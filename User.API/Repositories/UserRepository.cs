@@ -19,31 +19,28 @@ namespace User.API.Repositories
             this.mapper = mapper;
         }
 
-        public async Task<IdentityResult> SignUpAsync(SignUpDTO signUpModel)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="signUpModel"></param>
+        /// <returns>
+        /// 
+        /// </returns>
+        public async Task<string?> SignUpAsync(SignUpDTO signUpModel)
         {
-            using (UserContext db = new())
+            UserModel user = await userManager.FindByEmailAsync(signUpModel.Email);
+
+            if (user is not null)
             {
-                string email = signUpModel.Email;
-
-                IQueryable<UserModel>? users = db.Users?.Where(u => u.Email == email);
-
-                if (users is not null)
-                {
-                    return IdentityResult.Failed(new IdentityError() { Code = "400" });
-                }
+                return null;
             }
-            return null;
-        }
 
-        public async Task<string> CreateUserAsync(SignUpDTO signUpModel)
-        {
-            var user = new UserModel()
+            user = new()
             {
                 Email = signUpModel.Email,
                 FirstName = signUpModel.FirstName,
                 LastName = signUpModel.LastName,
-                Image = signUpModel.Image,
-                DateRegisterd = DateTime.Now
+                Image = signUpModel.Image
             };
 
             await userManager.CreateAsync(user, signUpModel.Password);
