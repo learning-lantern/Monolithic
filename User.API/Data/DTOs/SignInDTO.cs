@@ -2,6 +2,9 @@
 
 namespace User.API.Data.DTOs
 {
+    /// <summary>
+    /// Sign In data transfare object class.
+    /// </summary>
     public class SignInDTO
     {
         [Required, EmailAddress]

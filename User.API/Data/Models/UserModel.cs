@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace User.API.Data.Models
 {
+    /// <summary>
+    /// User data model class, inherits from "IdentityUser" class.
+    /// </summary>
     public class UserModel : IdentityUser
     {
         public string FirstName { get; set; } = null!;

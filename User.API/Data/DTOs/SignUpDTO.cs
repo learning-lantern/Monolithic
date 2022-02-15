@@ -2,6 +2,9 @@
 
 namespace User.API.Data.DTOs
 {
+    /// <summary>
+    /// Sign Up data transfare object class, inherits from "SignInDTO" class.
+    /// </summary>
     public class SignUpDTO : SignInDTO
     {
         [Required, StringLength(30)]
