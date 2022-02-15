@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BackEnd.DTOs
+namespace User.API.Data.DTOs
 {
-    public class LogIn
+    public class SignInDTO
     {
         [Required, EmailAddress]
         public string Email { get; set; } = null!;

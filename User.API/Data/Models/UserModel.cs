@@ -1,17 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BackEnd.Models
+namespace User.API.Data.Models
 {
-    public class User : IdentityUser
+    public class UserModel : IdentityUser
     {
-        [Key]
-        public new int Id { get; }
-        public new string Email { get; set; } = null!;
-        public new bool EmailConfirmed { get; set; } = false;
-        public string Password { get; set; } = null!;
         public string FirstName { get; set; } = null!;
+        public string MiddleName { get; set; } = null!;
         public string LastName { get; set; } = null!;
         public DateTime DateRegisterd { get; set; }
         public string ValidationCode { get; set; } = null!;

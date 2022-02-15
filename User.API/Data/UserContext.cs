@@ -1,16 +1,14 @@
-﻿using BackEnd.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using User.API.Data.Models;
 
-namespace BackEnd.Data
+namespace User.API.Data
 {
-    public class AuthContext : IdentityDbContext<User>
+    public class UserContext : IdentityDbContext<UserModel>
     {
-        public DbSet<User>? User { get; set; }
+        public UserContext() { }
 
-        public AuthContext() { }
-
-        public AuthContext(DbContextOptions<AuthContext> options) : base(options) { }
+        public UserContext(DbContextOptions<UserContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

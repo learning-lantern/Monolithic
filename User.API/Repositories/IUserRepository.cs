@@ -1,4 +1,4 @@
-﻿namespace BackEnd.Repositories
+﻿namespace User.API.Repositories
 {
     public interface IUserRepository
     {
