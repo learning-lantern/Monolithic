@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using User.API.Data.DTOs;
-using User.API.Data.Models;
 
 namespace User.API.Helpers
 {
