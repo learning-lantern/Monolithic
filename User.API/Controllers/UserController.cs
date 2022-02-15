@@ -21,12 +21,12 @@ namespace User.API.Controllers
         {
             var id = await userRepository.SignUpAsync(user);
 
-            if (id is not null)
+            if (id is null)
             {
-                return Ok(id);
+                return BadRequest();
             }
 
-            return Unauthorized();
+            return Ok(id);
         }
     }
 }

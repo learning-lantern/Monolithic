@@ -1,22 +1,26 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using User.API.Data;
+﻿using Microsoft.AspNetCore.Identity;
 using User.API.Data.DTOs;
 using User.API.Data.Models;
 
 namespace User.API.Repositories
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class UserRepository : IUserRepository
     {
-        private readonly IMapper mapper;
         private readonly UserManager<UserModel> userManager;
         private readonly SignInManager<UserModel> signInManager;
 
-        public UserRepository(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, IMapper mapper)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="signInManager"></param>
+        public UserRepository(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
-            this.mapper = mapper;
         }
 
         /// <summary>
@@ -44,17 +48,34 @@ namespace User.API.Repositories
             };
 
             await userManager.CreateAsync(user, signUpModel.Password);
+
+            //SmtpClient client = new("smtp.gmail.com");
+
+            //MailMessage message = new("elmourchiditest@gmail.com", user.Email, "Test Subject", "Test");
+
+            //client.Credentials = new NetworkCredential("elmourchiditest", "12345678Hr@#$");
+            //client.Port = 587;
+            //await client.SendMailAsync(message);
+
             return user.Id;
         }
 
-        public async Task<UserModel> FindByIdAsync(string id)
-        {
-            return await userManager.FindByIdAsync(id);
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>
+        /// 
+        /// </returns>
+        public async Task<UserModel> FindByIdAsync(string id) => await userManager.FindByIdAsync(id);
 
-        public async Task<UserModel> FindByEmailAsync(string email)
-        {
-            return await userManager.FindByEmailAsync(email);
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>
+        /// 
+        /// </returns>
+        public async Task<UserModel> FindByEmailAsync(string email) => await userManager.FindByEmailAsync(email);
     }
 }

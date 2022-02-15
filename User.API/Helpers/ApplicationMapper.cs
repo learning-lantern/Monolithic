@@ -11,7 +11,7 @@ namespace User.API.Helpers
     {
         public ApplicationMapper()
         {
-            CreateMap<UserModel, SignUpDTO>().ReverseMap();
+            //CreateMap<UserModel, SignUpDTO>().ReverseMap();
         }
     }
 }
