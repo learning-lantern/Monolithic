@@ -9,7 +9,7 @@ namespace User.API.Data.DTOs
     {
         [Required, EmailAddress]
         public string Email { get; set; } = null!;
-        [Required, RegularExpression("^(?=.*[A-Z].*[a-z])(?=.*[0-9]).{8,30}$")]
+        [Required, RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,30}$")]
         public string Password { get; set; } = null!;
     }
 }
