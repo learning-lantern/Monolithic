@@ -9,7 +9,10 @@ namespace User.API.Data.DTOs
     {
         [Required, EmailAddress]
         public string Email { get; set; } = null!;
-        [Required, RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,30}$")]
+        /// <summary>
+        /// Password property that its pattern must consist of a minimum 8 and maximum 10 characters, at least one uppercase letter, one lowercase letter, and one number.
+        /// </summary>
+        [Required, RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,10}$")]
         public string Password { get; set; } = null!;
     }
 }
