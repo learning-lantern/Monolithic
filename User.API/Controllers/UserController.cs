@@ -32,7 +32,7 @@ namespace User.API.Controllers
         [HttpPost("SignUp")]
         public async Task<IActionResult> SignUp([FromBody] SignUpDTO user)
         {
-            var id = await userRepository.SignUpAsync(user);
+            var id = await userRepository.CreateAsync(user);
 
             if (id is null)
             {
@@ -40,6 +40,34 @@ namespace User.API.Controllers
             }
 
             return Ok(id);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="token"></param>
+        /// <returns>
+        /// 
+        /// </returns>
+        [HttpPost("ConfirmEmail/{id}/{token}")]
+        public async Task<IActionResult> ConfirmEmail([FromRoute] string id, [FromRoute] string token)
+        {
+            var user = await userRepository.FindByIdAsync(id);
+
+            if (user is null)
+            {
+                return BadRequest();
+            }
+
+            var confirmEmailAsyncResult = await userRepository.ConfirmEmailAsync(user, token);
+
+            if (confirmEmailAsyncResult.Succeeded)
+            {
+                return Ok(id);
+            }
+
+            return BadRequest();
         }
     }
 }

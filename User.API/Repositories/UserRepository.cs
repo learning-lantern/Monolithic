@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Net;
+using System.Net.Mail;
 using User.API.Data.DTOs;
 using User.API.Data.Models;
 
@@ -30,9 +32,9 @@ namespace User.API.Repositories
         /// <returns>
         /// 
         /// </returns>
-        public async Task<string?> SignUpAsync(SignUpDTO signUpModel)
+        public async Task<string?> CreateAsync(SignUpDTO signUpModel)
         {
-            UserModel user = await userManager.FindByEmailAsync(signUpModel.Email);
+            var user = await userManager.FindByEmailAsync(signUpModel.Email);
 
             if (user is not null)
             {
@@ -47,35 +49,78 @@ namespace User.API.Repositories
                 Image = signUpModel.Image
             };
 
-            await userManager.CreateAsync(user, signUpModel.Password);
+            var createAsyncResult = await userManager.CreateAsync(user, signUpModel.Password);
 
-            //SmtpClient client = new("smtp.gmail.com");
+            if (!createAsyncResult.Succeeded)
+            {
+                return null;
+            }
 
-            //MailMessage message = new("elmourchiditest@gmail.com", user.Email, "Test Subject", "Test");
-
-            //client.Credentials = new NetworkCredential("elmourchiditest", "12345678Hr@#$");
-            //client.Port = 587;
-            //await client.SendMailAsync(message);
-
-            return user.Id;
+            return await SendConfirmationEmail(user);
         }
 
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="user"></param>
+        /// <param name="token"></param>
+        /// <returns>
+        /// 
+        /// </returns>
+        public async Task<string?> SendConfirmationEmail(UserModel user)
+        {
+            var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            if (token is null)
+            {
+                return null;
+            }
+
+            var confirmEmailUri = $"https://learning-lantern.web.app/en/auth/confirmation/{user.Id}/{token}/";
+
+            var client = new SmtpClient()
+            {
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                EnableSsl = true,
+                Host = "smtp.gmail.com",
+                Port = 587,
+                Credentials = new NetworkCredential("elmourchiditest@gmail.com", "12345678Hr@#$")
+            };
+
+            var message = new MailMessage(from: "elmourchiditest@gmail.com", to: user.Email, subject: "Confirm Email", body: confirmEmailUri);
+
+            await client.SendMailAsync(message);
+
+            return user.Id;
+        }
+
+        /// <summary>
+        /// Validates that an email confirmation token matches the specified user.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="token"></param>
+        /// <returns>
+        /// 
+        /// </returns>
+        public async Task<IdentityResult> ConfirmEmailAsync(UserModel user, string token) => await userManager.ConfirmEmailAsync(user, token);
+
+        /// <summary>
+        /// Finds and returns a user, if any, who has the specified userId.
+        /// </summary>
         /// <param name="id"></param>
         /// <returns>
         /// 
         /// </returns>
-        public async Task<UserModel> FindByIdAsync(string id) => await userManager.FindByIdAsync(id);
+        public async Task<UserModel?> FindByIdAsync(string id) => await userManager.FindByIdAsync(id);
 
         /// <summary>
-        /// 
+        /// Gets the user, if any, associated with the normalized value of the specified email address. Note: Its recommended that identityOptions.User.RequireUniqueEmail be set to true when using this method, otherwise the store may throw if there are users with duplicate emails.
         /// </summary>
         /// <param name="email"></param>
         /// <returns>
         /// 
         /// </returns>
-        public async Task<UserModel> FindByEmailAsync(string email) => await userManager.FindByEmailAsync(email);
+        public async Task<UserModel?> FindByEmailAsync(string email) => await userManager.FindByEmailAsync(email);
     }
 }
