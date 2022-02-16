@@ -34,15 +34,9 @@ namespace User.API.Repositories
         /// </returns>
         public async Task<string?> CreateAsync(SignUpDTO signUpModel)
         {
-            var user = await userManager.FindByEmailAsync(signUpModel.Email);
-
-            if (user is not null)
+            var user = new UserModel()
             {
-                return null;
-            }
-
-            user = new()
-            {
+                UserName = signUpModel.Email,
                 Email = signUpModel.Email,
                 FirstName = signUpModel.FirstName,
                 LastName = signUpModel.LastName,
@@ -85,7 +79,7 @@ namespace User.API.Repositories
                 EnableSsl = true,
                 Host = "smtp.gmail.com",
                 Port = 587,
-                Credentials = new NetworkCredential("elmourchiditest@gmail.com", "12345678Hr@#$")
+                Credentials = new NetworkCredential(userName: "elmourchiditest@gmail.com", password: "12345678Hr@#$")
             };
 
             var message = new MailMessage(from: "elmourchiditest@gmail.com", to: user.Email, subject: "Confirm Email", body: confirmEmailUri);
