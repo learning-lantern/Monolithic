@@ -70,7 +70,7 @@ namespace User.API.Repositories
                 return null;
             }
 
-            var confirmEmailUri = $"https://learning-lantern.web.app/en/auth/confirmation/{user.Id}/{token}/";
+            var confirmEmailURL = $"https://learning-lantern.web.app/en/auth/confirmation/{user.Id}/{token}/";
 
             var client = new SmtpClient()
             {
@@ -82,7 +82,7 @@ namespace User.API.Repositories
                 Credentials = new NetworkCredential(userName: "elmourchiditest@gmail.com", password: "12345678Hr@#$")
             };
 
-            var message = new MailMessage(from: "elmourchiditest@gmail.com", to: user.Email, subject: "Confirm Email", body: confirmEmailUri);
+            var message = new MailMessage(from: "elmourchiditest@gmail.com", to: user.Email, subject: "Confirm Email", body: confirmEmailURL);
 
             await client.SendMailAsync(message);
 
