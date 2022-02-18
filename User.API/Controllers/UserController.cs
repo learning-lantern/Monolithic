@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using User.API.Data.DTOs;
 using User.API.Data.Models;
 using User.API.Repositories;
@@ -62,8 +61,8 @@ namespace User.API.Controllers
         /// <returns>
         /// 
         /// </returns>
-        [HttpGet("ConfirmEmail/{id}/{token}")]
-        public async Task<IActionResult> ConfirmEmail([FromRoute] string id, [FromRoute] string token)
+        [HttpGet("ConfirmEmail/{id}")]
+        public async Task<IActionResult> ConfirmEmail([FromRoute] string id, [FromBody] string token)
         {
             var user = await userRepository.FindByIdAsync(id);
 

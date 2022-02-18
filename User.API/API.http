@@ -6,7 +6,7 @@ POST {{HOST_NAME}}/api/User/SignUp HTTP/1.1
 Content-Type: application/json
 
 {
-    "Email": "ahmed.fathy.dev@gmail.com",
+    "Email": "ahmmohfat18@compit.aun.edu.eg",
     "Password": "Fathy123",
     "FirstName": "Ahmed",
     "LastName": "Fathy"
@@ -17,6 +17,14 @@ POST {{HOST_NAME}}/api/User/SignIn HTTP/1.1
 Content-Type: application/json
 
 {
-    "Email": "ahmed.fathy.dev@gmail.com",
+    "Email": "ahmmohfat18@compit.aun.edu.eg",
     "Password": "Fathy123"
+}
+
+### ConfirmEmail
+GET {{HOST_NAME}}/api/User/ConfirmEmail/3e587a2d-8ed7-486e-bcd3-21f9abb3686c/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "token": "CfDJ8E1i+HYhPp5CiXZ9srKWg1czlxKQ2VEDPxdI9JNqcdDZI35FdbvcgbtnyasaBPLFhhge3u5Qbv8zvjf/pYWzy86qQt9SNfJiR9avQH/s65RZdi8P74plufL9iM8Wv09WmnyqBocLNHRCPz5V6MrcQRQg5hza3NkWQmmmbBAEN8qkXCB4m0UatZMEwJG2tcCsOTIlSuBBLKZNE37HGLKR9GTbhoyoZrfg062JUhtw11bovhwRmyZL6b3Km0iamM5lWQ=="
 }
