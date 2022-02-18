@@ -2,7 +2,7 @@
 @HOST_NAME = https://localhost:5001
 
 ### SignUp
-POST https://localhost:5001/api/User/SignUp HTTP/1.1
+POST {{HOST_NAME}}/api/User/SignUp HTTP/1.1
 Content-Type: application/json
 
 {
@@ -10,4 +10,13 @@ Content-Type: application/json
     "Password": "Fathy123",
     "FirstName": "Ahmed",
     "LastName": "Fathy"
+}
+
+### SignIn
+POST {{HOST_NAME}}/api/User/SignIn HTTP/1.1
+Content-Type: application/json
+
+{
+    "Email": "ahmed.fathy.dev@gmail.com",
+    "Password": "Fathy123"
 }

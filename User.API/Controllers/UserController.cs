@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using User.API.Data.DTOs;
+using User.API.Data.Models;
 using User.API.Repositories;
 
 namespace User.API.Controllers
@@ -25,21 +27,31 @@ namespace User.API.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="id"></param>
+        /// <returns>
+        /// 
+        /// </returns>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUser([FromRoute] string id)
+        {
+            var user = await userRepository.FindByIdAsync(id);
+
+            return user is null ? BadRequest() : Ok(value: user);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="signUpDTO"></param>
         /// <returns>
         /// 
         /// </returns>
         [HttpPost("SignUp")]
-        public async Task<IActionResult> SignUp([FromBody] SignUpDTO user)
+        public async Task<IActionResult> SignUp([FromBody] SignUpDTO signUpDTO)
         {
-            var id = await userRepository.CreateAsync(user);
+            var id = await userRepository.CreateAsync(signUpDTO);
 
-            if (id is null)
-            {
-                return BadRequest();
-            }
-
-            return Ok(id);
+            return string.IsNullOrEmpty(value: id) ? BadRequest() : Ok();
         }
 
         /// <summary>
@@ -60,14 +72,49 @@ namespace User.API.Controllers
                 return BadRequest();
             }
 
-            var confirmEmailAsyncResult = await userRepository.ConfirmEmailAsync(user, token);
-
-            if (confirmEmailAsyncResult.Succeeded)
+            if (user.EmailConfirmed)
             {
-                return Ok(id);
+                return Accepted(value: id);
             }
 
-            return BadRequest();
+            var confirmEmailAsyncResult = await userRepository.ConfirmEmailAsync(user, token);
+
+            if (!confirmEmailAsyncResult.Succeeded)
+            {
+                return BadRequest();
+            }
+
+            return CreatedAtAction(actionName: nameof(SignIn), value: user.Id);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="signInDTO"></param>
+        /// <returns>
+        /// 
+        /// </returns>
+        [HttpPost("SignIn")]
+        public async Task<IActionResult> SignIn([FromBody] SignInDTO signInDTO)
+        {
+            var token = await userRepository.SignInAsync(signInDTO);
+
+            return string.IsNullOrEmpty(value: token) ? Unauthorized() : Ok(value: token);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userModel"></param>
+        /// <returns>
+        /// 
+        /// </returns>
+        [HttpPut("Update")]
+        public async Task<IActionResult> Update([FromBody] UserModel userModel)
+        {
+            var updateAsyncResult = await userRepository.UpdateAsync(userModel);
+
+            return updateAsyncResult.Succeeded ? CreatedAtAction(actionName: nameof(GetUser), controllerName: nameof(UserController), routeValues: userModel.Id, value: userModel.Id) : BadRequest();
         }
     }
 }
