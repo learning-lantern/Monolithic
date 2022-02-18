@@ -15,5 +15,6 @@ namespace User.API.Repositories
         public Task<IdentityResult> ConfirmEmailAsync(UserModel userModel, string token);
         public Task<string?> SignInAsync(SignInDTO signInDTO);
         public Task<IdentityResult> UpdateAsync(UserModel userModel);
+        public Task<IdentityResult> DeleteAsync(UserModel userModel);
     }
 }

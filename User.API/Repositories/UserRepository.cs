@@ -50,9 +50,9 @@ namespace User.API.Repositories
                 Image = signUpDTO.Image
             };
 
-            var createAsyncResult = await userManager.CreateAsync(user, signUpDTO.Password);
+            var createAsyncResult = await userManager.CreateAsync(user: user, password: signUpDTO.Password);
 
-            return createAsyncResult.Succeeded ? await SendConfirmationEmailAsync(user) : null;
+            return createAsyncResult.Succeeded ? await SendConfirmationEmailAsync(userModel: user) : null;
         }
 
         /// <summary>
@@ -64,16 +64,16 @@ namespace User.API.Repositories
         /// </returns>
         private async Task<string?> SendConfirmationEmailAsync(UserModel userModel)
         {
-            var token = await userManager.GenerateEmailConfirmationTokenAsync(userModel);
+            var token = await userManager.GenerateEmailConfirmationTokenAsync(user: userModel);
 
-            if (string.IsNullOrEmpty(token))
+            if (string.IsNullOrEmpty(value: token))
             {
                 return null;
             }
 
-            var messageBody = $"<h1>Welcome To Learning Lantern</h1><br><p> Thanks for registering at learning lantern please click <strong><a href=\"https://localhost:5001/api/User/ConfirmEmail/{userModel.Id}/{token}/\" target=\"_blank\">here</a></strong> to activate your account</p>";
+            var messageBody = $"<h1>Welcome To Learning Lantern</h1><br><p> Thanks for registering at learning lantern please click <strong><a href=\"https://localhost:5001/api/User/ConfirmEmail?userId={userModel.Id}&token={token}\" target=\"_blank\">here</a></strong> to activate your account</p>";
 
-            var smtpClient = new SmtpClient("smtp.gmail.com", 587)
+            var smtpClient = new SmtpClient(host: "smtp.gmail.com", port: 587)
             {
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
@@ -86,7 +86,7 @@ namespace User.API.Repositories
                 IsBodyHtml = true
             };
 
-            await smtpClient.SendMailAsync(mailMessage);
+            await smtpClient.SendMailAsync(message: mailMessage);
 
             return userModel.Id;
         }
@@ -94,11 +94,11 @@ namespace User.API.Repositories
         /// <summary>
         /// Finds and returns a user, if any, who has the specified userId.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="userId"></param>
         /// <returns>
         /// 
         /// </returns>
-        public async Task<UserModel?> FindByIdAsync(string id) => await userManager.FindByIdAsync(id);
+        public async Task<UserModel?> FindByIdAsync(string userId) => await userManager.FindByIdAsync(userId: userId);
 
         /// <summary>
         /// Gets the user, if any, associated with the normalized value of the specified email address. Note: Its recommended that identityOptions.User.RequireUniqueEmail be set to true when using this method, otherwise the store may throw if there are users with duplicate emails.
@@ -107,7 +107,7 @@ namespace User.API.Repositories
         /// <returns>
         /// 
         /// </returns>
-        public async Task<UserModel?> FindByEmailAsync(string email) => await userManager.FindByEmailAsync(email);
+        public async Task<UserModel?> FindByEmailAsync(string email) => await userManager.FindByEmailAsync(email: email);
 
         /// <summary>
         /// Validates that an email confirmation token matches the specified user.
@@ -117,7 +117,7 @@ namespace User.API.Repositories
         /// <returns>
         /// 
         /// </returns>
-        public async Task<IdentityResult> ConfirmEmailAsync(UserModel userModel, string token) => await userManager.ConfirmEmailAsync(userModel, token);
+        public async Task<IdentityResult> ConfirmEmailAsync(UserModel userModel, string token) => await userManager.ConfirmEmailAsync(user: userModel, token: token);
 
         /// <summary>
         /// 
@@ -141,7 +141,7 @@ namespace User.API.Repositories
                 new Claim(type: JwtRegisteredClaimNames.Jti, value: Guid.NewGuid().ToString())
             };
 
-            var issuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["JWT:IssuerSigningKey"]));
+            var issuerSigningKey = new SymmetricSecurityKey(key: Encoding.ASCII.GetBytes(configuration["JWT:IssuerSigningKey"]));
 
             var token = new JwtSecurityToken(
                 issuer: configuration["JWT:ValidIssuer"],
@@ -151,7 +151,7 @@ namespace User.API.Repositories
                 signingCredentials: new SigningCredentials(key: issuerSigningKey, algorithm: SecurityAlgorithms.HmacSha256Signature)
                 );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return new JwtSecurityTokenHandler().WriteToken(token: token);
         }
 
         /// <summary>
@@ -161,6 +161,15 @@ namespace User.API.Repositories
         /// <returns>
         /// 
         /// </returns>
-        public async Task<IdentityResult> UpdateAsync(UserModel userModel) => await userManager.UpdateAsync(userModel);
+        public async Task<IdentityResult> UpdateAsync(UserModel userModel) => await userManager.UpdateAsync(user: userModel);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userModel"></param>
+        /// <returns>
+        /// 
+        /// </returns>
+        public async Task<IdentityResult> DeleteAsync(UserModel userModel) => await userManager.DeleteAsync(user: userModel);
     }
 }
