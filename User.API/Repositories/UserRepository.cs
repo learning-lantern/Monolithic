@@ -71,7 +71,7 @@ namespace User.API.Repositories
                 return null;
             }
 
-            var messageBody = $"<h1>Welcome To Learning Lantern</h1><br><p> Thanks for registering at learning lantern please click <strong><a href=\"https://learning-lantern.web.app/en/auth/confirmation/{userModel.Id}/{token}/\" target=\"_blank\">here</a></strong> to activate your account</p>";
+            var messageBody = $"<h1>Welcome To Learning Lantern</h1><br><p> Thanks for registering at learning lantern please click <strong><a href=\"https://localhost:5001/api/User/ConfirmEmail/{userModel.Id}/{token}/\" target=\"_blank\">here</a></strong> to activate your account</p>";
 
             var smtpClient = new SmtpClient("smtp.gmail.com", 587)
             {
