@@ -9,12 +9,77 @@ namespace User.API.Repositories
     /// </summary>
     public interface IUserRepository
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="signUpDTO"></param>
+        /// <returns>
+        /// 
+        /// </returns>
         public Task<string?> CreateAsync(SignUpDTO signUpDTO);
-        public Task<UserModel?> FindByIdAsync(string id);
-        public Task<UserModel?> FindByEmailAsync(string email);
-        public Task<IdentityResult> ConfirmEmailAsync(UserModel userModel, string token);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userModel"></param>
+        /// <returns>
+        /// 
+        /// </returns>
+        public Task<string?> SendConfirmationEmailAsync(UserModel userModel);
+
+        /// <summary>
+        /// Finds and returns a user, if any, who has the specified userId.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>
+        /// 
+        /// </returns>
+        public Task<UserDTO?> FindByIdAsync(string userId);
+
+        /// <summary>
+        /// Gets the user, if any, associated with the normalized value of the specified email address. Note: Its recommended that identityOptions.User.RequireUniqueEmail be set to true when using this method, otherwise the store may throw if there are users with duplicate emails.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>
+        /// 
+        /// </returns>
+        public Task<UserDTO?> FindByEmailAsync(string email);
+
+        /// <summary>
+        /// Validates that an email confirmation token matches the specified user.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="confirmationCode"></param>
+        /// <returns>
+        /// 
+        /// </returns>
+        public Task<IdentityResult> ConfirmEmailAsync(string userId, string confirmationCode);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="signInDTO"></param>
+        /// <returns>
+        /// 
+        /// </returns>
         public Task<string?> SignInAsync(SignInDTO signInDTO);
-        public Task<IdentityResult> UpdateAsync(UserModel userModel);
-        public Task<IdentityResult> DeleteAsync(UserModel userModel);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userDTO"></param>
+        /// <returns>
+        /// 
+        /// </returns>
+        public Task<IdentityResult> UpdateAsync(UserDTO userDTO);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>
+        /// 
+        /// </returns>
+        public Task<IdentityResult> DeleteAsync(string userId);
     }
 }

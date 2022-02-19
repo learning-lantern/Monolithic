@@ -13,8 +13,8 @@ namespace User.API.Data.Models
         public string FirstName { get; set; } = null!;
         [StringLength(30)]
         public string LastName { get; set; } = null!;
-        public DateTime DateRegisterd { get; set; } = DateTime.Now;
-        public bool IsAdmin { get; set; } = false;
+        [StringLength(10)]
+        public string ConfirmationCode { get; set; } = null!;
         [Column(TypeName = "IMAGE")]
         public byte[]? Image { get; set; }
     }

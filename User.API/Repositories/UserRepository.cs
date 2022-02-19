@@ -18,6 +18,7 @@ namespace User.API.Repositories
         private readonly UserManager<UserModel> userManager;
         private readonly SignInManager<UserModel> signInManager;
         private readonly IConfiguration configuration;
+        private static readonly Random random = new();
 
         /// <summary>
         /// 
@@ -32,13 +33,6 @@ namespace User.API.Repositories
             this.configuration = configuration;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="signUpDTO"></param>
-        /// <returns>
-        /// 
-        /// </returns>
         public async Task<string?> CreateAsync(SignUpDTO signUpDTO)
         {
             var user = new UserModel()
@@ -47,7 +41,10 @@ namespace User.API.Repositories
                 Email = signUpDTO.Email,
                 FirstName = signUpDTO.FirstName,
                 LastName = signUpDTO.LastName,
-                Image = signUpDTO.Image
+                Image = signUpDTO.Image,
+                ConfirmationCode = new string(
+                    value: Enumerable.Repeat(element: configuration["Chars"], count: 10).Select(
+                    selector => selector[random.Next(maxValue: selector.Length)]).ToArray())
             };
 
             var createAsyncResult = await userManager.CreateAsync(user: user, password: signUpDTO.Password);
@@ -55,33 +52,19 @@ namespace User.API.Repositories
             return createAsyncResult.Succeeded ? await SendConfirmationEmailAsync(userModel: user) : null;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="userModel"></param>
-        /// <returns>
-        /// 
-        /// </returns>
-        private async Task<string?> SendConfirmationEmailAsync(UserModel userModel)
+        public async Task<string?> SendConfirmationEmailAsync(UserModel userModel)
         {
-            var token = await userManager.GenerateEmailConfirmationTokenAsync(user: userModel);
+            var messageBody = $"<h1>Welcome To Learning Lantern</h1><br><p> Thanks for registering at learning lantern please click <strong><a href=\"https://localhost:5001/api/User/ConfirmEmail?userId={userModel.Id}&confirmationCode={userModel.ConfirmationCode}\" target=\"_blank\">here</a></strong> to activate your account</p>";
 
-            if (string.IsNullOrEmpty(value: token))
-            {
-                return null;
-            }
-
-            var messageBody = $"<h1>Welcome To Learning Lantern</h1><br><p> Thanks for registering at learning lantern please click <strong><a href=\"https://localhost:5001/api/User/ConfirmEmail?userId={userModel.Id}&token={token}\" target=\"_blank\">here</a></strong> to activate your account</p>";
-
-            var smtpClient = new SmtpClient(host: "smtp.gmail.com", port: 587)
+            var smtpClient = new SmtpClient(host: configuration["SMTP:Host"], port: 587)
             {
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
                 EnableSsl = true,
-                Credentials = new NetworkCredential(userName: "elmourchiditest@gmail.com", password: "12345678Hr@#$")
+                Credentials = new NetworkCredential(userName: configuration["SMTP:Credentials:UserName"], password: configuration["SMTP:Credentials:Password"])
             };
 
-            var mailMessage = new MailMessage(from: "elmourchiditest@gmail.com", to: userModel.Email, subject: "Confirm Email", body: messageBody)
+            var mailMessage = new MailMessage(from: configuration["SMTP:Credentials:UserName"], to: userModel.Email, subject: "Confirmation Email", body: messageBody)
             {
                 IsBodyHtml = true
             };
@@ -91,41 +74,44 @@ namespace User.API.Repositories
             return userModel.Id;
         }
 
-        /// <summary>
-        /// Finds and returns a user, if any, who has the specified userId.
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns>
-        /// 
-        /// </returns>
-        public async Task<UserModel?> FindByIdAsync(string userId) => await userManager.FindByIdAsync(userId: userId);
+        public async Task<UserDTO?> FindByIdAsync(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId: userId);
 
-        /// <summary>
-        /// Gets the user, if any, associated with the normalized value of the specified email address. Note: Its recommended that identityOptions.User.RequireUniqueEmail be set to true when using this method, otherwise the store may throw if there are users with duplicate emails.
-        /// </summary>
-        /// <param name="email"></param>
-        /// <returns>
-        /// 
-        /// </returns>
-        public async Task<UserModel?> FindByEmailAsync(string email) => await userManager.FindByEmailAsync(email: email);
+            if (user == null || !user.EmailConfirmed)
+            {
+                return null;
+            }
 
-        /// <summary>
-        /// Validates that an email confirmation token matches the specified user.
-        /// </summary>
-        /// <param name="userModel"></param>
-        /// <param name="token"></param>
-        /// <returns>
-        /// 
-        /// </returns>
-        public async Task<IdentityResult> ConfirmEmailAsync(UserModel userModel, string token) => await userManager.ConfirmEmailAsync(user: userModel, token: token);
+            return new UserDTO(user);
+        }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="signInDTO"></param>
-        /// <returns>
-        /// 
-        /// </returns>
+        public async Task<UserDTO?> FindByEmailAsync(string email)
+        {
+            var user = await userManager.FindByEmailAsync(email: email);
+
+            if (user == null || !user.EmailConfirmed)
+            {
+                return null;
+            }
+
+            return new UserDTO(user);
+        }
+
+        public async Task<IdentityResult> ConfirmEmailAsync(string userId, string confirmationCode)
+        {
+            var user = await userManager.FindByIdAsync(userId: userId);
+
+            if (user is null || confirmationCode != user.ConfirmationCode)
+            {
+                return IdentityResult.Failed();
+            }
+
+            user.EmailConfirmed = true;
+
+            return await userManager.UpdateAsync(user);
+        }
+
         public async Task<string?> SignInAsync(SignInDTO signInDTO)
         {
             var passwordSignInAsyncResult = await signInManager.PasswordSignInAsync(userName: signInDTO.Email, password: signInDTO.Password, isPersistent: true, lockoutOnFailure: false);
@@ -154,22 +140,32 @@ namespace User.API.Repositories
             return new JwtSecurityTokenHandler().WriteToken(token: token);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="userModel"></param>
-        /// <returns>
-        /// 
-        /// </returns>
-        public async Task<IdentityResult> UpdateAsync(UserModel userModel) => await userManager.UpdateAsync(user: userModel);
+        public async Task<IdentityResult> UpdateAsync(UserDTO userDTO)
+        {
+            var user = await userManager.FindByIdAsync(userDTO.Id);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="userModel"></param>
-        /// <returns>
-        /// 
-        /// </returns>
-        public async Task<IdentityResult> DeleteAsync(UserModel userModel) => await userManager.DeleteAsync(user: userModel);
+            if (user is null)
+            {
+                return IdentityResult.Failed();
+            }
+
+            user.FirstName = userDTO.FirstName;
+            user.LastName = userDTO.LastName;
+            user.Image = userDTO.Image;
+
+            return IdentityResult.Success;
+        }
+
+        public async Task<IdentityResult> DeleteAsync(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user is null)
+            {
+                return IdentityResult.Failed();
+            }
+
+            return await userManager.DeleteAsync(user: user);
+        }
     }
 }

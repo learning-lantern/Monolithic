@@ -19,6 +19,7 @@ builder.Services.AddIdentity<UserModel, IdentityRole>(setupAction =>
     setupAction.SignIn.RequireConfirmedEmail = true;
     setupAction.Password.RequiredLength = 8;
     setupAction.Password.RequireNonAlphanumeric = false;
+    setupAction.User.RequireUniqueEmail = true;
 }).AddEntityFrameworkStores<UserContext>().AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(configureOptions =>
@@ -45,14 +46,11 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 
+builder.Services.AddCors(setupAction => setupAction.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
 
 app.UseHttpsRedirection();
 app.UseCors();

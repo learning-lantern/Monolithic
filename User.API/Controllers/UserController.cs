@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using User.API.Data.DTOs;
-using User.API.Data.Models;
 using User.API.Repositories;
 
 namespace User.API.Controllers
@@ -30,10 +30,10 @@ namespace User.API.Controllers
         /// <returns>
         /// 
         /// </returns>
-        [HttpGet]
+        [HttpGet, Authorize]
         public async Task<IActionResult> GetUser([FromQuery] string userId)
         {
-            var user = await userRepository.FindByIdAsync(userId);
+            var user = await userRepository.FindByIdAsync(userId: userId);
 
             return user is null ? BadRequest() : Ok(value: user);
         }
@@ -48,7 +48,7 @@ namespace User.API.Controllers
         [HttpPost("SignUp")]
         public async Task<IActionResult> SignUp([FromBody] SignUpDTO signUpDTO)
         {
-            var id = await userRepository.CreateAsync(signUpDTO);
+            var id = await userRepository.CreateAsync(signUpDTO: signUpDTO);
 
             return string.IsNullOrEmpty(value: id) ? BadRequest() : Ok();
         }
@@ -62,21 +62,9 @@ namespace User.API.Controllers
         /// 
         /// </returns>
         [HttpGet("ConfirmEmail")]
-        public async Task<IActionResult> ConfirmEmail([FromQuery] string userId, [FromQuery] string token)
+        public async Task<IActionResult> ConfirmEmail([FromQuery] string userId, [FromQuery] string confirmationCode)
         {
-            var user = await userRepository.FindByIdAsync(userId);
-
-            if (user is null)
-            {
-                return BadRequest();
-            }
-
-            if (user.EmailConfirmed)
-            {
-                return Accepted(value: userId);
-            }
-
-            var confirmEmailAsyncResult = await userRepository.ConfirmEmailAsync(user, token);
+            var confirmEmailAsyncResult = await userRepository.ConfirmEmailAsync(userId: userId, confirmationCode: confirmationCode);
 
             return confirmEmailAsyncResult.Succeeded ? CreatedAtAction(actionName: nameof(SignIn), value: userId) : BadRequest();
         }
@@ -99,16 +87,16 @@ namespace User.API.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="userModel"></param>
+        /// <param name="userDTO"></param>
         /// <returns>
         /// 
         /// </returns>
-        [HttpPut("Update")]
-        public async Task<IActionResult> Update([FromBody] UserModel userModel)
+        [HttpPut("Update"), Authorize]
+        public async Task<IActionResult> Update([FromBody] UserDTO userDTO)
         {
-            var updateAsyncResult = await userRepository.UpdateAsync(userModel);
+            var updateAsyncResult = await userRepository.UpdateAsync(userDTO);
 
-            return updateAsyncResult.Succeeded ? CreatedAtAction(actionName: nameof(GetUser), controllerName: nameof(UserController), routeValues: userModel.Id, value: userModel.Id) : BadRequest();
+            return updateAsyncResult.Succeeded ? CreatedAtAction(actionName: nameof(GetUser), controllerName: nameof(UserController), routeValues: userDTO.Id, value: userDTO) : BadRequest();
         }
 
         /// <summary>
@@ -118,17 +106,10 @@ namespace User.API.Controllers
         /// <returns>
         /// 
         /// </returns>
-        [HttpDelete("Delete")]
+        [HttpDelete("Delete"), Authorize]
         public async Task<IActionResult> Delete([FromQuery] string userId)
         {
-            var user = await userRepository.FindByIdAsync(userId);
-
-            if (user is null)
-            {
-                return BadRequest();
-            }
-
-            var deleteAsyncResult = await userRepository.DeleteAsync(user);
+            var deleteAsyncResult = await userRepository.DeleteAsync(userId);
 
             return deleteAsyncResult.Succeeded ? Ok() : BadRequest();
         }

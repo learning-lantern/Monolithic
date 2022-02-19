@@ -1,6 +1,10 @@
 
 @HOST_NAME = https://localhost:5001
 
+### GetUser
+GET {{HOST_NAME}}/api/User?userId=f5c6ebdf-a072-4632-b718-489c0ce8278d
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWhtbW9oZmF0MThAY29tcGl0LmF1bi5lZHUuZWciLCJqdGkiOiI2YTVjNzRmZC0yNTlhLTQ5ZjgtODUyYy0wODczYzQ0YzFkZDMiLCJleHAiOjE2NDc4MjEwMDMsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjUwMDEiLCJhdWQiOiJVc2VyIn0.zVXI-9rdGfx2XtszLATvAad_R_2jYxYLbr-JcSqE17c
+
 ### SignUp
 POST {{HOST_NAME}}/api/User/SignUp HTTP/1.1
 Content-Type: application/json
@@ -21,8 +25,19 @@ Content-Type: application/json
     "Password": "Fathy123"
 }
 
-### ConfirmEmail
-GET {{HOST_NAME}}/api/User/ConfirmEmail?userId=fa6ab0d4-b626-4d22-9856-907dfdaceb96&token=CfDJ8E1i+HYhPp5CiXZ9srKWg1f4EMdqdBXyRX53cPWBxxcvcXop8j0lzW19ZycfDoGkuaIIgRCxCyIGyxbi9R3hnv6ABEH/wdKegSjwJKh1xQHdd8YQQp4+Xz7Oyf/8J2kZI/qbJbXL2HlO1GFPgGqAH5DG26jdcUFGBghheNT5cS0jAwBeRYeXkNTB9oukDu1q4NyNeJWDoon/jElE3uZAT6+0vWMNuafbzFpzLc+DhdPYdcd2nhm6NSFffenDzcahqg== HTTP/1.1
+### Update
+PUT {{HOST_NAME}}/api/User/Update HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWhtbW9oZmF0MThAY29tcGl0LmF1bi5lZHUuZWciLCJqdGkiOiI2YTVjNzRmZC0yNTlhLTQ5ZjgtODUyYy0wODczYzQ0YzFkZDMiLCJleHAiOjE2NDc4MjEwMDMsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjUwMDEiLCJhdWQiOiJVc2VyIn0.zVXI-9rdGfx2XtszLATvAad_R_2jYxYLbr-JcSqE17c
+
+{
+    "Id": "f5c6ebdf-a072-4632-b718-489c0ce8278d",
+    "Email": "ahmmohfat18@compit.aun.edu.eg",
+    "FirstName": "Ahemd",
+    "LastName": "Osman",
+    "Image": null
+}
 
 ### Delete
-DELETE {{HOST_NAME}}/api/User/Delete?userId=fa6ab0d4-b626-4d22-9856-907dfdaceb96 HTTP/1.1
+DELETE {{HOST_NAME}}/api/User/Delete?userId=f5c6ebdf-a072-4632-b718-489c0ce8278d HTTP/1.1
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWhtbW9oZmF0MThAY29tcGl0LmF1bi5lZHUuZWciLCJqdGkiOiI2YTVjNzRmZC0yNTlhLTQ5ZjgtODUyYy0wODczYzQ0YzFkZDMiLCJleHAiOjE2NDc4MjEwMDMsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjUwMDEiLCJhdWQiOiJVc2VyIn0.zVXI-9rdGfx2XtszLATvAad_R_2jYxYLbr-JcSqE17c
