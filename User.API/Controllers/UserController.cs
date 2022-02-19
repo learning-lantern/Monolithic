@@ -26,21 +26,6 @@ namespace User.API.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="userId"></param>
-        /// <returns>
-        /// 
-        /// </returns>
-        [HttpGet, Authorize]
-        public async Task<IActionResult> GetUser([FromQuery] string userId)
-        {
-            var user = await userRepository.FindByIdAsync(userId: userId);
-
-            return user is null ? BadRequest() : Ok(value: user);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="signUpDTO"></param>
         /// <returns>
         /// 
@@ -48,25 +33,9 @@ namespace User.API.Controllers
         [HttpPost("SignUp")]
         public async Task<IActionResult> SignUp([FromBody] SignUpDTO signUpDTO)
         {
-            var id = await userRepository.CreateAsync(signUpDTO: signUpDTO);
+            var id = await userRepository.CreateAsync(signUpDTO);
 
-            return string.IsNullOrEmpty(value: id) ? BadRequest() : Ok();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="token"></param>
-        /// <returns>
-        /// 
-        /// </returns>
-        [HttpGet("ConfirmEmail")]
-        public async Task<IActionResult> ConfirmEmail([FromQuery] string userId, [FromQuery] string confirmationCode)
-        {
-            var confirmEmailAsyncResult = await userRepository.ConfirmEmailAsync(userId: userId, confirmationCode: confirmationCode);
-
-            return confirmEmailAsyncResult.Succeeded ? CreatedAtAction(actionName: nameof(SignIn), value: userId) : BadRequest();
+            return string.IsNullOrEmpty(id) ? BadRequest() : Ok();
         }
 
         /// <summary>
@@ -81,7 +50,40 @@ namespace User.API.Controllers
         {
             var token = await userRepository.SignInAsync(signInDTO);
 
-            return string.IsNullOrEmpty(value: token) ? Unauthorized() : Ok(value: token);
+            return string.IsNullOrEmpty(token) ? Unauthorized() : Ok(token);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="token"></param>
+        /// <returns>
+        /// 
+        /// </returns>
+        [HttpGet("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] string userId, [FromQuery] string token)
+        {
+            var confirmEmailAsyncResult = await userRepository.ConfirmEmailAsync(userId, token);
+
+            return confirmEmailAsyncResult.Succeeded ?
+                CreatedAtAction(actionName: nameof(SignIn), value: userId)
+                : BadRequest();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>
+        /// 
+        /// </returns>
+        [HttpGet, Authorize]
+        public async Task<IActionResult> GetUser([FromQuery] string userId)
+        {
+            var user = await userRepository.FindByIdAsync(userId);
+
+            return user is null ? NotFound() : Ok(user);
         }
 
         /// <summary>
@@ -96,7 +98,9 @@ namespace User.API.Controllers
         {
             var updateAsyncResult = await userRepository.UpdateAsync(userDTO);
 
-            return updateAsyncResult.Succeeded ? CreatedAtAction(actionName: nameof(GetUser), controllerName: nameof(UserController), routeValues: userDTO.Id, value: userDTO) : BadRequest();
+            return updateAsyncResult.Succeeded ?
+                CreatedAtAction(actionName: nameof(GetUser), value: userDTO)
+                : BadRequest();
         }
 
         /// <summary>

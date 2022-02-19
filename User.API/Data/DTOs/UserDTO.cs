@@ -21,6 +21,11 @@ namespace User.API.Data.DTOs
         /// <summary>
         /// 
         /// </summary>
+        public UserDTO() { }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="userMode"></param>
         public UserDTO(UserModel userMode)
         {
