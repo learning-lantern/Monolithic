@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "User.API": {
+    "APIs": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

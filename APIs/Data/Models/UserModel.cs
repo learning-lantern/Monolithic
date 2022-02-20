@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace User.API.Data.Models
+namespace APIs.Data.Models
 {
     /// <summary>
     /// User data model class, inherits from "IdentityUser" class.

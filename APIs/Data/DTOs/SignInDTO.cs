@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace User.API.Data.DTOs
+namespace APIs.Data.DTOs
 {
     /// <summary>
     /// Sign In data transfare object class.
@@ -10,9 +10,9 @@ namespace User.API.Data.DTOs
         [Required, EmailAddress]
         public string Email { get; set; } = null!;
         /// <summary>
-        /// Password property that its pattern must consist of a minimum 8 and maximum 30 characters, at least one uppercase letter, one lowercase letter, and one number.
+        /// Password property that its pattern must consist of a minimum 6 characters, at least one uppercase letter, one lowercase letter, and one number.
         /// </summary>
-        [Required, RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,30}$")]
+        [Required, RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[a-zA-Z0-9@$!%*?&]{6,}$")]
         public string Password { get; set; } = null!;
     }
 }

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using User.API.Data.DTOs;
-using User.API.Data.Models;
+using APIs.Data.DTOs;
+using APIs.Data.Models;
 
-namespace User.API.Repositories
+namespace APIs.Repositories
 {
     /// <summary>
     /// 

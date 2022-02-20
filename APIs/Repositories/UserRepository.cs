@@ -6,10 +6,10 @@ using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using System.Web;
-using User.API.Data.DTOs;
-using User.API.Data.Models;
+using APIs.Data.DTOs;
+using APIs.Data.Models;
 
-namespace User.API.Repositories
+namespace APIs.Repositories
 {
     /// <summary>
     /// 

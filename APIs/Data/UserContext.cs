@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using User.API.Data.Models;
+using APIs.Data.Models;
 
-namespace User.API.Data
+namespace APIs.Data
 {
     /// <summary>
     /// User data context class, inherits from "IdentityDbContext" class.

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using User.API.Data.DTOs;
-using User.API.Repositories;
+using APIs.Data.DTOs;
+using APIs.Repositories;
 
-namespace User.API.Controllers
+namespace APIs.Controllers
 {
     /// <summary>
     /// 

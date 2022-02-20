@@ -3,22 +3,20 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using User.API.Data;
-using User.API.Data.Models;
-using User.API.Repositories;
+using APIs.Data;
+using APIs.Data.Models;
+using APIs.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddDbContext<UserContext>(
-    optionsActions => optionsActions.UseSqlServer(connectionString: builder.Configuration.GetConnectionString(name: "UsersDB")));
+    optionsActions => optionsActions.UseSqlServer(connectionString: builder.Configuration.GetConnectionString(name: "LearningLanternDB")));
 
 builder.Services.AddIdentity<UserModel, IdentityRole>(setupAction =>
 {
     setupAction.SignIn.RequireConfirmedEmail = true;
-    setupAction.Password.RequiredLength = 8;
-    setupAction.Password.RequireNonAlphanumeric = false;
     setupAction.User.RequireUniqueEmail = true;
     setupAction.Lockout.MaxFailedAccessAttempts = 5;
 }).AddEntityFrameworkStores<UserContext>().AddDefaultTokenProviders();
