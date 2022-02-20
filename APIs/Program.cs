@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddDbContext<UsersContext>(
-    optionsActions => optionsActions.UseSqlServer(connectionString: builder.Configuration.GetConnectionString(name: "LearningLanternUsersDbAzure")));
+    optionsActions => optionsActions.UseSqlServer(connectionString: builder.Configuration.GetConnectionString(name: "UsersDbAzure")));
 
 builder.Services.AddIdentity<UserModel, IdentityRole>(setupAction =>
 {
