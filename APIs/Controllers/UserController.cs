@@ -8,8 +8,8 @@ namespace APIs.Controllers
     /// <summary>
     /// 
     /// </summary>
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class UserController : ControllerBase
     {
         private readonly IUserRepository userRepository;

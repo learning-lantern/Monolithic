@@ -4,8 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace APIs.Controllers
 {
-    [ApiController]
+    /// <summary>
+    /// 
+    /// </summary>
     [Route("api/[controller]")]
+    [ApiController]
     public class AuthController : ControllerBase
     {
         private readonly IAuthRepository authRepository;

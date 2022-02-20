@@ -83,7 +83,7 @@ namespace APIs.Repositories.AuthRepository
         {
             var token = HttpUtility.UrlEncode(await userManager.GenerateEmailConfirmationTokenAsync(user: userModel));
 
-            var messageBody = $"<h1>Welcome To Learning Lantern</h1><br><p> Thanks for registering at learning lantern please click <strong><a href=\"https://localhost:5001/api/Auth/ConfirmEmail?userId={userModel.Id}&token={token}\" target=\"_blank\">here</a></strong> to activate your account</p>";
+            var messageBody = $"<h1>Welcome To Learning Lantern</h1><br><p> Thanks for registering at learning lantern please click <strong><a href=\"https://learning-lantern.herokuapp.com/api/Auth/ConfirmEmail?userId={userModel.Id}&token={token}\" target=\"_blank\">here</a></strong> to activate your account</p>";
 
             var smtpClient = new SmtpClient(host: configuration["SMTP:Host"], port: 587)
             {
