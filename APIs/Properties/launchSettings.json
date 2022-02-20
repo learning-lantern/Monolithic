@@ -5,7 +5,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production"
       },
-      "applicationUrl": "https://learning-lantern.herokuapp.com"
+      "applicationUrl": "https://localhost:5001"
     }
   }
 }
