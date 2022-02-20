@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddDbContext<LearningLanternContext>(
-    optionsActions => optionsActions.UseSqlServer(connectionString: builder.Configuration.GetConnectionString(name: "LearningLanternDB")));
+    optionsActions => optionsActions.UseSqlServer(connectionString: builder.Configuration.GetConnectionString(name: "LearningLanternAzureDB")));
 
 builder.Services.AddIdentity<UserModel, IdentityRole>(setupAction =>
 {
