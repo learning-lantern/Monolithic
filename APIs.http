@@ -22,21 +22,21 @@ Content-Type: application/json
 }
 
 ### FindById
-GET {{HOST_NAME}}/api/User?userId=7afd3917-308b-4dd1-a471-8e5e495f2ccc
-Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWhtbW9oZmF0MThAY29tcGl0LmF1bi5lZHUuZWciLCJqdGkiOiJmYTdiYzMwZi0xMzk2LTQzN2QtOWEyMy1mMzNiMDEyODQxNzQiLCJleHAiOjE2NDc5NzE3MzUsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjUwMDEiLCJhdWQiOiJVc2VyIn0.xhNRtEDzp7QmmdKgPMXU_PXE243HywteM6F1mzkvjdc
+GET {{HOST_NAME}}/api/User?userId=xxx
+Authorization: Bearer xxx
 
 ### Update
 PUT {{HOST_NAME}}/api/User/Update HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWhtbW9oZmF0MThAY29tcGl0LmF1bi5lZHUuZWciLCJqdGkiOiJmYTdiYzMwZi0xMzk2LTQzN2QtOWEyMy1mMzNiMDEyODQxNzQiLCJleHAiOjE2NDc5NzE3MzUsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjUwMDEiLCJhdWQiOiJVc2VyIn0.xhNRtEDzp7QmmdKgPMXU_PXE243HywteM6F1mzkvjdc
+Authorization: Bearer xxx
 
 {
-  "id": "7afd3917-308b-4dd1-a471-8e5e495f2ccc",
+  "id": "xxx",
   "email": "ahmmohfat18@compit.aun.edu.eg",
   "firstName": "Ahmed",
   "lastName": "Osman"
 }
 
 ### Delete
-DELETE {{HOST_NAME}}/api/User/Delete?userId=7afd3917-308b-4dd1-a471-8e5e495f2ccc HTTP/1.1
-Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWhtbW9oZmF0MThAY29tcGl0LmF1bi5lZHUuZWciLCJqdGkiOiJmYTdiYzMwZi0xMzk2LTQzN2QtOWEyMy1mMzNiMDEyODQxNzQiLCJleHAiOjE2NDc5NzE3MzUsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjUwMDEiLCJhdWQiOiJVc2VyIn0.xhNRtEDzp7QmmdKgPMXU_PXE243HywteM6F1mzkvjdc
+DELETE {{HOST_NAME}}/api/User/Delete?userId=xxx HTTP/1.1
+Authorization: Bearer xxx
