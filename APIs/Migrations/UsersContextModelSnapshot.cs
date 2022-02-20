@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace APIs.Migrations
 {
-    [DbContext(typeof(LearningLanternContext))]
-    partial class LearningLanternContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(UsersContext))]
+    partial class UsersContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

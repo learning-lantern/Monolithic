@@ -7,12 +7,12 @@ namespace APIs.Data
     /// <summary>
     /// User data context class, inherits from "IdentityDbContext" class.
     /// </summary>
-    public class LearningLanternContext : IdentityDbContext<UserModel>
+    public class UsersContext : IdentityDbContext<UserModel>
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="options"></param>
-        public LearningLanternContext(DbContextOptions<LearningLanternContext> options) : base(options) { }
+        public UsersContext(DbContextOptions<UsersContext> options) : base(options) { }
     }
 }

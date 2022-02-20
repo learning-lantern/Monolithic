@@ -12,14 +12,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddDbContext<LearningLanternContext>(
-    optionsActions => optionsActions.UseSqlServer(connectionString: builder.Configuration.GetConnectionString(name: "LearningLanternAzureDB")));
+builder.Services.AddDbContext<UsersContext>(
+    optionsActions => optionsActions.UseSqlServer(connectionString: builder.Configuration.GetConnectionString(name: "LearningLanternUsersDbAzure")));
 
 builder.Services.AddIdentity<UserModel, IdentityRole>(setupAction =>
 {
     setupAction.SignIn.RequireConfirmedEmail = true;
     setupAction.User.RequireUniqueEmail = true;
-}).AddEntityFrameworkStores<LearningLanternContext>().AddDefaultTokenProviders();
+}).AddEntityFrameworkStores<UsersContext>().AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(configureOptions =>
 {
