@@ -19,7 +19,6 @@ builder.Services.AddIdentity<UserModel, IdentityRole>(setupAction =>
 {
     setupAction.SignIn.RequireConfirmedEmail = true;
     setupAction.User.RequireUniqueEmail = true;
-    setupAction.Lockout.MaxFailedAccessAttempts = 5;
 }).AddEntityFrameworkStores<LearningLanternContext>().AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(configureOptions =>
