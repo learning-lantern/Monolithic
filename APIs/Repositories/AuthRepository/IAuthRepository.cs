@@ -1,13 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
-using APIs.Data.DTOs;
+﻿using APIs.Data.DTOs;
 using APIs.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
-namespace APIs.Repositories
+namespace APIs.Repositories.AuthRepository
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IUserRepository
+    public interface IAuthRepository
     {
         /// <summary>
         /// 
@@ -45,32 +42,5 @@ namespace APIs.Repositories
         /// 
         /// </returns>
         public Task<IdentityResult> ConfirmEmailAsync(string userId, string token);
-
-        /// <summary>
-        /// Finds and returns a user, if any, who has the specified userId.
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns>
-        /// 
-        /// </returns>
-        public Task<UserDTO?> FindByIdAsync(string userId);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="userDTO"></param>
-        /// <returns>
-        /// 
-        /// </returns>
-        public Task<IdentityResult> UpdateAsync(UserDTO userDTO);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns>
-        /// 
-        /// </returns>
-        public Task<IdentityResult> DeleteAsync(string userId);
     }
 }

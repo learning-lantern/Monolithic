@@ -9,12 +9,12 @@ using System.Web;
 using APIs.Data.DTOs;
 using APIs.Data.Models;
 
-namespace APIs.Repositories
+namespace APIs.Repositories.AuthRepository
 {
     /// <summary>
     /// 
     /// </summary>
-    public class UserRepository : IUserRepository
+    public class AuthRepository : IAuthRepository
     {
         private readonly UserManager<UserModel> userManager;
         private readonly SignInManager<UserModel> signInManager;
@@ -26,7 +26,7 @@ namespace APIs.Repositories
         /// <param name="userManager"></param>
         /// <param name="signInManager"></param>
         /// <param name="configuration"></param>
-        public UserRepository(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, IConfiguration configuration)
+        public AuthRepository(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, IConfiguration configuration)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -113,46 +113,6 @@ namespace APIs.Repositories
             }
 
             return await userManager.ConfirmEmailAsync(user, token);
-        }
-
-        public async Task<UserDTO?> FindByIdAsync(string userId)
-        {
-            var user = await userManager.FindByIdAsync(userId);
-
-            if (user == null || !user.EmailConfirmed)
-            {
-                return null;
-            }
-
-            return new UserDTO(user);
-        }
-
-        public async Task<IdentityResult> UpdateAsync(UserDTO userDTO)
-        {
-            var user = await userManager.FindByIdAsync(userDTO.Id);
-
-            if (user is null)
-            {
-                return IdentityResult.Failed();
-            }
-
-            user.FirstName = userDTO.FirstName;
-            user.LastName = userDTO.LastName;
-            user.Image = userDTO.Image;
-
-            return await userManager.UpdateAsync(user);
-        }
-
-        public async Task<IdentityResult> DeleteAsync(string userId)
-        {
-            var user = await userManager.FindByIdAsync(userId);
-
-            if (user is null)
-            {
-                return IdentityResult.Failed();
-            }
-
-            return await userManager.DeleteAsync(user);
         }
     }
 }
