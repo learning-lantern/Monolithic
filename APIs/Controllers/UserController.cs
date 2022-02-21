@@ -1,5 +1,5 @@
-﻿using APIs.Data.Users.DTOs;
-using APIs.Repositories.UserRepository;
+﻿using APIs.Data.User.DTOs;
+using APIs.Repositories.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

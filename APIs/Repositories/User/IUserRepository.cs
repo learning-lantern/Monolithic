@@ -1,7 +1,7 @@
-﻿using APIs.Data.Users.DTOs;
+﻿using APIs.Data.User.DTOs;
 using Microsoft.AspNetCore.Identity;
 
-namespace APIs.Repositories.UserRepository
+namespace APIs.Repositories.User
 {
     /// <summary>
     /// 

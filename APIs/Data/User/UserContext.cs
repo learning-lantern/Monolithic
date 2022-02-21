@@ -1,18 +1,18 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using APIs.Data.Users.Models;
+using APIs.Data.User.Models;
 
-namespace APIs.Data.Users
+namespace APIs.Data.User
 {
     /// <summary>
     /// User data context class, inherits from "IdentityDbContext" class.
     /// </summary>
-    public class UsersContext : IdentityDbContext<UserModel>
+    public class UserContext : IdentityDbContext<UserModel>
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="options"></param>
-        public UsersContext(DbContextOptions<UsersContext> options) : base(options) { }
+        public UserContext(DbContextOptions<UserContext> options) : base(options) { }
     }
 }

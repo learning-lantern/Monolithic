@@ -1,5 +1,5 @@
-﻿using APIs.Data.Users.DTOs;
-using APIs.Repositories.AuthRepository;
+﻿using APIs.Data.Auth.DTOs;
+using APIs.Repositories.Auth;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIs.Controllers
@@ -32,9 +32,11 @@ namespace APIs.Controllers
         [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] SignUpDTO signUpDTO)
         {
-            var id = await authRepository.CreateAsync(signUpDTO);
+            var createAsyncResult = await authRepository.CreateAsync(signUpDTO);
 
-            return string.IsNullOrEmpty(id) ? BadRequest() : Ok();
+            return createAsyncResult.Succeeded ?
+                CreatedAtAction(actionName: nameof(ConfirmEmail), value: signUpDTO.Email)
+                : BadRequest();
         }
 
         /// <summary>

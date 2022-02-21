@@ -6,10 +6,10 @@ using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using System.Web;
-using APIs.Data.Users.DTOs;
-using APIs.Data.Users.Models;
+using APIs.Data.Auth.DTOs;
+using APIs.Data.User.Models;
 
-namespace APIs.Repositories.AuthRepository
+namespace APIs.Repositories.Auth
 {
     /// <summary>
     /// 
@@ -33,7 +33,7 @@ namespace APIs.Repositories.AuthRepository
             this.configuration = configuration;
         }
 
-        public async Task<string?> CreateAsync(SignUpDTO signUpDTO)
+        public async Task<IdentityResult> CreateAsync(SignUpDTO signUpDTO)
         {
             var user = new UserModel()
             {
@@ -46,7 +46,8 @@ namespace APIs.Repositories.AuthRepository
 
             var createAsyncResult = await userManager.CreateAsync(user, signUpDTO.Password);
 
-            return createAsyncResult.Succeeded ? await SendConfirmationEmailAsync(user) : null;
+            return createAsyncResult.Succeeded ?
+                await SendConfirmationEmailAsync(user.Email) : IdentityResult.Failed();
         }
 
         public async Task<string?> SignInAsync(SignInDTO signInDTO)
@@ -79,11 +80,14 @@ namespace APIs.Repositories.AuthRepository
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public async Task<string?> SendConfirmationEmailAsync(UserModel userModel)
+        public async Task<IdentityResult> SendConfirmationEmailAsync(string userEmail)
         {
-            var token = HttpUtility.UrlEncode(await userManager.GenerateEmailConfirmationTokenAsync(user: userModel));
+            var user = await userManager.FindByEmailAsync(userEmail);
 
-            var messageBody = $"<h1>Welcome To Learning Lantern</h1><br><p> Thanks for registering at learning lantern please click <strong><a href=\"https://learning-lantern.web.app/en/auth/email-validation/{userModel.Id}/{token}\" target=\"_blank\">here</a></strong> to activate your account</p>";
+            var token = HttpUtility.UrlEncode(
+                await userManager.GenerateEmailConfirmationTokenAsync(user));
+
+            var messageBody = $"<h1>Welcome To Learning Lantern</h1><br><p> Thanks for registering at learning lantern please click <strong><a href=\"https://learning-lantern.web.app/en/auth/email-validation/{user.Id}/{token}\" target=\"_blank\">here</a></strong> to activate your account</p>";
 
             var smtpClient = new SmtpClient(host: configuration["SMTP:Host"], port: 587)
             {
@@ -93,14 +97,14 @@ namespace APIs.Repositories.AuthRepository
                 Credentials = new NetworkCredential(userName: configuration["SMTP:Credentials:UserName"], password: configuration["SMTP:Credentials:Password"])
             };
 
-            var mailMessage = new MailMessage(from: configuration["SMTP:Credentials:UserName"], to: userModel.Email, subject: "Confirmation Email", body: messageBody)
+            var mailMessage = new MailMessage(from: configuration["SMTP:Credentials:UserName"], to: userEmail, subject: "Confirmation Email", body: messageBody)
             {
                 IsBodyHtml = true
             };
 
             await smtpClient.SendMailAsync(mailMessage);
 
-            return userModel.Id;
+            return IdentityResult.Success;
         }
 
         public async Task<IdentityResult> ConfirmEmailAsync(string userId, string token)

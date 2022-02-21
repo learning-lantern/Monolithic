@@ -31,10 +31,10 @@ Content-Type: application/json
 Authorization: Bearer xxx
 
 {
-  "id": "xxx",
-  "email": "ahmmohfat18@compit.aun.edu.eg",
-  "firstName": "Ahmed",
-  "lastName": "Osman"
+    "id": "xxx",
+    "email": "ahmmohfat18@compit.aun.edu.eg",
+    "firstName": "Ahmed",
+    "lastName": "Osman"
 }
 
 ### Delete

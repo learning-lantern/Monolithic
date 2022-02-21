@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace APIs.Data.Users.DTOs
+namespace APIs.Data.Auth.DTOs
 {
     /// <summary>
     /// Sign In data transfare object class.

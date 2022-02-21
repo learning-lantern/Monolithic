@@ -1,8 +1,7 @@
-﻿using APIs.Data.Users.DTOs;
-using APIs.Data.Users.Models;
+﻿using APIs.Data.Auth.DTOs;
 using Microsoft.AspNetCore.Identity;
 
-namespace APIs.Repositories.AuthRepository
+namespace APIs.Repositories.Auth
 {
     public interface IAuthRepository
     {
@@ -13,7 +12,7 @@ namespace APIs.Repositories.AuthRepository
         /// <returns>
         /// 
         /// </returns>
-        public Task<string?> CreateAsync(SignUpDTO signUpDTO);
+        public Task<IdentityResult> CreateAsync(SignUpDTO signUpDTO);
 
         /// <summary>
         /// 
@@ -27,11 +26,11 @@ namespace APIs.Repositories.AuthRepository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="userModel"></param>
+        /// <param name="userEmail"></param>
         /// <returns>
         /// 
         /// </returns>
-        public Task<string?> SendConfirmationEmailAsync(UserModel userModel);
+        public Task<IdentityResult> SendConfirmationEmailAsync(string userEmail);
 
         /// <summary>
         /// Validates that an email confirmation token matches the specified user.

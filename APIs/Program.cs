@@ -1,7 +1,7 @@
-﻿using APIs.Data.Users;
-using APIs.Data.Users.Models;
-using APIs.Repositories.AuthRepository;
-using APIs.Repositories.UserRepository;
+﻿using APIs.Data.User;
+using APIs.Data.User.Models;
+using APIs.Repositories.Auth;
+using APIs.Repositories.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -12,14 +12,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddDbContext<UsersContext>(
+builder.Services.AddDbContext<UserContext>(
     optionsActions => optionsActions.UseSqlServer(connectionString: builder.Configuration.GetConnectionString(name: "UsersDb")));
 
 builder.Services.AddIdentity<UserModel, IdentityRole>(setupAction =>
 {
     setupAction.SignIn.RequireConfirmedEmail = true;
     setupAction.User.RequireUniqueEmail = true;
-}).AddEntityFrameworkStores<UsersContext>().AddDefaultTokenProviders();
+}).AddEntityFrameworkStores<UserContext>().AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(configureOptions =>
 {
