@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace APIs.Data.DTOs
+namespace APIs.Data.Users.DTOs
 {
     /// <summary>
     /// Sign Up data transfare object class, inherits from "SignInDTO" class.

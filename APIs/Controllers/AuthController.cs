@@ -1,4 +1,4 @@
-﻿using APIs.Data.DTOs;
+﻿using APIs.Data.Users.DTOs;
 using APIs.Repositories.AuthRepository;
 using Microsoft.AspNetCore.Mvc;
 

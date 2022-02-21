@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using APIs.Data.Models;
+using APIs.Data.Users.Models;
 
-namespace APIs.Data.DTOs
+namespace APIs.Data.Users.DTOs
 {
     /// <summary>
     /// 

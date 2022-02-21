@@ -1,4 +1,4 @@
-﻿using APIs.Data.DTOs;
+﻿using APIs.Data.Users.DTOs;
 using Microsoft.AspNetCore.Identity;
 
 namespace APIs.Repositories.UserRepository

@@ -6,8 +6,8 @@ using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using System.Web;
-using APIs.Data.DTOs;
-using APIs.Data.Models;
+using APIs.Data.Users.DTOs;
+using APIs.Data.Users.Models;
 
 namespace APIs.Repositories.AuthRepository
 {

@@ -1,5 +1,5 @@
-﻿using APIs.Data.DTOs;
-using APIs.Data.Models;
+﻿using APIs.Data.Users.DTOs;
+using APIs.Data.Users.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace APIs.Repositories.AuthRepository
