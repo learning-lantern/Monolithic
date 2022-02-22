@@ -34,7 +34,7 @@ namespace APIs.Controllers
         {
             var createAsyncResult = await authRepository.CreateAsync(signUpDTO);
 
-            return createAsyncResult.Succeeded ? Ok() : BadRequest();
+            return createAsyncResult.Succeeded ? Ok(signUpDTO.Email) : BadRequest();
         }
 
         /// <summary>
@@ -65,9 +65,7 @@ namespace APIs.Controllers
         {
             var confirmEmailAsyncResult = await authRepository.ConfirmEmailAsync(userId, token);
 
-            return confirmEmailAsyncResult.Succeeded ?
-                CreatedAtAction(actionName: nameof(SignIn), value: userId)
-                : BadRequest();
+            return confirmEmailAsyncResult.Succeeded ? Ok(userId) : BadRequest();
         }
     }
 }
