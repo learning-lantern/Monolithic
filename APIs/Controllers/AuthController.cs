@@ -49,10 +49,9 @@ namespace APIs.Controllers
         [HttpPost("SignIn")]
         public async Task<IActionResult> SignIn([FromBody] SignInDTO signInDTO)
         {
-            var token = await authRepository.SignInAsync(signInDTO);
+            var signInRO = await authRepository.SignInAsync(signInDTO);
 
-            return string.IsNullOrEmpty(token) ? Unauthorized()
-                : Ok("\"" + token + "\"");
+            return string.IsNullOrEmpty(signInRO.Token) ? Unauthorized() : Ok(signInRO);
         }
 
         /// <summary>

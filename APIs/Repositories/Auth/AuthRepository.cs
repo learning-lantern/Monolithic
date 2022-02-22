@@ -50,7 +50,7 @@ namespace APIs.Repositories.Auth
                 await SendConfirmationEmailAsync(user.Email) : IdentityResult.Failed();
         }
 
-        public async Task<string?> SignInAsync(SignInDTO signInDTO)
+        public async Task<SignInRO> SignInAsync(SignInDTO signInDTO)
         {
             var passwordSignInAsyncResult = await signInManager.PasswordSignInAsync(
                 userName: signInDTO.Email, password: signInDTO.Password,
@@ -58,7 +58,7 @@ namespace APIs.Repositories.Auth
 
             if (!passwordSignInAsyncResult.Succeeded)
             {
-                return null;
+                return new SignInRO("","", "", null);
             }
 
             var claims = new List<Claim>
@@ -77,7 +77,10 @@ namespace APIs.Repositories.Auth
                 signingCredentials: new SigningCredentials(key: issuerSigningKey, algorithm: SecurityAlgorithms.HmacSha256Signature)
                 );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var user = await userManager.FindByEmailAsync(signInDTO.Email);
+
+            return new SignInRO(user.Id, user.FirstName, user.LastName,
+                new JwtSecurityTokenHandler().WriteToken(token));
         }
 
         public async Task<IdentityResult> SendConfirmationEmailAsync(string userEmail)

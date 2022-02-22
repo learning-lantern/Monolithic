@@ -21,7 +21,7 @@ namespace APIs.Repositories.Auth
         /// <returns>
         /// 
         /// </returns>
-        public Task<string?> SignInAsync(SignInDTO signInDTO);
+        public Task<SignInRO> SignInAsync(SignInDTO signInDTO);
 
         /// <summary>
         /// 
