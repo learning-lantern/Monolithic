@@ -13,7 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddDbContext<UserContext>(
-    optionsActions => optionsActions.UseSqlServer(connectionString: builder.Configuration.GetConnectionString(name: "UsersDb")));
+    optionsActions => optionsActions.UseSqlServer(
+        connectionString: builder.Configuration.GetConnectionString(name: "UsersDb")));
 
 builder.Services.AddIdentity<UserModel, IdentityRole>(setupAction =>
 {
@@ -36,15 +37,17 @@ builder.Services.AddAuthentication(configureOptions =>
         ValidateAudience = true,
         ValidAudience = builder.Configuration["JWT:ValidAudience"],
         ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
-        IssuerSigningKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(s: builder.Configuration["JWT:IssuerSigningKey"]))
+        IssuerSigningKey = new SymmetricSecurityKey(
+            key: Encoding.UTF8.GetBytes(
+                s: builder.Configuration["JWT:IssuerSigningKey"]))
     };
 });
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IAuthRepository, AuthRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
 
 builder.Services.AddCors(setupAction => setupAction.AddDefaultPolicy(
     policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));

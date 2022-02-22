@@ -94,7 +94,9 @@ namespace APIs.Repositories.Auth
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
                 EnableSsl = true,
-                Credentials = new NetworkCredential(userName: configuration["SMTP:Credentials:UserName"], password: configuration["SMTP:Credentials:Password"])
+                Credentials = new NetworkCredential(
+                    userName: configuration["SMTP:Credentials:UserName"],
+                    password: configuration["SMTP:Credentials:Password"])
             };
 
             var mailMessage = new MailMessage(from: configuration["SMTP:Credentials:UserName"], to: userEmail, subject: "Confirmation Email", body: messageBody)
