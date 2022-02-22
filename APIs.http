@@ -12,6 +12,9 @@ Content-Type: application/json
     "LastName": "Mail"
 }
 
+### /Auth/ConfirmEmail
+GET {{HOST_NAME}}/api/Auth/ConfirmEmail?userId=xxx&token=xxx
+
 ### Auth/SignIn
 POST {{HOST_NAME}}/api/Auth/SignIn HTTP/1.1
 Content-Type: application/json
