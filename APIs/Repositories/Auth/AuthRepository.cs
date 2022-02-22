@@ -8,7 +8,7 @@ using System.Text;
 using System.Web;
 using APIs.Data.Auth.DTOs;
 using APIs.Data.User.Models;
-using APIs.Data.Auth.ROs;
+using APIs.Data.User.DTOs;
 
 namespace APIs.Repositories.Auth
 {
@@ -51,7 +51,7 @@ namespace APIs.Repositories.Auth
                 await SendConfirmationEmailAsync(user.Email) : IdentityResult.Failed();
         }
 
-        public async Task<SignInRO> SignInAsync(SignInDTO signInDTO)
+        public async Task<SignInResponseDTO> SignInAsync(SignInDTO signInDTO)
         {
             var passwordSignInAsyncResult = await signInManager.PasswordSignInAsync(
                 userName: signInDTO.Email, password: signInDTO.Password,
@@ -59,7 +59,7 @@ namespace APIs.Repositories.Auth
 
             if (!passwordSignInAsyncResult.Succeeded)
             {
-                return new SignInRO("","", "", null);
+                return new SignInResponseDTO();
             }
 
             var claims = new List<Claim>
@@ -80,7 +80,7 @@ namespace APIs.Repositories.Auth
 
             var user = await userManager.FindByEmailAsync(signInDTO.Email);
 
-            return new SignInRO(user.Id, user.FirstName, user.LastName,
+            return new SignInResponseDTO(new UserDTO(user),
                 new JwtSecurityTokenHandler().WriteToken(token));
         }
 

@@ -1,5 +1,4 @@
 ﻿using APIs.Data.Auth.DTOs;
-using APIs.Data.Auth.ROs;
 using Microsoft.AspNetCore.Identity;
 
 namespace APIs.Repositories.Auth
@@ -22,7 +21,7 @@ namespace APIs.Repositories.Auth
         /// <returns>
         /// 
         /// </returns>
-        public Task<SignInRO> SignInAsync(SignInDTO signInDTO);
+        public Task<SignInResponseDTO> SignInAsync(SignInDTO signInDTO);
 
         /// <summary>
         /// 

@@ -26,14 +26,27 @@ namespace APIs.Data.User.DTOs
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="userMode"></param>
-        public UserDTO(UserModel userMode)
+        /// <param name="userModel"></param>
+        public UserDTO(UserModel userModel)
         {
-            Id = userMode.Id;
-            Email = userMode.Email;
-            FirstName = userMode.FirstName;
-            LastName = userMode.LastName;
-            Image = userMode.Image;
+            Id = userModel.Id;
+            Email = userModel.Email;
+            FirstName = userModel.FirstName;
+            LastName = userModel.LastName;
+            Image = userModel.Image;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userDTO"></param>
+        public UserDTO(UserDTO userDTO)
+        {
+            Id = userDTO.Id;
+            Email = userDTO.Email;
+            FirstName = userDTO.FirstName;
+            LastName = userDTO.LastName;
+            Image = userDTO.Image;
         }
     }
 }
