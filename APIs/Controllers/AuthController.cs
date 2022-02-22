@@ -36,7 +36,7 @@ namespace APIs.Controllers
 
             return createAsyncResult.Succeeded ?
                 CreatedAtAction(actionName: nameof(ConfirmEmail),
-                value: "{ \"Email\": \"" + signUpDTO.Email + "\" }") : BadRequest();
+                value: signUpDTO.Email) : BadRequest();
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace APIs.Controllers
         {
             var token = await authRepository.SignInAsync(signInDTO);
 
-            return string.IsNullOrEmpty(token) ? Unauthorized() : Ok("{ \"Token\": \"" + token + "\" }");
+            return string.IsNullOrEmpty(token) ? Unauthorized() : Ok(token);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace APIs.Controllers
             var confirmEmailAsyncResult = await authRepository.ConfirmEmailAsync(userId, token);
 
             return confirmEmailAsyncResult.Succeeded ?
-                CreatedAtAction(actionName: nameof(SignIn), value: "{ \"Id\": \"" + userId + "\" }")
+                CreatedAtAction(actionName: nameof(SignIn), value: userId)
                 : BadRequest();
         }
     }
