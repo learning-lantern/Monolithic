@@ -1,4 +1,5 @@
 ﻿using APIs.Data.Auth.DTOs;
+using APIs.Data.Auth.ROs;
 using Microsoft.AspNetCore.Identity;
 
 namespace APIs.Repositories.Auth
@@ -8,11 +9,11 @@ namespace APIs.Repositories.Auth
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="signUpDTO"></param>
+        /// <param name="createDTO"></param>
         /// <returns>
         /// 
         /// </returns>
-        public Task<IdentityResult> CreateAsync(SignUpDTO signUpDTO);
+        public Task<IdentityResult> CreateAsync(CreateDTO createDTO);
 
         /// <summary>
         /// 

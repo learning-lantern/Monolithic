@@ -1,4 +1,4 @@
-﻿namespace APIs.Data.Auth.DTOs
+﻿namespace APIs.Data.Auth.ROs
 {
     /// <summary>
     /// Sign In Return Object

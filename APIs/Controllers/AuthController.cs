@@ -25,18 +25,18 @@ namespace APIs.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="signUpDTO"></param>
+        /// <param name="createDTO"></param>
         /// <returns>
         /// 
         /// </returns>
         [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromBody] SignUpDTO signUpDTO)
+        public async Task<IActionResult> Create([FromBody] CreateDTO createDTO)
         {
-            var createAsyncResult = await authRepository.CreateAsync(signUpDTO);
+            var createAsyncResult = await authRepository.CreateAsync(createDTO);
 
             return createAsyncResult.Succeeded ?
                 CreatedAtAction(actionName: nameof(ConfirmEmail),
-                value: "\"" + signUpDTO.Email + "\"") : BadRequest();
+                value: "\"" + createDTO.Email + "\"") : BadRequest();
         }
 
         /// <summary>

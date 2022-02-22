@@ -8,6 +8,7 @@ using System.Text;
 using System.Web;
 using APIs.Data.Auth.DTOs;
 using APIs.Data.User.Models;
+using APIs.Data.Auth.ROs;
 
 namespace APIs.Repositories.Auth
 {
@@ -33,18 +34,18 @@ namespace APIs.Repositories.Auth
             this.configuration = configuration;
         }
 
-        public async Task<IdentityResult> CreateAsync(SignUpDTO signUpDTO)
+        public async Task<IdentityResult> CreateAsync(CreateDTO createDTO)
         {
             var user = new UserModel()
             {
-                UserName = signUpDTO.Email,
-                Email = signUpDTO.Email,
-                FirstName = signUpDTO.FirstName,
-                LastName = signUpDTO.LastName,
-                Image = signUpDTO.Image
+                UserName = createDTO.Email,
+                Email = createDTO.Email,
+                FirstName = createDTO.FirstName,
+                LastName = createDTO.LastName,
+                Image = createDTO.Image
             };
 
-            var createAsyncResult = await userManager.CreateAsync(user, signUpDTO.Password);
+            var createAsyncResult = await userManager.CreateAsync(user, createDTO.Password);
 
             return createAsyncResult.Succeeded ?
                 await SendConfirmationEmailAsync(user.Email) : IdentityResult.Failed();

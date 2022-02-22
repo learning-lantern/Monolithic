@@ -5,7 +5,7 @@ namespace APIs.Data.Auth.DTOs
     /// <summary>
     /// Sign Up data transfare object class, inherits from "SignInDTO" class.
     /// </summary>
-    public class SignUpDTO : SignInDTO
+    public class CreateDTO : SignInDTO
     {
         [Required, StringLength(30)]
         public string FirstName { get; set; } = null!;
