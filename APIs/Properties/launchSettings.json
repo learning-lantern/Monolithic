@@ -3,7 +3,7 @@
     "APIs": {
       "commandName": "Project",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Production"
+        "ASPNETCORE_ENVIRONMENT": "Devlopment"
       },
       "applicationUrl": "https://localhost:5001"
     }
