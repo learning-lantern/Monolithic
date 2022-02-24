@@ -32,6 +32,11 @@ namespace APIs.Controllers
         [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] CreateDTO createDTO)
         {
+            if (createDTO.University != "Assiut University")
+            {
+                return BadRequest();
+            }
+
             var createAsyncResult = await authRepository.CreateAsync(createDTO);
 
             return createAsyncResult.Succeeded ?
@@ -49,6 +54,11 @@ namespace APIs.Controllers
         [HttpPost("SignIn")]
         public async Task<IActionResult> SignIn([FromBody] SignInDTO signInDTO)
         {
+            if (signInDTO.University != "Assiut University")
+            {
+                return BadRequest();
+            }
+
             var signInRO = await authRepository.SignInAsync(signInDTO);
 
             return string.IsNullOrEmpty(signInRO.Token) ? Unauthorized() : Ok(signInRO);

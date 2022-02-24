@@ -14,5 +14,7 @@ namespace APIs.Data.Auth.DTOs
         /// </summary>
         [Required, RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[a-zA-Z0-9@$!%*?&]{6,}$")]
         public string Password { get; set; } = null!;
+        [Required]
+        public string University { get; set; } = null!;
     }
 }
