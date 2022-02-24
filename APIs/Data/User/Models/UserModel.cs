@@ -13,7 +13,5 @@ namespace APIs.Data.User.Models
         public string FirstName { get; set; } = null!;
         [StringLength(30)]
         public string LastName { get; set; } = null!;
-        [Column(TypeName = "IMAGE")]
-        public byte[]? Image { get; set; }
     }
 }

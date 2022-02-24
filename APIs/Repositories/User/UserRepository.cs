@@ -43,7 +43,6 @@ namespace APIs.Repositories.User
 
             user.FirstName = userDTO.FirstName;
             user.LastName = userDTO.LastName;
-            user.Image = userDTO.Image;
 
             return await userManager.UpdateAsync(user);
         }

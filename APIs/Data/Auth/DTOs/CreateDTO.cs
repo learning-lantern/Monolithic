@@ -11,6 +11,5 @@ namespace APIs.Data.Auth.DTOs
         public string FirstName { get; set; } = null!;
         [Required, StringLength(30)]
         public string LastName { get; set; } = null!;
-        public byte[]? Image { get; set; }
     }
 }

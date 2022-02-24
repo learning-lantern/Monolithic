@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<UserContext>(
     optionsActions => optionsActions.UseSqlServer(
-        connectionString: builder.Configuration.GetConnectionString(name: "UsersDb")));
+        connectionString: builder.Configuration.GetConnectionString(name: "aun-eg-Users")));
 
 builder.Services.AddIdentity<UserModel, IdentityRole>(setupAction =>
 {

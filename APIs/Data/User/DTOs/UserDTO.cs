@@ -16,7 +16,6 @@ namespace APIs.Data.User.DTOs
         public string FirstName { get; set; } = null!;
         [Required, StringLength(30)]
         public string LastName { get; set; } = null!;
-        public byte[]? Image { get; set; }
 
         /// <summary>
         /// 
@@ -33,7 +32,6 @@ namespace APIs.Data.User.DTOs
             Email = userModel.Email;
             FirstName = userModel.FirstName;
             LastName = userModel.LastName;
-            Image = userModel.Image;
         }
 
         /// <summary>
@@ -46,7 +44,6 @@ namespace APIs.Data.User.DTOs
             Email = userDTO.Email;
             FirstName = userDTO.FirstName;
             LastName = userDTO.LastName;
-            Image = userDTO.Image;
         }
     }
 }

@@ -41,8 +41,7 @@ namespace APIs.Repositories.Auth
                 UserName = createDTO.Email,
                 Email = createDTO.Email,
                 FirstName = createDTO.FirstName,
-                LastName = createDTO.LastName,
-                Image = createDTO.Image
+                LastName = createDTO.LastName
             };
 
             var createAsyncResult = await userManager.CreateAsync(user, createDTO.Password);
