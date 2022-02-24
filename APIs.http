@@ -1,5 +1,5 @@
 
-@HOST_NAME = https://learning-lantern.herokuapp.com
+@HOST_NAME = https://localhost:5001
 
 ### Auth/Create
 POST {{HOST_NAME}}/api/Auth/Create HTTP/1.1
@@ -9,7 +9,8 @@ Content-Type: application/json
     "Email": "3v5yd.test@inbox.testmail.app",
     "Password": "Test@1234",
     "FirstName": "Test",
-    "LastName": "Mail"
+    "LastName": "Mail",
+    "University": "Assiut University"
 }
 
 ### /Auth/ConfirmEmail
@@ -21,7 +22,8 @@ Content-Type: application/json
 
 {
     "Email": "3v5yd.test@inbox.testmail.app",
-    "Password": "Test@1234"
+    "Password": "Test@1234",
+    "University": "Assiut University"
 }
 
 ### User/FindById
