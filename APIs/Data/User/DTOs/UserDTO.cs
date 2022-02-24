@@ -16,6 +16,7 @@ namespace APIs.Data.User.DTOs
         public string FirstName { get; set; } = null!;
         [Required, StringLength(30)]
         public string LastName { get; set; } = null!;
+        public const string University = "Assiut University";
 
         /// <summary>
         /// 
