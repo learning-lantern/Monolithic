@@ -1,6 +1,7 @@
 ﻿using APIs.Data.Auth.DTOs;
 using APIs.Repositories.Auth;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace APIs.Controllers
 {
@@ -41,7 +42,7 @@ namespace APIs.Controllers
 
             return createAsyncResult.Succeeded ?
                 CreatedAtAction(actionName: nameof(ConfirmEmail),
-                value: "\"" + createDTO.Email + "\"") : BadRequest();
+                value: JsonConvert.SerializeObject(createDTO.Email)) : BadRequest();
         }
 
         /// <summary>
@@ -59,9 +60,10 @@ namespace APIs.Controllers
                 return BadRequest();
             }
 
-            var signInRO = await authRepository.SignInAsync(signInDTO);
+            var signInResponseDTO = await authRepository.SignInAsync(signInDTO);
 
-            return string.IsNullOrEmpty(signInRO.Token) ? Unauthorized() : Ok(signInRO);
+            return string.IsNullOrEmpty(signInResponseDTO.Token)
+                ? Unauthorized() : Ok(JsonConvert.SerializeObject(signInResponseDTO));
         }
 
         /// <summary>
@@ -79,7 +81,7 @@ namespace APIs.Controllers
 
             return confirmEmailAsyncResult.Succeeded ?
                 CreatedAtAction(actionName: nameof(SignIn),
-                value: "\"" + userId + "\"") : BadRequest();
+                value: JsonConvert.SerializeObject(userId)) : BadRequest();
         }
     }
 }

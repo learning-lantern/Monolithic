@@ -1,12 +1,12 @@
 
-@HOST_NAME = https://localhost:5001
+@HOST_NAME = https://learning-lantern.herokuapp.com
 
 ### Auth/Create
 POST {{HOST_NAME}}/api/Auth/Create HTTP/1.1
 Content-Type: application/json
 
 {
-    "Email": "3v5yd.test@inbox.testmail.app",
+    "Email": "test@gmail.com",
     "Password": "Test@1234",
     "FirstName": "Test",
     "LastName": "Mail",
@@ -21,13 +21,13 @@ POST {{HOST_NAME}}/api/Auth/SignIn HTTP/1.1
 Content-Type: application/json
 
 {
-    "Email": "3v5yd.test@inbox.testmail.app",
+    "Email": "test@gmail.com",
     "Password": "Test@1234",
     "University": "Assiut University"
 }
 
 ### User/FindById
-GET {{HOST_NAME}}/api/User?userId=xxx
+GET {{HOST_NAME}}/api/User?userId=xxx HTTP/1.1
 Authorization: Bearer xxx
 
 ### User/Update
@@ -36,10 +36,11 @@ Content-Type: application/json
 Authorization: Bearer xxx
 
 {
-    "id": "xxx",
-    "email": "3v5yd.test@inbox.testmail.app",
-    "firstName": "Test",
-    "lastName": "App"
+    "Id": "xxx",
+    "Email": "test@gmail.com",
+    "FirstName": "Test",
+    "LastName": "App",
+    "University": "Cairo University"
 }
 
 ### User/Delete

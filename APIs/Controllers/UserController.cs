@@ -2,6 +2,7 @@
 using APIs.Repositories.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace APIs.Controllers
 {
@@ -35,7 +36,7 @@ namespace APIs.Controllers
         {
             var user = await userRepository.FindByIdAsync(userId);
 
-            return user is null ? NotFound() : Ok(user);
+            return user is null ? NotFound() : Ok(JsonConvert.SerializeObject(user));
         }
 
         /// <summary>
@@ -51,8 +52,8 @@ namespace APIs.Controllers
             var updateAsyncResult = await userRepository.UpdateAsync(userDTO);
 
             return updateAsyncResult.Succeeded ?
-                CreatedAtAction(actionName: nameof(FindById), value: userDTO)
-                : BadRequest();
+                CreatedAtAction(actionName: nameof(FindById),
+                value: JsonConvert.SerializeObject(userDTO)) : BadRequest();
         }
 
         /// <summary>
