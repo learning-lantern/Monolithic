@@ -12,9 +12,9 @@ namespace APIs.Data.User.DTOs
         public string Id { get; set; } = null!;
         [Required, EmailAddress]
         public string Email { get; set; } = null!;
-        [Required, StringLength(30)]
+        [Required, StringLength(30), RegularExpression("[a-zA-Z]{3,30}")]
         public string FirstName { get; set; } = null!;
-        [Required, StringLength(30)]
+        [Required, StringLength(30), RegularExpression("[a-zA-Z]{3,30}")]
         public string LastName { get; set; } = null!;
         public string University { get => "Assiut University"; }
 
