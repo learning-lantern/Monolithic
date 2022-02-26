@@ -6,11 +6,11 @@ POST {{HOST_NAME}}/api/Auth/Create HTTP/1.1
 Content-Type: application/json
 
 {
-    "Email": "test@gmail.com",
-    "Password": "Test@1234",
+    "University": "Assiut University",
     "FirstName": "Test",
     "LastName": "Mail",
-    "University": "Assiut University"
+    "Email": "test@gmail.com",
+    "Password": "Pa$$w0rd"
 }
 
 ### /Auth/ConfirmEmail
@@ -21,9 +21,9 @@ POST {{HOST_NAME}}/api/Auth/SignIn HTTP/1.1
 Content-Type: application/json
 
 {
+    "University": "Assiut University",
     "Email": "test@gmail.com",
-    "Password": "Test@1234",
-    "University": "Assiut University"
+    "Password": "Pa$$w0rd"
 }
 
 ### User/FindById
@@ -37,10 +37,10 @@ Authorization: Bearer xxx
 
 {
     "Id": "xxx",
-    "Email": "test@gmail.com",
+    "University": "Cairo University",
     "FirstName": "Test",
     "LastName": "App",
-    "University": "Cairo University"
+    "Email": "test@gmail.com"
 }
 
 ### User/Delete
