@@ -8,8 +8,8 @@ Content-Type: application/json
 {
     "University": "Assiut University",
     "FirstName": "Test",
-    "LastName": "Mail",
-    "Email": "test@gmail.com",
+    "LastName": "User",
+    "Email": "test@example.com",
     "Password": "Pa$$w0rd"
 }
 
@@ -22,7 +22,7 @@ Content-Type: application/json
 
 {
     "University": "Assiut University",
-    "Email": "test@gmail.com",
+    "Email": "test@example.com",
     "Password": "Pa$$w0rd"
 }
 
@@ -39,8 +39,8 @@ Authorization: Bearer xxx
     "Id": "xxx",
     "University": "Cairo University",
     "FirstName": "Test",
-    "LastName": "App",
-    "Email": "test@gmail.com"
+    "LastName": "Account",
+    "Email": "test@example.com"
 }
 
 ### User/Delete
