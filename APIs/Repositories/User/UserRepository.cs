@@ -5,16 +5,12 @@ using Microsoft.AspNetCore.Identity;
 namespace APIs.Repositories.User
 {
     /// <summary>
-    /// 
+    /// User repository class for user services, implements the IUserRepository interface.
     /// </summary>
     public class UserRepository : IUserRepository
     {
         private readonly UserManager<UserModel> userManager;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="userManager"></param>
         public UserRepository(UserManager<UserModel> userManager)
         {
             this.userManager = userManager;
@@ -38,11 +34,15 @@ namespace APIs.Repositories.User
 
             if (user is null)
             {
-                return IdentityResult.Failed();
+                return IdentityResult.Failed(new IdentityError()
+                {
+                    Code = "NotFound",
+                    Description = "There is no user in this University whith this Id."
+                });
             }
 
-            user.FirstName = userDTO.FirstName;
-            user.LastName = userDTO.LastName;
+            user.FirstName = userDTO.FirstName.Trim();
+            user.LastName = userDTO.LastName.Trim();
 
             return await userManager.UpdateAsync(user);
         }
@@ -53,7 +53,11 @@ namespace APIs.Repositories.User
 
             if (user is null)
             {
-                return IdentityResult.Failed();
+                return IdentityResult.Failed(new IdentityError()
+                {
+                    Code = "NotFound",
+                    Description = "There is no user in this University whith this Id."
+                });
             }
 
             return await userManager.DeleteAsync(user);

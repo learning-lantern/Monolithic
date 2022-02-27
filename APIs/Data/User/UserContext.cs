@@ -5,14 +5,10 @@ using APIs.Data.User.Models;
 namespace APIs.Data.User
 {
     /// <summary>
-    /// User data context class, inherits from "IdentityDbContext" class.
+    /// User data context class for Entity Framework Core.
     /// </summary>
     public class UserContext : IdentityDbContext<UserModel>
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="options"></param>
         public UserContext(DbContextOptions<UserContext> options) : base(options) { }
     }
 }

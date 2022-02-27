@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 namespace APIs.Repositories.User
 {
     /// <summary>
-    /// 
+    /// User repository interface for user repository class to applay the dependency injection.
     /// </summary>
     public interface IUserRepository
     {
@@ -13,25 +13,25 @@ namespace APIs.Repositories.User
         /// </summary>
         /// <param name="userId"></param>
         /// <returns>
-        /// 
+        /// Task that represents the asynchronous operation, containing the user matching the specified userId if it exists.
         /// </returns>
         public Task<UserDTO?> FindByIdAsync(string userId);
 
         /// <summary>
-        /// 
+        /// Updates the specified user in the backing store.
         /// </summary>
         /// <param name="userDTO"></param>
         /// <returns>
-        /// 
+        /// Task that represents the asynchronous operation, containing IdentityResult of the operation.
         /// </returns>
         public Task<IdentityResult> UpdateAsync(UserDTO userDTO);
 
         /// <summary>
-        /// 
+        /// Deletes the specified user from the backing store.
         /// </summary>
         /// <param name="userId"></param>
         /// <returns>
-        /// 
+        /// Task that represents the asynchronous operation, containing IdentityResult of the operation.
         /// </returns>
         public Task<IdentityResult> DeleteAsync(string userId);
     }

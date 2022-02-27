@@ -13,7 +13,7 @@ using APIs.Data.User.DTOs;
 namespace APIs.Repositories.Auth
 {
     /// <summary>
-    /// 
+    /// Auth repository class for authentication services, implements the IAuthRepository interface.
     /// </summary>
     public class AuthRepository : IAuthRepository
     {
@@ -21,12 +21,6 @@ namespace APIs.Repositories.Auth
         private readonly SignInManager<UserModel> signInManager;
         private readonly IConfiguration configuration;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="userManager"></param>
-        /// <param name="signInManager"></param>
-        /// <param name="configuration"></param>
         public AuthRepository(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, IConfiguration configuration)
         {
             this.userManager = userManager;
@@ -40,14 +34,14 @@ namespace APIs.Repositories.Auth
             {
                 UserName = createDTO.Email,
                 Email = createDTO.Email,
-                FirstName = createDTO.FirstName,
-                LastName = createDTO.LastName
+                FirstName = createDTO.FirstName.Trim(),
+                LastName = createDTO.LastName.Trim()
             };
 
             var createAsyncResult = await userManager.CreateAsync(user, createDTO.Password);
 
             return createAsyncResult.Succeeded ?
-                await SendConfirmationEmailAsync(user.Email) : IdentityResult.Failed();
+                await SendConfirmationEmailAsync(user.Email) : createAsyncResult;
         }
 
         public async Task<SignInResponseDTO> SignInAsync(SignInDTO signInDTO)
@@ -85,31 +79,42 @@ namespace APIs.Repositories.Auth
 
         public async Task<IdentityResult> SendConfirmationEmailAsync(string userEmail)
         {
-            var user = await userManager.FindByEmailAsync(userEmail);
-
-            var token = HttpUtility.UrlEncode(
-                await userManager.GenerateEmailConfirmationTokenAsync(user));
-
-            var messageBody = $"<h1>Welcome To Learning Lantern</h1><br><p> Thanks for registering at learning lantern please click <strong><a href=\"https://learning-lantern.web.app/en/auth/email-validation?userId={user.Id}&token={token}\" target=\"_blank\">here</a></strong> to activate your account</p>";
-
-            var smtpClient = new SmtpClient(host: configuration["SMTP:Host"], port: 587)
+            try
             {
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                EnableSsl = true,
-                Credentials = new NetworkCredential(
-                    userName: configuration["SMTP:Credentials:UserName"],
-                    password: configuration["SMTP:Credentials:Password"])
-            };
+                var user = await userManager.FindByEmailAsync(userEmail);
 
-            var mailMessage = new MailMessage(from: configuration["SMTP:Credentials:UserName"], to: userEmail, subject: "Confirmation Email", body: messageBody)
+                var token = HttpUtility.UrlEncode(
+                    await userManager.GenerateEmailConfirmationTokenAsync(user));
+
+                var messageBody = $"<h1>Welcome To Learning Lantern</h1><br><p> Thanks for registering at learning lantern please click <strong><a href=\"https://learning-lantern.web.app/en/auth/email-validation?userId={user.Id}&token={token}\" target=\"_blank\">here</a></strong> to activate your account</p>";
+
+                var smtpClient = new SmtpClient(host: configuration["SMTP:Host"], port: 587)
+                {
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    EnableSsl = true,
+                    Credentials = new NetworkCredential(
+                        userName: configuration["SMTP:Credentials:UserName"],
+                        password: configuration["SMTP:Credentials:Password"])
+                };
+
+                var mailMessage = new MailMessage(from: configuration["SMTP:Credentials:UserName"], to: userEmail, subject: "Confirmation Email", body: messageBody)
+                {
+                    IsBodyHtml = true
+                };
+
+                await smtpClient.SendMailAsync(mailMessage);
+
+                return IdentityResult.Success;
+            }
+            catch (Exception)
             {
-                IsBodyHtml = true
-            };
-
-            await smtpClient.SendMailAsync(mailMessage);
-
-            return IdentityResult.Success;
+                return IdentityResult.Failed(new IdentityError
+                {
+                    Code = "ConfirmFailure",
+                    Description = "Send Confirmation Email Failure"
+                });
+            }
         }
 
         public async Task<IdentityResult> ConfirmEmailAsync(string userId, string token)
@@ -118,7 +123,11 @@ namespace APIs.Repositories.Auth
 
             if (user is null)
             {
-                return IdentityResult.Failed();
+                return IdentityResult.Failed(new IdentityError()
+                {
+                    Code = "NotFound",
+                    Description = "There is no user in this University whith this Id."
+                });
             }
 
             return await userManager.ConfirmEmailAsync(user, token);
