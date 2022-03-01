@@ -83,6 +83,15 @@ namespace APIs.Repositories.Auth
             {
                 var user = await userManager.FindByEmailAsync(userEmail);
 
+                if (user is null)
+                {
+                    return IdentityResult.Failed(new IdentityError()
+                    {
+                        Code = "NotFound",
+                        Description = "There is no user in this University whith this email."
+                    });
+                }
+
                 var token = HttpUtility.UrlEncode(
                     await userManager.GenerateEmailConfirmationTokenAsync(user));
 

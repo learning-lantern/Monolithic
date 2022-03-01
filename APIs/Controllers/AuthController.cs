@@ -101,5 +101,30 @@ namespace APIs.Controllers
 
             return Ok(JsonConvert.SerializeObject(userId));
         }
+
+        /// <summary>
+        /// Resends confirmation email token to the email.
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <returns>
+        /// Task that represents the asynchronous operation, containing IActionResult of the operation.
+        /// </returns>
+        [HttpGet("ResendConfirmationEmail")]
+        public async Task<IActionResult> ResendConfirmationEmail([FromQuery] string userEmail)
+        {
+            var sendConfirmationEmailResult = await authRepository.SendConfirmationEmailAsync(userEmail);
+
+            if (!sendConfirmationEmailResult.Succeeded)
+            {
+                if (sendConfirmationEmailResult.Errors?.FirstOrDefault(error => error.Code == "NotFound") is not null)
+                {
+                    return NotFound(JsonConvert.SerializeObject(sendConfirmationEmailResult.Errors));
+                }
+
+                return BadRequest(JsonConvert.SerializeObject(sendConfirmationEmailResult.Errors));
+            }
+
+            return Ok(JsonConvert.SerializeObject(userEmail));
+        }
     }
 }
