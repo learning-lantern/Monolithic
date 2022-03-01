@@ -25,6 +25,7 @@ namespace APIs.Data.User.DTOs
             Email = userDTO.Email;
             FirstName = userDTO.FirstName;
             LastName = userDTO.LastName;
+            University = userDTO.University;
         }
         public UserDTO(UserModel userModel)
         {
@@ -32,6 +33,7 @@ namespace APIs.Data.User.DTOs
             Email = userModel.Email;
             FirstName = userModel.FirstName;
             LastName = userModel.LastName;
+            University = "Assiut University";
         }
     }
 }
