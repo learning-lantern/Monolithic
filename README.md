@@ -1,1 +1,1 @@
-# Learning Lantern APIs
+# Learning Lantern API
