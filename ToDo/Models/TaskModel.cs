@@ -1,7 +1,8 @@
-﻿using API.Data.DTOs;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using API.Authentication.Models;
+using API.ToDo.DTOs;
 
-namespace API.Data.Models
+namespace API.ToDo.Models
 {
     public class TaskModel : TaskDTO
     {

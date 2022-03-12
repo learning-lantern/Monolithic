@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using API.Data.Models;
+using API.Authentication.Models;
 
-namespace API.Data.DTOs
+namespace API.Authentication.DTOs
 {
     /// <summary>
     /// User data transfare object class.

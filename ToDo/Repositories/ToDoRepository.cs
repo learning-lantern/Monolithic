@@ -1,10 +1,11 @@
-﻿using API.Data;
-using API.Data.DTOs;
-using API.Data.Models;
+﻿using API.Authentication.Models;
+using API.Database;
+using API.ToDo.DTOs;
+using API.ToDo.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Repositories.ToDo
+namespace API.ToDo.Repositories
 {
     public class ToDoRepository : IToDoRepository
     {

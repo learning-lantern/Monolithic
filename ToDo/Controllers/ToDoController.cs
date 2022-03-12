@@ -1,10 +1,10 @@
-﻿using API.Data.DTOs;
-using API.Repositories.ToDo;
+﻿using API.ToDo.DTOs;
+using API.ToDo.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace API.Controllers
+namespace API.ToDo.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController, Authorize]
