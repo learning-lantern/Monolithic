@@ -1,6 +1,6 @@
-﻿using API.Data.DTOs;
+﻿using API.ToDo.DTOs;
 
-namespace API.Repositories.ToDo
+namespace API.ToDo.Repositories
 {
     public interface IToDoRepository
     {

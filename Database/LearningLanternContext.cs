@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using API.Authentication.Models;
+using API.ToDo.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using API.Data.Models;
 
-namespace API.Data
+namespace API.Database
 {
     /// <summary>
     /// User data context class for Entity Framework Core.

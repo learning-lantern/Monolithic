@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using System.Web;
-using API.Data.DTOs;
-using API.Data.Models;
+using API.Authentication.DTOs;
+using API.Authentication.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 
-namespace API.Repositories.Auth
+namespace API.Authentication.Repositories
 {
     /// <summary>
     /// Auth repository class for authentication services, implements the IAuthRepository interface.

@@ -1,9 +1,9 @@
-﻿using API.Data.DTOs;
-using API.Repositories.Auth;
+﻿using API.Authentication.DTOs;
+using API.Authentication.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace API.Controllers
+namespace API.Authentication.Controllers
 {
     /// <summary>
     /// Auth controller class for authentication methods.

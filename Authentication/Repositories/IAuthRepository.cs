@@ -1,7 +1,7 @@
-﻿using API.Data.DTOs;
+﻿using API.Authentication.DTOs;
 using Microsoft.AspNetCore.Identity;
 
-namespace API.Repositories.Auth
+namespace API.Authentication.Repositories
 {
     /// <summary>
     /// Auth repository interface for auth repository class to applay the dependency injection.

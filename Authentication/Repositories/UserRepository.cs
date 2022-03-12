@@ -1,8 +1,8 @@
-﻿using API.Data.DTOs;
-using API.Data.Models;
+﻿using API.Authentication.DTOs;
+using API.Authentication.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace API.Repositories.User
+namespace API.Authentication.Repositories
 {
     /// <summary>
     /// User repository class for user services, implements the IUserRepository interface.

@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using API.ToDo.Models;
+using Microsoft.AspNetCore.Identity;
 
-namespace API.Data.Models
+namespace API.Authentication.Models
 {
     /// <summary>
     /// User data model class, inherits from "IdentityUser" class.
