@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using API.Authentication.Models;
+﻿using API.User.Models;
+using System.ComponentModel.DataAnnotations;
 
-namespace API.Authentication.DTOs
+namespace API.User.DTOs
 {
     /// <summary>
     /// User data transfare object class.
@@ -16,6 +16,7 @@ namespace API.Authentication.DTOs
         public string FirstName { get; set; } = null!;
         [Required, StringLength(30), RegularExpression("^((?![0-9!\"#$%&'()*+,-./\\:;<=>?@[" + @"\]" + "^_`{|}~]).){2,30}$")]
         public string LastName { get; set; } = null!;
+        [Required]
         public string University { get; set; } = null!;
 
         public UserDTO() { }

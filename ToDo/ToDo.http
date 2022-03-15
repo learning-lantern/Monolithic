@@ -1,0 +1,43 @@
+
+@HOST_NAME = https://localhost:5001
+
+### ToDo/Get
+GET {{HOST_NAME}}/api/ToDo/Get?userId=xxx&list=xxx HTTP/1.1
+Authorization: Bearer xxx
+
+### ToDo/Add
+POST {{HOST_NAME}}/api/ToDo/Add
+Content-Type: application/json
+Authorization: Bearer xxx
+
+{
+    "Name": "xxx",
+    "DueDate": "2022-03-15T14:32:48.014Z",
+    "Note": "xxx",
+    "MyDay": false,
+    "Completed": false,
+    "Important": false,
+    "Repeated": 0,
+    "UserId": "xxx"
+}
+
+### ToDo/Update
+PUT {{HOST_NAME}}/api/ToDo/Update HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer xxx
+
+{
+    "Id": 1,
+    "Name": "xxx",
+    "DueDate": "2022-03-15T14:32:48.014Z",
+    "Note": "xxx",
+    "MyDay": false,
+    "Completed": false,
+    "Important": false,
+    "Repeated": 0,
+    "UserId": "xxx"
+}
+
+### ToDo/Remove
+DELETE {{HOST_NAME}}/api/ToDo/Remove?taskId=xxx HTTP/1.1
+Authorization: Bearer xxx

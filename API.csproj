@@ -8,59 +8,16 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.2">
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Swashbuckle.AspNetCore" />
-    <None Remove="Users\" />
-    <None Remove="Users\Controllers\" />
-    <None Remove="ToDo\" />
-    <None Remove="ToDo\Controllers\" />
-    <None Remove="Authentication\Repositories\" />
-    <None Remove="ToDo\Repositories\" />
-    <None Remove="Authentication\Models\" />
-    <None Remove="ToDo\Models\" />
-    <None Remove="Authentication\DTO\" />
-    <None Remove="ToDo\DTOs\" />
-    <None Remove="Data\" />
-    <None Remove="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Authentication\" />
-    <Folder Include="Authentication\Controllers\" />
-    <Folder Include="ToDo\" />
-    <Folder Include="ToDo\Controllers\" />
-    <Folder Include="Authentication\Repositories\" />
-    <Folder Include="ToDo\Repositories\" />
-    <Folder Include="Authentication\Models\" />
-    <Folder Include="ToDo\Models\" />
-    <Folder Include="Authentication\DTOs\" />
-    <Folder Include="ToDo\DTOs\" />
-    <Folder Include="Database\" />
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="Database\launchSettings.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\launchSettings.json">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Condition="'$(ExcludeConfigFilesFromBuildOutput)'!='true'" Update="Properties\launchSettings.json">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
   <Target Name="PrePublishTarget" AfterTargets="Publish">
     <Exec Command="dotnet ef database update" />
   </Target>

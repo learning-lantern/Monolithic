@@ -1,4 +1,6 @@
-﻿namespace API.Authentication.DTOs
+﻿using API.User.DTOs;
+
+namespace API.Auth.DTOs
 {
     /// <summary>
     /// Sign in response data transfare object class.

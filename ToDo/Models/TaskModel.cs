@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using API.Authentication.Models;
-using API.ToDo.DTOs;
+﻿using API.ToDo.DTOs;
+using API.User.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.ToDo.Models
 {

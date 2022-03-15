@@ -1,10 +1,10 @@
-﻿using API.Authentication.DTOs;
-using API.Authentication.Repositories;
+﻿using API.User.DTOs;
+using API.User.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace API.Authentication.Controllers
+namespace API.User.Controllers
 {
     /// <summary>
     /// User controller class for user methods.
