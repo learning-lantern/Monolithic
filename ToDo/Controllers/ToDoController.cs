@@ -18,9 +18,9 @@ namespace API.ToDo.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] string userId, [FromQuery] string? filter)
+        public async Task<IActionResult> Get([FromQuery] string userId, [FromQuery] string? list)
         {
-            var tasks = await toDoRepository.GetAsync(userId, filter);
+            var tasks = await toDoRepository.GetAsync(userId, list);
 
             return Ok(JsonConvert.SerializeObject(tasks));
         }

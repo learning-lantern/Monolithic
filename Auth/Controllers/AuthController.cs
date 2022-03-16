@@ -1,14 +1,14 @@
-﻿using API.Authentication.DTOs;
-using API.Authentication.Repositories;
+﻿using API.Auth.DTOs;
+using API.Auth.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace API.Authentication.Controllers
+namespace API.Auth.Controllers
 {
     /// <summary>
     /// Auth controller class for authentication methods.
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -26,7 +26,7 @@ namespace API.Authentication.Controllers
         /// <returns>
         /// Task that represents the asynchronous operation, containing IActionResult of the operation.
         /// </returns>
-        [HttpPost("Create")]
+        [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateUserDTO createUserDTO)
         {
             if (createUserDTO.University != "Assiut University")
@@ -55,7 +55,7 @@ namespace API.Authentication.Controllers
         /// <returns>
         /// Task that represents the asynchronous operation, containing IActionResult of the operation. The signed in user and its JWT token (object of sign in response data transfare class).
         /// </returns>
-        [HttpPost("SignIn")]
+        [HttpPost]
         public async Task<IActionResult> SignIn([FromBody] SignInUserDTO signInUserDTO)
         {
             if (signInUserDTO.University != "Assiut University")
@@ -84,7 +84,7 @@ namespace API.Authentication.Controllers
         /// <returns>
         /// Task that represents the asynchronous operation, containing IActionResult of the operation.
         /// </returns>
-        [HttpGet("ConfirmEmail")]
+        [HttpGet]
         public async Task<IActionResult> ConfirmEmail([FromQuery] string userId, [FromQuery] string token)
         {
             var confirmEmailAsyncResult = await authRepository.ConfirmEmailAsync(userId, token);
@@ -109,7 +109,7 @@ namespace API.Authentication.Controllers
         /// <returns>
         /// Task that represents the asynchronous operation, containing IActionResult of the operation.
         /// </returns>
-        [HttpGet("ResendConfirmationEmail")]
+        [HttpGet]
         public async Task<IActionResult> ResendConfirmationEmail([FromQuery] string userEmail)
         {
             var sendConfirmationEmailResult = await authRepository.SendConfirmationEmailAsync(userEmail);

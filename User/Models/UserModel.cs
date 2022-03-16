@@ -2,7 +2,7 @@
 using API.ToDo.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace API.Authentication.Models
+namespace API.User.Models
 {
     /// <summary>
     /// User data model class, inherits from "IdentityUser" class.

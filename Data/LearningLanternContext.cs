@@ -1,5 +1,5 @@
-﻿using API.Authentication.Models;
-using API.ToDo.Models;
+﻿using API.ToDo.Models;
+using API.User.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +23,8 @@ namespace API.Database
                 .WithMany(user => user.Tasks)
                 .HasForeignKey(task => task.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            base.OnModelCreating(builder);
         }
     }
 }

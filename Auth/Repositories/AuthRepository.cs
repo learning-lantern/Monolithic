@@ -1,15 +1,16 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using API.Auth.DTOs;
+using API.User.DTOs;
+using API.User.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using System.Web;
-using API.Authentication.DTOs;
-using API.Authentication.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
 
-namespace API.Authentication.Repositories
+namespace API.Auth.Repositories
 {
     /// <summary>
     /// Auth repository class for authentication services, implements the IAuthRepository interface.
@@ -94,7 +95,7 @@ namespace API.Authentication.Repositories
                 var token = HttpUtility.UrlEncode(
                     await userManager.GenerateEmailConfirmationTokenAsync(user));
 
-                var messageBody = $"<h1>Welcome To Learning Lantern</h1><br><p> Thanks for registering at learning lantern please click <strong><a href=\"https://learning-lantern.web.app/en/auth/email-validation?userId={user.Id}&token={token}\" target=\"_blank\">here</a></strong> to activate your account</p>";
+                var messageBody = $"<h1>Welcome To Learning Lantern</h1><br><p> Thanks for registering at learning lantern please click <strong><a href=\"https://localhost:5001/api/Auth/ConfirmEmail?userId={user.Id}&token={token}\" target=\"_blank\">here</a></strong> to activate your account</p>";
 
                 var smtpClient = new SmtpClient(host: configuration["SMTP:Host"], port: 587)
                 {

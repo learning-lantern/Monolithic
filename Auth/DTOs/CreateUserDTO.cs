@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace API.Authentication.DTOs
+namespace API.Auth.DTOs
 {
     /// <summary>
     /// Create data transfare object class, inherits from "SignInDTO" class.

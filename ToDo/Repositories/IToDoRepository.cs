@@ -8,11 +8,11 @@ namespace API.ToDo.Repositories
         /// 
         /// </summary>
         /// <param name="userId"></param>
-        /// <param name="filter"></param>
+        /// <param name="list"></param>
         /// <returns>
         /// 
         /// </returns>
-        public Task<List<TaskDTO>> GetAsync(string userId, string? filter);
+        public Task<List<TaskDTO>> GetAsync(string userId, string? list);
 
         /// <summary>
         /// 

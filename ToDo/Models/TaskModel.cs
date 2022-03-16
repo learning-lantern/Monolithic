@@ -1,12 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using API.Authentication.Models;
-using API.ToDo.DTOs;
+﻿using API.ToDo.DTOs;
+using API.User.Models;
 
 namespace API.ToDo.Models
 {
     public class TaskModel : TaskDTO
     {
-        [Required]
         public UserModel User { get; set; } = null!;
 
         public TaskModel() { }

@@ -1,7 +1,7 @@
-﻿using API.Authentication.Models;
-using API.Database;
+﻿using API.Database;
 using API.ToDo.DTOs;
 using API.ToDo.Models;
+using API.User.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,17 +18,17 @@ namespace API.ToDo.Repositories
             this.userManager = userManager;
         }
 
-        public async Task<List<TaskDTO>> GetAsync(string userId, string? filter)
+        public async Task<List<TaskDTO>> GetAsync(string userId, string? list)
         {
-            if (filter is null)
+            if (list is null)
             {
                 return await learningLanternContext.Task.Where(task => task.UserId == userId).Select(task => new TaskDTO(task)).ToListAsync();
             }
-            else if (filter == "MyDay")
+            else if (list == "MyDay")
             {
                 return await learningLanternContext.Task.Where(task => task.UserId == userId && task.MyDay).Select(task => new TaskDTO(task)).ToListAsync();
             }
-            else if (filter == "Completed")
+            else if (list == "Completed")
             {
                 return await learningLanternContext.Task.Where(task => task.UserId == userId && task.Completed).Select(task => new TaskDTO(task)).ToListAsync();
             }
