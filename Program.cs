@@ -81,4 +81,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run(); // blocking call
+app.Run(); // Blocking call listens to HTTP requests.
