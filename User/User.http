@@ -12,10 +12,10 @@ Authorization: Bearer xxx
 
 {
     "Id": "xxx",
-    "University": "Cairo University",
+    "University": "Assiut University",
     "FirstName": "Test",
-    "LastName": "Account",
-    "Email": "test@example.com"
+    "LastName": "User",
+    "Email": "user@example.com"
 }
 
 ### User/Delete

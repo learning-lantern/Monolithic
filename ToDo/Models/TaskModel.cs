@@ -1,12 +1,10 @@
 ﻿using API.ToDo.DTOs;
 using API.User.Models;
-using System.ComponentModel.DataAnnotations;
 
 namespace API.ToDo.Models
 {
     public class TaskModel : TaskDTO
     {
-        [Required]
         public UserModel User { get; set; } = null!;
 
         public TaskModel() { }

@@ -18,10 +18,12 @@ builder.Services.AddDbContext<LearningLanternContext>(
     optionsActions => optionsActions.UseSqlServer(
         connectionString: builder.Configuration.GetConnectionString(name: "aun-eg-local")));
 
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
 // Add identity core framework roles.
 builder.Services.AddIdentity<UserModel, IdentityRole>(setupAction =>
 {
-    setupAction.SignIn.RequireConfirmedEmail = true;
+    setupAction.SignIn.RequireConfirmedAccount = true;
     setupAction.User.RequireUniqueEmail = true;
 }).AddEntityFrameworkStores<LearningLanternContext>().AddDefaultTokenProviders();
 
