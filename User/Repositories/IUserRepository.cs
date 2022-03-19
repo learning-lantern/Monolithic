@@ -29,10 +29,11 @@ namespace API.User.Repositories
         /// <summary>
         /// Deletes the specified user from the backing store.
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="userEmail"></param>
+        /// <param name="userPassword"></param>
         /// <returns>
         /// Task that represents the asynchronous operation, containing IdentityResult of the operation.
         /// </returns>
-        public Task<IdentityResult> DeleteAsync(string userId);
+        public Task<IdentityResult> DeleteAsync(string userEmail, string userPassword);
     }
 }

@@ -47,9 +47,9 @@ namespace API.User.Repositories
             return await userManager.UpdateAsync(user);
         }
 
-        public async Task<IdentityResult> DeleteAsync(string userId)
+        public async Task<IdentityResult> DeleteAsync(string userEmail, string userPassword)
         {
-            var user = await userManager.FindByIdAsync(userId);
+            var user = await userManager.FindByEmailAsync(userEmail);
 
             if (user is null)
             {

@@ -80,14 +80,15 @@ namespace API.User.Controllers
         /// <summary>
         /// Deletes the specified user from the backing store.
         /// </summary>
-        /// <param name="userId"></param>
-        /// <returns>
+        /// <param name="userEmail"></param>
+        /// <param name="userPassword"></param>
+        /// /// <returns>
         /// Task that represents the asynchronous operation, containing IActionResult of the operation.
         /// </returns>
         [HttpDelete("Delete")]
-        public async Task<IActionResult> Delete([FromQuery] string userId)
+        public async Task<IActionResult> Delete([FromQuery] string userEmail, [FromBody] string userPassword)
         {
-            var deleteAsyncResult = await userRepository.DeleteAsync(userId);
+            var deleteAsyncResult = await userRepository.DeleteAsync(userEmail, userPassword);
 
             if (!deleteAsyncResult.Succeeded)
             {
