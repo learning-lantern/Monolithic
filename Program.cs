@@ -17,10 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-// Add aun-eg database.
-builder.Services.AddDbContext<LearningLanternContext>(
-    optionsActions => optionsActions.UseSqlServer(
-        connectionString: builder.Configuration.GetConnectionString(name: "aun-eg-local")));
+// Add database.
+builder.Services.AddDbContext<LearningLanternContext>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

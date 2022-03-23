@@ -16,9 +16,17 @@ namespace API.Database
         public DbSet<EventModel> Events { get; set; } = null!;
         public DbSet<ClassroomModel> Classrooms { get; set; } = null!;
 
-        public LearningLanternContext(DbContextOptions<LearningLanternContext> options) : base(options) { }
+        public LearningLanternContext(DbContextOptions<LearningLanternContext> options) : base(options)
+        {
+        }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        {
+            base.OnConfiguring(options);
+            string path = Path.Combine(Environment.CurrentDirectory, "Database");
+            path = Path.Combine(path, "LearningLantern.db");
+            options.UseSqlite($"Filename={path}");
+        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -27,7 +35,7 @@ namespace API.Database
                 .WithMany(user => user.Tasks)
                 .HasForeignKey(task => task.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
-            
+
             builder.Entity<EventModel>()
                 .HasOne(Event => Event.Classroom)
                 .WithMany(classroom => classroom.Events)
