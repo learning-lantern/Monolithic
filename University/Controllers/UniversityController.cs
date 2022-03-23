@@ -17,26 +17,26 @@ namespace API.University.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddToRoleInstructor([FromQuery] string university, [FromBody] string userName)
+        public async Task<IActionResult> AddToRoleInstructor([FromQuery] string university, [FromQuery] string userId)
         {
             if (university != "Assiut University")
             {
                 return BadRequest(JsonConvert.SerializeObject("There is no University in our database with this name."));
             }
 
-            var result = await universityAdminRepository.AddToRoleInstructorAsync(userName);
+            var addToRoleInstructorAsyncResult = await universityAdminRepository.AddToRoleInstructorAsync(userId);
 
-            if (!result.Succeeded)
+            if (!addToRoleInstructorAsyncResult.Succeeded)
             {
-                if (result.Errors?.FirstOrDefault(error => error.Code == "NotFound") is not null)
+                if (addToRoleInstructorAsyncResult.Errors?.FirstOrDefault(error => error.Code == "NotFound") is not null)
                 {
-                    return NotFound(JsonConvert.SerializeObject(result.Errors));
+                    return NotFound(JsonConvert.SerializeObject(addToRoleInstructorAsyncResult.Errors));
                 }
 
-                return BadRequest(JsonConvert.SerializeObject(result.Errors));
+                return BadRequest(JsonConvert.SerializeObject(addToRoleInstructorAsyncResult.Errors));
             }
 
-            return Ok();
+            return Ok(JsonConvert.SerializeObject("Updated the user role to Instructor role."));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using API.User.DTOs;
+using API.User.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace API.User.Repositories
@@ -35,5 +36,14 @@ namespace API.User.Repositories
         /// Task that represents the asynchronous operation, containing IdentityResult of the operation.
         /// </returns>
         public Task<IdentityResult> DeleteAsync(string userEmail, string userPassword);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>
+        /// 
+        /// </returns>
+        public Task<UserModel?> FindUserByIdAsync(string userId);
     }
 }

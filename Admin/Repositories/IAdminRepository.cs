@@ -15,11 +15,11 @@ namespace API.Admin.Repositories
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="userName"></param>
+        /// <param name="userId"></param>
         /// <returns>
         /// 
         /// </returns>
-        public Task<IdentityResult> AddToRoleAdminAsync(string userName);
+        public Task<IdentityResult> AddToRoleAdminAsync(string userId);
 
         /// <summary>
         /// 
@@ -32,11 +32,11 @@ namespace API.Admin.Repositories
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="userName"></param>
+        /// <param name="userId"></param>
         /// <returns>
         /// 
         /// </returns>
-        public Task<IdentityResult> AddToRoleUniversityAdminAsync(string userName);
+        public Task<IdentityResult> AddToRoleUniversityAdminAsync(string userId);
 
         /// <summary>
         /// 
