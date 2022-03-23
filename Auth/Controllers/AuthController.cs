@@ -65,9 +65,9 @@ namespace API.Auth.Controllers
 
             var signInUserResponseDTO = await authRepository.SignInAsync(signInUserDTO);
 
-            if (signInUserResponseDTO.User is null)
+            if (signInUserResponseDTO.User == null)
             {
-                return NotFound(JsonConvert.SerializeObject("There is no user in this University whith this email."));
+                return NotFound(JsonConvert.SerializeObject("There is no user in this University with this email."));
             }
 
             return string.IsNullOrEmpty(signInUserResponseDTO.Token)

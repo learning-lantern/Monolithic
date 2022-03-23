@@ -83,12 +83,12 @@ namespace API.Auth.Repositories
             {
                 var user = await userManager.FindByEmailAsync(userEmail);
 
-                if (user is null)
+                if (user == null)
                 {
                     return IdentityResult.Failed(new IdentityError()
                     {
                         Code = "NotFound",
-                        Description = "There is no user in this University whith this email."
+                        Description = "There is no user in this University with this email."
                     });
                 }
 
@@ -130,12 +130,12 @@ namespace API.Auth.Repositories
         {
             var user = await userManager.FindByIdAsync(userId);
 
-            if (user is null)
+            if (user == null)
             {
                 return IdentityResult.Failed(new IdentityError()
                 {
                     Code = "NotFound",
-                    Description = "There is no user in this University whith this Id."
+                    Description = "There is no user in this University with this Id."
                 });
             }
 
