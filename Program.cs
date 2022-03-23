@@ -59,7 +59,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IAuthRepository, AuthRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IToDoRepository, ToDoRepository>();
-builder.Services.AddTransient<IToDoRepository, ToDoRepository>();
 builder.Services.AddTransient<IAdminRepository, AdminRepository>();
 builder.Services.AddTransient<IUniversityRepository, UniversityRepository>();
 
