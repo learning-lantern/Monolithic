@@ -19,13 +19,13 @@ namespace API.Calendar.Repositories
             this.classroomRepository = classroomRepository;
         }
 
-        public async Task<List<EventDTO>> GetAllEventsAsync(int classroomId)
+        public async Task<List<EventDTO>> GetAsync(int classroomId)
         {
-            return await learningLanternContext.Events.Where(x => x.ClassroomId == classroomId)
-                .Select(x => new EventDTO(x)).ToListAsync();
+            return await learningLanternContext.Events.Where(eventModel => eventModel.ClassroomId == classroomId)
+                .Select(eventModel => new EventDTO(eventModel)).ToListAsync();
         }
 
-        public async Task<int> AddAsync(int classroomId, AddEventDTO eventDTO)
+        public async Task<int?> AddAsync(AddEventDTO eventDTO)
         {
             ClassroomModel? classroom = classroomRepository.FindByIdAsync(classroomId);
             if (classroom is null)
@@ -36,7 +36,7 @@ namespace API.Calendar.Repositories
             return newEvent.Id;
         }
 
-        public async Task<bool> UpdateAsync(int eventId, AddEventDTO eventDTO)
+        public async Task<bool?> UpdateAsync(EventDTO eventDTO)
         {
             EventModel? newEvent = await learningLanternContext.Events.FindAsync(eventId);
             if (newEvent is null)
@@ -45,7 +45,7 @@ namespace API.Calendar.Repositories
             return await learningLanternContext.SaveChangesAsync() != 0;
         }
 
-        public async Task<bool> RemoveAsync(int eventId)
+        public async Task<bool?> RemoveAsync(int eventId)
         {
             learningLanternContext.Events.Remove(new EventModel() {Id = eventId});
             return await learningLanternContext.SaveChangesAsync() != 0;

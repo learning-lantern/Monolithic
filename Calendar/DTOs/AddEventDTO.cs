@@ -1,21 +1,28 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace API.Calendar.DTOs
 {
     public class AddEventDTO
     {
-        public string? Name { get; set; }
+        [Required, StringLength(450)]
+        public string Name { get; set; } = null!;
         public string? Discription { get; set; }
-        public DateTime? StartTime { get; set; }
-        public DateTime? EndTime { get; set; }
+        [Required]
+        public DateTime StartTime { get; set; }
+        [Required]
+        public DateTime EndTime { get; set; }
 
-        public AddEventDTO()
+        [Required]
+        public int ClassroomId { get; set; }
+
+        public AddEventDTO() { }
+        public AddEventDTO(AddEventDTO addEventDTO)
         {
-        }
-        public AddEventDTO(AddEventDTO copy)
-        {
-            Name = copy.Name;
-            Discription = copy.Discription;
-            StartTime = copy.StartTime;
-            EndTime = copy.EndTime;
+            Name = addEventDTO.Name;
+            Discription = addEventDTO.Discription;
+            StartTime = addEventDTO.StartTime;
+            EndTime = addEventDTO.EndTime;
+            ClassroomId = addEventDTO.ClassroomId;
         }
     }
 }
