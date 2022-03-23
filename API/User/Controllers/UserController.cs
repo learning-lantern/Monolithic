@@ -1,4 +1,5 @@
-﻿using API.User.DTOs;
+﻿using API.Auth.DTOs;
+using API.User.DTOs;
 using API.User.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ namespace API.User.Controllers
     /// <summary>
     /// User controller class for user methods.
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController, Authorize]
     public class UserController : ControllerBase
     {
@@ -48,7 +49,7 @@ namespace API.User.Controllers
         /// <returns>
         /// Task that represents the asynchronous operation, containing IActionResult of the operation.
         /// </returns>
-        [HttpPut("Update")]
+        [HttpPut]
         public async Task<IActionResult> Update([FromBody] UserDTO userDTO)
         {
             if (userDTO.University != "Assiut University")
@@ -80,15 +81,19 @@ namespace API.User.Controllers
         /// <summary>
         /// Deletes the specified user from the backing store.
         /// </summary>
-        /// <param name="userEmail"></param>
-        /// <param name="userPassword"></param>
+        /// <param name="signInUserDTO"></param>
         /// /// <returns>
         /// Task that represents the asynchronous operation, containing IActionResult of the operation.
         /// </returns>
-        [HttpDelete("Delete")]
-        public async Task<IActionResult> Delete([FromQuery] string userEmail, [FromBody] string userPassword)
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromBody] SignInUserDTO signInUserDTO)
         {
-            var deleteAsyncResult = await userRepository.DeleteAsync(userEmail, userPassword);
+            if (signInUserDTO.University != "Assiut University")
+            {
+                return BadRequest(JsonConvert.SerializeObject("There is no University in our database with this name."));
+            }
+
+            var deleteAsyncResult = await userRepository.DeleteAsync(signInUserDTO.Email, signInUserDTO.Password);
 
             if (!deleteAsyncResult.Succeeded)
             {
