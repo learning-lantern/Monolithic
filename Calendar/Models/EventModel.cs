@@ -26,5 +26,19 @@ namespace API.Calendar.Models
 			ClassroomId = classroom.Id;
 			Classroom = classroom;
 		}
+
+		public EventModel(int id, AddEventDTO eventDTO, ClassroomModel? classroom)
+		{
+			Id = id;
+			Name = eventDTO.Name;
+			Discription = eventDTO.Discription;
+			StartTime = eventDTO.StartTime;
+			EndTime = eventDTO.EndTime;
+			if (classroom is not null)
+			{
+				ClassroomId = classroom.Id;
+				Classroom = classroom;
+			}
+		}
 	}
 }

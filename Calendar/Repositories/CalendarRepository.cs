@@ -41,7 +41,7 @@ namespace API.Calendar.Repositories
             EventModel? newEvent = await learningLanternContext.Events.FindAsync(eventId);
             if (newEvent is null)
                 return false;
-            learningLanternContext.Events.Update(newEvent);
+            learningLanternContext.Events.Update(new EventModel(eventId, eventDTO, newEvent.Classroom));
             return await learningLanternContext.SaveChangesAsync() != 0;
         }
 
