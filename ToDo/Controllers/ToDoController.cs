@@ -30,10 +30,10 @@ namespace API.ToDo.Controllers
         {
             var addAsyncResult = await toDoRepository.AddAsync(addTaskDTO);
 
-            if (addAsyncResult is null)
+            if (addAsyncResult == null)
             {
                 return NotFound(JsonConvert.SerializeObject(
-                "There is no user in this University whith this Id."));
+                "There is no user in this University with this Id."));
             }
             if (addAsyncResult.Value > 0)
             {
@@ -48,10 +48,10 @@ namespace API.ToDo.Controllers
         {
             var updateAsyncResult = await toDoRepository.UpdateAsync(taskDTO);
 
-            if (updateAsyncResult is null)
+            if (updateAsyncResult == null)
             {
                 return NotFound(JsonConvert.SerializeObject(
-                "There is no user in this University whith this Id."));
+                "There is no user in this University with this Id."));
             }
 
             if (updateAsyncResult.Value)
@@ -67,10 +67,10 @@ namespace API.ToDo.Controllers
         {
             var removeAsyncResult = await toDoRepository.RemoveAsync(taskId);
 
-            if (removeAsyncResult is null)
+            if (removeAsyncResult == null)
             {
                 return NotFound(JsonConvert.SerializeObject(
-                "There is no user in this University whith this Id."));
+                "There is no user in this University with this Id."));
             }
 
             if (removeAsyncResult.Value)
