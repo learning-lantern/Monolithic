@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using API.Calendar.Repositories;
+using API.Classroom.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,6 +63,8 @@ builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IToDoRepository, ToDoRepository>();
 builder.Services.AddTransient<IAdminRepository, AdminRepository>();
 builder.Services.AddTransient<IUniversityRepository, UniversityRepository>();
+builder.Services.AddTransient<IClassroomRepository, ClassroomRepository>();
+builder.Services.AddTransient<ICalendarRepository, CalendarRepository>();
 
 // Add cors for Angular.
 builder.Services.AddCors(setupAction => setupAction.AddDefaultPolicy(

@@ -22,19 +22,19 @@ namespace API.ToDo.Repositories
         {
             if (list is null)
             {
-                return await learningLanternContext.Task.Where(task => task.UserId == userId).Select(task => new TaskDTO(task)).ToListAsync();
+                return await learningLanternContext.Tasks.Where(task => task.UserId == userId).Select(task => new TaskDTO(task)).ToListAsync();
             }
             else if (list == "MyDay")
             {
-                return await learningLanternContext.Task.Where(task => task.UserId == userId && task.MyDay).Select(task => new TaskDTO(task)).ToListAsync();
+                return await learningLanternContext.Tasks.Where(task => task.UserId == userId && task.MyDay).Select(task => new TaskDTO(task)).ToListAsync();
             }
             else if (list == "Completed")
             {
-                return await learningLanternContext.Task.Where(task => task.UserId == userId && task.Completed).Select(task => new TaskDTO(task)).ToListAsync();
+                return await learningLanternContext.Tasks.Where(task => task.UserId == userId && task.Completed).Select(task => new TaskDTO(task)).ToListAsync();
             }
             else
             {
-                return await learningLanternContext.Task.Where(task => task.UserId == userId && task.Important).Select(task => new TaskDTO(task)).ToListAsync();
+                return await learningLanternContext.Tasks.Where(task => task.UserId == userId && task.Important).Select(task => new TaskDTO(task)).ToListAsync();
             }
         }
 
@@ -47,7 +47,7 @@ namespace API.ToDo.Repositories
                 return null;
             }
 
-            var task = await learningLanternContext.Task.AddAsync(new TaskModel(addTaskDTO, user));
+            var task = await learningLanternContext.Tasks.AddAsync(new TaskModel(addTaskDTO, user));
 
             if (task is null)
             {
@@ -68,7 +68,7 @@ namespace API.ToDo.Repositories
                 return null;
             }
 
-            var task = learningLanternContext.Task.Update(new TaskModel(taskDTO, user));
+            var task = learningLanternContext.Tasks.Update(new TaskModel(taskDTO, user));
 
             if (task is null)
             {
@@ -82,7 +82,7 @@ namespace API.ToDo.Repositories
 
         public async Task<bool?> RemoveAsync(int taskId)
         {
-            var task = learningLanternContext.Task.Remove(new TaskModel() { Id = taskId });
+            var task = learningLanternContext.Tasks.Remove(new TaskModel() { Id = taskId });
 
             if (task is null)
             {
