@@ -37,7 +37,7 @@ namespace API.User.Controllers
             var user = await userRepository.FindByIdAsync(userId);
 
             return user is null ? NotFound(JsonConvert.SerializeObject(
-                "There is no user in this University whith this Id."))
+                "There is no user in this University with this Id."))
                 : Ok(JsonConvert.SerializeObject(user));
         }
 
