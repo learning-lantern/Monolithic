@@ -1,6 +1,8 @@
-﻿using API.Auth.Repositories;
+﻿using API.Admin.Repositories;
+using API.Auth.Repositories;
 using API.Database;
 using API.ToDo.Repositories;
+using API.University.Repositories;
 using API.User.Models;
 using API.User.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -57,6 +59,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IAuthRepository, AuthRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IToDoRepository, ToDoRepository>();
+builder.Services.AddTransient<IToDoRepository, ToDoRepository>();
+builder.Services.AddTransient<IAdminRepository, AdminRepository>();
+builder.Services.AddTransient<IUniversityRepository, UniversityRepository>();
 
 // Add cors for Angular.
 builder.Services.AddCors(setupAction => setupAction.AddDefaultPolicy(
