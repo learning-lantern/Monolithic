@@ -1,5 +1,7 @@
 ﻿using API.Admin.Repositories;
 using API.Auth.Repositories;
+using API.Calendar.Repositories;
+using API.Classroom.Repositories;
 using API.Database;
 using API.ToDo.Repositories;
 using API.University.Repositories;
@@ -7,11 +9,8 @@ using API.User.Models;
 using API.User.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using API.Calendar.Repositories;
-using API.Classroom.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
