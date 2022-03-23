@@ -19,7 +19,7 @@ namespace API.Database
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             string path = Path.Combine(Environment.CurrentDirectory, "Database");
-            path = Path.Combine(path, "LearningLantern.db");
+            path = Path.Combine(path, "learning-lantern.aun.eg.db");
             options.UseSqlite($"Filename={path}");
 
             base.OnConfiguring(options);

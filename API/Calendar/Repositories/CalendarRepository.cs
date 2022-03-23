@@ -1,6 +1,5 @@
 using API.Calendar.DTOs;
 using API.Calendar.Models;
-using API.Classroom.Models;
 using API.Classroom.Repositories;
 using API.Database;
 using Microsoft.EntityFrameworkCore;
@@ -21,33 +20,58 @@ namespace API.Calendar.Repositories
 
         public async Task<List<EventDTO>> GetAsync(int classroomId)
         {
-            return await learningLanternContext.Events.Where(eventModel => eventModel.ClassroomId == classroomId)
+            return await learningLanternContext.Events
+                .Where(eventModel => eventModel.ClassroomId == classroomId)
                 .Select(eventModel => new EventDTO(eventModel)).ToListAsync();
         }
 
-        public async Task<int?> AddAsync(AddEventDTO eventDTO)
+        public async Task<int?> AddAsync(AddEventDTO addEventDTO)
         {
-            ClassroomModel? classroom = classroomRepository.FindByIdAsync(classroomId);
-            if (classroom is null)
+            var classroom = await classroomRepository.GetAsync(addEventDTO.ClassroomId);
+
+            if (classroom == null)
+            {
+                return null;
+            }
+
+            var eventModel = await learningLanternContext.Events.AddAsync(new EventModel(addEventDTO, classroom));
+
+            if (eventModel == null)
+            {
                 return 0;
-            EventModel newEvent = new EventModel(eventDTO, classroom);
-            await learningLanternContext.Events.AddAsync(newEvent);
-            await learningLanternContext.SaveChangesAsync();
-            return newEvent.Id;
+            }
+
+            return await learningLanternContext.SaveChangesAsync() == 0 ? 0 : eventModel.Entity.Id;
         }
 
         public async Task<bool?> UpdateAsync(EventDTO eventDTO)
         {
-            EventModel? newEvent = await learningLanternContext.Events.FindAsync(eventId);
-            if (newEvent is null)
+            var classroom = await classroomRepository.GetAsync(eventDTO.ClassroomId);
+
+            if (classroom == null)
+            {
+                return null;
+            }
+
+            var eventModel = learningLanternContext.Events.Update(new EventModel(eventDTO, classroom));
+
+            if (eventModel == null)
+            {
                 return false;
-            learningLanternContext.Events.Update(new EventModel(eventId, eventDTO, newEvent.Classroom));
+            }
+
             return await learningLanternContext.SaveChangesAsync() != 0;
         }
 
         public async Task<bool?> RemoveAsync(int eventId)
         {
-            learningLanternContext.Events.Remove(new EventModel() {Id = eventId});
+            var eventModel = learningLanternContext.Events.Remove(new EventModel() { Id = eventId });
+
+            if (eventModel == null)
+            {
+                return false;
+            }
+
             return await learningLanternContext.SaveChangesAsync() != 0;
         }
     }

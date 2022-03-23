@@ -7,8 +7,8 @@ using Newtonsoft.Json;
 namespace API.Calendar.Controllers
 {
 
-    [Route("api/[controller]/[action]")]
-    [ApiController, Authorize(Roles = "Instructor")]
+    [Route("api/Classroom/[controller]/[action]")]
+    [ApiController, Authorize]
     public class CalenderController : ControllerBase
     {
         private readonly ICalendarRepository calendarRepository;
@@ -26,7 +26,7 @@ namespace API.Calendar.Controllers
             return Ok(JsonConvert.SerializeObject(events));
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Instructor")]
         public async Task<IActionResult> Add([FromBody] AddEventDTO addEventDTO)
         {
             var addAsyncResult = await calendarRepository.AddAsync(addEventDTO);
@@ -44,7 +44,7 @@ namespace API.Calendar.Controllers
             return BadRequest();
         }
         
-        [HttpPut]
+        [HttpPut, Authorize(Roles = "Instructor")]
         public async Task<IActionResult> Update([FromBody] EventDTO eventDTO)
         {
             var updateAsyncResult = await calendarRepository.UpdateAsync(eventDTO);
@@ -63,8 +63,8 @@ namespace API.Calendar.Controllers
             return BadRequest();
         }
 
-        [HttpDelete("{eventId}")]
-        public async Task<IActionResult> Remove([FromRoute] int eventId)
+        [HttpDelete, Authorize(Roles = "Instructor")]
+        public async Task<IActionResult> Remove([FromQuery] int eventId)
         {
             var removeAsyncResult = await calendarRepository.RemoveAsync(eventId);
 
