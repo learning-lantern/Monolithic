@@ -1,27 +1,17 @@
-using API.Calendar.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.Calendar.DTOs
 {
     public class EventDTO : AddEventDTO
     {
+        [Required, Key]
         public int Id { get; set; }
 
-        public EventDTO()
+        public EventDTO() { }
+        public EventDTO(AddEventDTO addEventDTO) : base(addEventDTO) { }
+        public EventDTO(EventDTO eventDTO) : base(eventDTO)
         {
-        }
-
-        public EventDTO(int id, AddEventDTO addEvent) : base(addEvent)
-        {
-            Id = id;
-        }
-        
-        public EventDTO(EventModel copy)
-        {
-            Id = copy.Id;
-            Name = copy.Name;
-            Discription = copy.Discription;
-            StartTime = copy.StartTime;
-            EndTime = copy.EndTime;
+            Id = eventDTO.Id;
         }
     }
 }
