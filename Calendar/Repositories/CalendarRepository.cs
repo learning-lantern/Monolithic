@@ -27,10 +27,9 @@ namespace API.Calendar.Repositories
 
         public async Task<int> AddAsync(int classroomId, AddEventDTO eventDTO)
         {
-            ClassroomModel? classroom = classroomRepository.FindByIdAsync(classroomId);
-            if (classroom is null)
+            if (await classroomRepository.FindByIdAsync(classroomId) is null)
                 return 0;
-            EventModel newEvent = new EventModel(eventDTO, classroom);
+            EventModel newEvent = new EventModel(eventDTO, classroomId);
             await learningLanternContext.Events.AddAsync(newEvent);
             await learningLanternContext.SaveChangesAsync();
             return newEvent.Id;
@@ -38,10 +37,10 @@ namespace API.Calendar.Repositories
 
         public async Task<bool> UpdateAsync(int eventId, AddEventDTO eventDTO)
         {
-            EventModel? newEvent = await learningLanternContext.Events.FindAsync(eventId);
-            if (newEvent is null)
+            EventModel? currentEvent = await learningLanternContext.Events.FindAsync(eventId);
+            if (currentEvent is null)
                 return false;
-            learningLanternContext.Events.Update(new EventModel(eventId, eventDTO, newEvent.Classroom));
+            learningLanternContext.Events.Update(new EventModel(eventId, eventDTO, currentEvent.ClassroomId));
             return await learningLanternContext.SaveChangesAsync() != 0;
         }
 

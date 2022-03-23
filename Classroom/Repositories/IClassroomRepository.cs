@@ -4,6 +4,6 @@ namespace API.Classroom.Repositories
 {
     public interface IClassroomRepository
     {
-        public ClassroomModel? FindByIdAsync(int id);
+        public Task<ClassroomModel?> FindByIdAsync(int id);
     }
 }

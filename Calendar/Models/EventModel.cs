@@ -17,28 +17,18 @@ namespace API.Calendar.Models
 		{
 		}
 
-		public EventModel(AddEventDTO eventDTO, ClassroomModel classroom)
+		public EventModel(AddEventDTO eventDTO, int? classroomId)
 		{
 			Name = eventDTO.Name;
 			Discription = eventDTO.Discription;
 			StartTime = eventDTO.StartTime;
 			EndTime = eventDTO.EndTime;
-			ClassroomId = classroom.Id;
-			Classroom = classroom;
+			ClassroomId = classroomId;
 		}
 
-		public EventModel(int id, AddEventDTO eventDTO, ClassroomModel? classroom)
+		public EventModel(int id, AddEventDTO eventDTO, int? classroomId) : this(eventDTO, classroomId)
 		{
 			Id = id;
-			Name = eventDTO.Name;
-			Discription = eventDTO.Discription;
-			StartTime = eventDTO.StartTime;
-			EndTime = eventDTO.EndTime;
-			if (classroom is not null)
-			{
-				ClassroomId = classroom.Id;
-				Classroom = classroom;
-			}
 		}
 	}
 }

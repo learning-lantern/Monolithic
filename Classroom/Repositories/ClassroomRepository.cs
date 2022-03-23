@@ -5,7 +5,7 @@ namespace API.Classroom.Repositories
 {
     public class ClassroomRepository : IClassroomRepository
     {
-        public ClassroomModel? FindByIdAsync(int id)
+        public async Task<ClassroomModel?> FindByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
