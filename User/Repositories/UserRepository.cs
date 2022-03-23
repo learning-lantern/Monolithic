@@ -62,5 +62,7 @@ namespace API.User.Repositories
 
             return await userManager.DeleteAsync(user);
         }
+        
+        public async Task<UserModel?> FindUserByIdAsync(string userId) => await userManager.FindByIdAsync(userId);
     }
 }

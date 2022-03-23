@@ -12,16 +12,16 @@ namespace API.University.Repositories
             this.userManager = userManager;
         }
 
-        public async Task<IdentityResult> AddToRoleInstructorAsync(string userName)
+        public async Task<IdentityResult> AddToRoleInstructorAsync(string userId)
         {
-            var user = await userManager.FindByNameAsync(userName);
+            var user = await userManager.FindByIdAsync(userId);
 
             if (user == null)
             {
                 return IdentityResult.Failed(new IdentityError()
                 {
                     Code = "NotFound",
-                    Description = "There is no user in this University with this user name."
+                    Description = "There is no user in this University with this Id."
                 });
             }
 

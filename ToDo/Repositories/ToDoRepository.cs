@@ -1,8 +1,7 @@
 ﻿using API.Database;
 using API.ToDo.DTOs;
 using API.ToDo.Models;
-using API.User.Models;
-using Microsoft.AspNetCore.Identity;
+using API.User.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.ToDo.Repositories
@@ -10,17 +9,17 @@ namespace API.ToDo.Repositories
     public class ToDoRepository : IToDoRepository
     {
         private readonly LearningLanternContext learningLanternContext;
-        private readonly UserManager<UserModel> userManager;
+        private readonly IUserRepository userRepository;
 
-        public ToDoRepository(LearningLanternContext learningLanternContext, UserManager<UserModel> userManager)
+        public ToDoRepository(LearningLanternContext learningLanternContext, IUserRepository userRepository)
         {
             this.learningLanternContext = learningLanternContext;
-            this.userManager = userManager;
+            this.userRepository = userRepository;
         }
 
         public async Task<List<TaskDTO>> GetAsync(string userId, string? list)
         {
-            if (list is null)
+            if (list == null)
             {
                 return await learningLanternContext.Task.Where(task => task.UserId == userId).Select(task => new TaskDTO(task)).ToListAsync();
             }
@@ -40,58 +39,52 @@ namespace API.ToDo.Repositories
 
         public async Task<int?> AddAsync(AddTaskDTO addTaskDTO)
         {
-            var user = await userManager.FindByIdAsync(addTaskDTO.UserId);
+            var user = await userRepository.FindUserByIdAsync(addTaskDTO.UserId);
 
-            if (user is null)
+            if (user == null)
             {
                 return null;
             }
 
             var task = await learningLanternContext.Task.AddAsync(new TaskModel(addTaskDTO, user));
 
-            if (task is null)
+            if (task == null)
             {
                 return 0;
             }
 
-            var saveChangesAsyncResult = await learningLanternContext.SaveChangesAsync();
-
-            return saveChangesAsyncResult == 0 ? 0 : task.Entity.Id;
+            return await learningLanternContext.SaveChangesAsync() == 0 ? 0 : task.Entity.Id;
         }
 
         public async Task<bool?> UpdateAsync(TaskDTO taskDTO)
         {
-            var user = await userManager.FindByIdAsync(taskDTO.UserId);
+            var user = await userRepository.FindUserByIdAsync(taskDTO.UserId);
 
-            if (user is null)
+            if (user == null)
             {
                 return null;
             }
 
             var task = learningLanternContext.Task.Update(new TaskModel(taskDTO, user));
 
-            if (task is null)
+            if (task == null)
             {
                 return false;
             }
 
-            var saveChangesAsyncResult = await learningLanternContext.SaveChangesAsync();
-
-            return saveChangesAsyncResult != 0;
+            return await learningLanternContext.SaveChangesAsync() != 0;
         }
 
         public async Task<bool?> RemoveAsync(int taskId)
         {
             var task = learningLanternContext.Task.Remove(new TaskModel() { Id = taskId });
 
-            if (task is null)
+            if (task == null)
             {
                 return false;
             }
 
-            var saveChangesAsyncResult = await learningLanternContext.SaveChangesAsync();
-
-            return saveChangesAsyncResult != 0;
+            return await learningLanternContext.SaveChangesAsync() != 0;
         }
     }
 }

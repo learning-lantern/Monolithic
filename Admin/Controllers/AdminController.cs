@@ -21,64 +21,70 @@ namespace API.Admin.Controllers
         {
             var result = await adminRepository.CreateAdminRoleAsync();
 
-            return result.Succeeded ? Ok() : BadRequest(JsonConvert.SerializeObject(result.Errors));
+            return result.Succeeded ?
+                Ok(JsonConvert.SerializeObject("Created the Admin role.")) :
+                BadRequest(JsonConvert.SerializeObject(result.Errors));
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddToRoleAdmin([FromBody] string userName)
+        public async Task<IActionResult> AddToRoleAdmin([FromQuery] string userId)
         {
-            var result = await adminRepository.AddToRoleAdminAsync(userName);
+            var addToRoleAdminAsyncResult = await adminRepository.AddToRoleAdminAsync(userId);
 
-            if (!result.Succeeded)
+            if (!addToRoleAdminAsyncResult.Succeeded)
             {
-                if (result.Errors?.FirstOrDefault(error => error.Code == "NotFound") is not null)
+                if (addToRoleAdminAsyncResult.Errors?.FirstOrDefault(error => error.Code == "NotFound") is not null)
                 {
-                    return NotFound(JsonConvert.SerializeObject(result.Errors));
+                    return NotFound(JsonConvert.SerializeObject(addToRoleAdminAsyncResult.Errors));
                 }
 
-                return BadRequest(JsonConvert.SerializeObject(result.Errors));
+                return BadRequest(JsonConvert.SerializeObject(addToRoleAdminAsyncResult.Errors));
             }
 
-            return Ok();
+            return Ok(JsonConvert.SerializeObject("Updated the user role to Admin role."));
         }
 
         [HttpGet]
         public async Task<IActionResult> CreateUniversityAdminRole()
         {
-            var result = await adminRepository.CreateUniversityAdminRoleAsync();
+            var createUniversityAdminRoleAsyncResult = await adminRepository.CreateUniversityAdminRoleAsync();
 
-            return result.Succeeded ? Ok() : BadRequest(JsonConvert.SerializeObject(result.Errors));
+            return createUniversityAdminRoleAsyncResult.Succeeded ?
+                Ok(JsonConvert.SerializeObject("Created the UniversityAdmin role.")) :
+                BadRequest(JsonConvert.SerializeObject(createUniversityAdminRoleAsyncResult.Errors));
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddToRoleUniversityAdmin([FromQuery] string university, [FromBody] string userName)
+        public async Task<IActionResult> AddToRoleUniversityAdmin([FromQuery] string university, [FromQuery] string userId)
         {
             if (university != "Assiut University")
             {
                 return BadRequest(JsonConvert.SerializeObject("There is no University in our database with this name."));
             }
 
-            var result = await adminRepository.AddToRoleUniversityAdminAsync(userName);
+            var addToRoleUniversityAdminAsyncResult = await adminRepository.AddToRoleUniversityAdminAsync(userId);
 
-            if (!result.Succeeded)
+            if (!addToRoleUniversityAdminAsyncResult.Succeeded)
             {
-                if (result.Errors?.FirstOrDefault(error => error.Code == "NotFound") is not null)
+                if (addToRoleUniversityAdminAsyncResult.Errors?.FirstOrDefault(error => error.Code == "NotFound") is not null)
                 {
-                    return NotFound(JsonConvert.SerializeObject(result.Errors));
+                    return NotFound(JsonConvert.SerializeObject(addToRoleUniversityAdminAsyncResult.Errors));
                 }
 
-                return BadRequest(JsonConvert.SerializeObject(result.Errors));
+                return BadRequest(JsonConvert.SerializeObject(addToRoleUniversityAdminAsyncResult.Errors));
             }
 
-            return Ok();
+            return Ok(JsonConvert.SerializeObject("Updated the user role to UniversityAdmin role."));
         }
 
         [HttpGet]
         public async Task<IActionResult> CreateInstructorRole()
         {
-            var result = await adminRepository.CreateInstructorRoleAsync();
+            var createInstructorRoleAsyncResult = await adminRepository.CreateInstructorRoleAsync();
 
-            return result.Succeeded ? Ok() : BadRequest(JsonConvert.SerializeObject(result.Errors));
+            return createInstructorRoleAsyncResult.Succeeded ?
+                Ok(JsonConvert.SerializeObject("Created the Instructor role.")) :
+                BadRequest(JsonConvert.SerializeObject(createInstructorRoleAsyncResult.Errors));
         }
     }
 }

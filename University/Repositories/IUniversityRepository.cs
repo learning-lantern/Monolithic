@@ -7,10 +7,10 @@ namespace API.University.Repositories
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="userName"></param>
+        /// <param name="userId"></param>
         /// <returns>
         /// 
         /// </returns>
-        public Task<IdentityResult> AddToRoleInstructorAsync(string userName);
+        public Task<IdentityResult> AddToRoleInstructorAsync(string userId);
     }
 }
