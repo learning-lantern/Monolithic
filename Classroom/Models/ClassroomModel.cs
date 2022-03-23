@@ -1,11 +1,10 @@
 using API.Calendar.Models;
+using API.Classroom.DTOs;
 
 namespace API.Classroom.Models
 {
-    public class ClassroomModel
+    public class ClassroomModel : ClassroomDTO
     {
-        public int Id { get; set; }
-        public string Name { get; set; } = null!;
         public ICollection<EventModel> Events { get; set; } = null!;
     }
 }
