@@ -1,5 +1,7 @@
 ﻿using API.Calendar.Models;
 using API.Classroom.Models;
+using API.Quiz.Models;
+using API.TextLesson.Models;
 using API.ToDo.Models;
 using API.User.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -13,8 +15,10 @@ namespace API.Database
     public class LearningLanternContext : IdentityDbContext<UserModel>
     {
         public DbSet<TaskModel> Tasks { get; set; } = null!;
-        public DbSet<EventModel> Events { get; set; } = null!;
         public DbSet<ClassroomModel> Classrooms { get; set; } = null!;
+        public DbSet<EventModel> Events { get; set; } = null!;
+        public DbSet<QuizModel> Quizes { get; set; } = null!;
+        public DbSet<TextLessonModel> TextLessons { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {

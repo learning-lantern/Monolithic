@@ -421,3 +421,7 @@ ASALocalRun/
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+API/Database/LearningLantern.aun.eg.db
+API/Database/LearningLantern.aun.eg.db-shm
+API/Database/LearningLantern.aun.eg.db-wal

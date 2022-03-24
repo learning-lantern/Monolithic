@@ -4,6 +4,7 @@ using API.Calendar.Repositories;
 using API.Classroom.Repositories;
 using API.Database;
 using API.Quiz.Repositories;
+using API.TextLesson.Repositories;
 using API.ToDo.Repositories;
 using API.University.Repositories;
 using API.User.Models;
@@ -64,7 +65,8 @@ builder.Services.AddTransient<IUniversityRepository, UniversityRepository>();
 builder.Services.AddTransient<IToDoRepository, ToDoRepository>();
 builder.Services.AddTransient<IClassroomRepository, ClassroomRepository>();
 builder.Services.AddTransient<ICalendarRepository, CalendarRepository>();
-//builder.Services.AddTransient<IQuizRepository, QuizRepository>();
+builder.Services.AddTransient<IQuizRepository, QuizRepository>();
+builder.Services.AddTransient<ITextLessonRepository, TextLessonRepository>();
 
 // Add cors for Angular.
 builder.Services.AddCors(setupAction => setupAction.AddDefaultPolicy(
