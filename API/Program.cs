@@ -32,12 +32,14 @@ builder.Services.AddIdentity<UserModel, IdentityRole>(setupAction =>
 // Add JWT authentication.
 builder.Services.AddAuthentication(configureOptions =>
 {
-    configureOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    configureOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     configureOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    configureOptions.DefaultForbidScheme = JwtBearerDefaults.AuthenticationScheme;
+    configureOptions.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+    configureOptions.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+    configureOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    configureOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(configureOptions =>
 {
-    configureOptions.SaveToken = true;
     configureOptions.TokenValidationParameters = new()
     {
         ValidateIssuer = true,
