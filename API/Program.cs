@@ -3,6 +3,7 @@ using API.Auth.Repositories;
 using API.Calendar.Repositories;
 using API.Classroom.Repositories;
 using API.Database;
+using API.Quiz.Repositories;
 using API.ToDo.Repositories;
 using API.University.Repositories;
 using API.User.Models;
@@ -37,16 +38,15 @@ builder.Services.AddAuthentication(configureOptions =>
 }).AddJwtBearer(configureOptions =>
 {
     configureOptions.SaveToken = true;
-    configureOptions.RequireHttpsMetadata = false;
     configureOptions.TokenValidationParameters = new()
     {
         ValidateIssuer = true,
+        ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
         ValidateAudience = true,
         ValidAudience = builder.Configuration["JWT:ValidAudience"],
-        ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+        ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(
-            key: Encoding.UTF8.GetBytes(
-                s: builder.Configuration["JWT:IssuerSigningKey"]))
+            key: Encoding.UTF8.GetBytes(builder.Configuration["JWT:IssuerSigningKey"]))
     };
 });
 
@@ -57,11 +57,12 @@ builder.Services.AddSwaggerGen();
 // Add services.
 builder.Services.AddTransient<IAuthRepository, AuthRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
-builder.Services.AddTransient<IToDoRepository, ToDoRepository>();
 builder.Services.AddTransient<IAdminRepository, AdminRepository>();
 builder.Services.AddTransient<IUniversityRepository, UniversityRepository>();
+builder.Services.AddTransient<IToDoRepository, ToDoRepository>();
 builder.Services.AddTransient<IClassroomRepository, ClassroomRepository>();
 builder.Services.AddTransient<ICalendarRepository, CalendarRepository>();
+//builder.Services.AddTransient<IQuizRepository, QuizRepository>();
 
 // Add cors for Angular.
 builder.Services.AddCors(setupAction => setupAction.AddDefaultPolicy(

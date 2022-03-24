@@ -57,21 +57,28 @@ namespace API.Auth.Repositories
 
             var claims = new List<Claim>
             {
-                new Claim(type: ClaimTypes.Name, value: signInUserDTO.Email),
+                new Claim(type: ClaimTypes.Email, value: signInUserDTO.Email),
+                new Claim(type: "university", value: signInUserDTO.University),
                 new Claim(type: JwtRegisteredClaimNames.Jti, value: Guid.NewGuid().ToString())
             };
 
-            var issuerSigningKey = new SymmetricSecurityKey(key: Encoding.ASCII.GetBytes(configuration["JWT:IssuerSigningKey"]));
+            var user = await userManager.FindByEmailAsync(signInUserDTO.Email);
+            var roles = await userManager.GetRolesAsync(user);
+
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(type: ClaimTypes.Role, value: role));
+            }
+
+            var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(configuration["JWT:IssuerSigningKey"]));
 
             var token = new JwtSecurityToken(
                 issuer: configuration["JWT:ValidIssuer"],
                 audience: configuration["JWT:ValidAudience"],
                 claims: claims,
                 expires: DateTime.Now.AddDays(30),
-                signingCredentials: new SigningCredentials(key: issuerSigningKey, algorithm: SecurityAlgorithms.HmacSha256Signature)
+                signingCredentials: new SigningCredentials(key: symmetricSecurityKey, algorithm: SecurityAlgorithms.HmacSha256Signature)
                 );
-
-            var user = await userManager.FindByEmailAsync(signInUserDTO.Email);
 
             return new SignInUserResponseDTO(new UserDTO(user),
                 new JwtSecurityTokenHandler().WriteToken(token));
