@@ -1,4 +1,5 @@
 ﻿using API.Auth.DTOs;
+using API.Helpers;
 using API.User.DTOs;
 using API.User.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -16,10 +17,6 @@ namespace API.User.Controllers
     {
         private readonly IUserRepository userRepository;
 
-        /// <summary>
-        /// User controller class constructor.
-        /// </summary>
-        /// <param name="userRepository"></param>
         public UserController(IUserRepository userRepository)
         {
             this.userRepository = userRepository;
@@ -43,6 +40,23 @@ namespace API.User.Controllers
         }
 
         /// <summary>
+        /// Finds and returns a user, if any, who has the specified userEmail.
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <returns>
+        /// Task that represents the asynchronous operation, containing the user matching the specified userId if it exists.
+        /// </returns>
+        [HttpGet]
+        public async Task<IActionResult> FindByEmail([FromQuery] string userEmail)
+        {
+            var user = await userRepository.FindByEmailAsync(userEmail);
+
+            return user is null ? NotFound(JsonConvert.SerializeObject(
+                "There is no user in this University with this Email."))
+                : Ok(JsonConvert.SerializeObject(user));
+        }
+
+        /// <summary>
         /// Updates the specified user in the backing store.
         /// </summary>
         /// <param name="userDTO"></param>
@@ -50,8 +64,15 @@ namespace API.User.Controllers
         /// Task that represents the asynchronous operation, containing IActionResult of the operation.
         /// </returns>
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] UserDTO userDTO)
+        public async Task<IActionResult> Update([FromBody] UserDTO userDTO, [FromQuery] string password)
         {
+            // HACK: We should not send the password in query.
+
+            if (!Statics.PasswordRegex.IsMatch(password))
+            {
+                return BadRequest(JsonConvert.SerializeObject("The password is not correct."));
+            }
+
             if (userDTO.University != "Assiut University")
             {
                 return BadRequest(JsonConvert.SerializeObject("There is no University in our database with this name."));
@@ -63,6 +84,7 @@ namespace API.User.Controllers
                 return BadRequest(JsonConvert.SerializeObject("The first name and last name if they have space, then their alphabetic characters length must be greater than or equal 2."));
             }
 
+            // HACK: When the user update his information must give the password.
             var updateAsyncResult = await userRepository.UpdateAsync(userDTO);
 
             if (!updateAsyncResult.Succeeded)

@@ -19,6 +19,15 @@ namespace API.User.Repositories
         public Task<UserDTO?> FindByIdAsync(string userId);
 
         /// <summary>
+        /// Finds and returns a user, if any, who has the specified userEmail.
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <returns>
+        /// Task that represents the asynchronous operation, containing the user matching the specified userId if it exists.
+        /// </returns>
+        public Task<UserDTO?> FindByEmailAsync(string userEmail);
+
+        /// <summary>
         /// Updates the specified user in the backing store.
         /// </summary>
         /// <param name="userDTO"></param>

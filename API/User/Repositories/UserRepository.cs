@@ -28,6 +28,18 @@ namespace API.User.Repositories
             return new UserDTO(user);
         }
 
+        public async Task<UserDTO?> FindByEmailAsync(string userEmail)
+        {
+            var user = await userManager.FindByEmailAsync(userEmail);
+
+            if (user == null || !user.EmailConfirmed)
+            {
+                return null;
+            }
+
+            return new UserDTO(user);
+        }
+
         public async Task<IdentityResult> UpdateAsync(UserDTO userDTO)
         {
             var user = await userManager.FindByIdAsync(userDTO.Id);
