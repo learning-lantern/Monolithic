@@ -64,15 +64,8 @@ namespace API.User.Controllers
         /// Task that represents the asynchronous operation, containing IActionResult of the operation.
         /// </returns>
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] UserDTO userDTO, [FromQuery] string password)
+        public async Task<IActionResult> Update([FromBody] UserDTO userDTO)
         {
-            // HACK: We should not send the password in query.
-
-            if (!Statics.PasswordRegex.IsMatch(password))
-            {
-                return BadRequest(JsonConvert.SerializeObject("The password is not correct."));
-            }
-
             if (userDTO.University != "Assiut University")
             {
                 return BadRequest(JsonConvert.SerializeObject("There is no University in our database with this name."));
@@ -84,7 +77,6 @@ namespace API.User.Controllers
                 return BadRequest(JsonConvert.SerializeObject("The first name and last name if they have space, then their alphabetic characters length must be greater than or equal 2."));
             }
 
-            // HACK: When the user update his information must give the password.
             var updateAsyncResult = await userRepository.UpdateAsync(userDTO);
 
             if (!updateAsyncResult.Succeeded)
