@@ -76,7 +76,7 @@ namespace API.Auth.Repositories
                 issuer: configuration["JWT:ValidIssuer"],
                 audience: configuration["JWT:ValidAudience"],
                 claims: claims,
-                expires: DateTime.Now.AddDays(30),
+                expires: DateTime.UtcNow.AddDays(30),
                 signingCredentials: new SigningCredentials(key: symmetricSecurityKey, algorithm: SecurityAlgorithms.HmacSha256Signature)
                 );
 
