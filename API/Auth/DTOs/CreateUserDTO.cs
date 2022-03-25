@@ -1,5 +1,4 @@
-﻿using API.Helpers;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace API.Auth.DTOs
 {
@@ -8,9 +7,9 @@ namespace API.Auth.DTOs
     /// </summary>
     public class CreateUserDTO : SignInUserDTO
     {
-        [Required, StringLength(30), RegularExpression(Constants.NamePattern)]
+        [Required, StringLength(30), RegularExpression(ProgramHelper.NamePattern)]
         public string FirstName { get; set; } = null!;
-        [Required, StringLength(30), RegularExpression(Constants.NamePattern)]
+        [Required, StringLength(30), RegularExpression(ProgramHelper.NamePattern)]
         public string LastName { get; set; } = null!;
     }
 }

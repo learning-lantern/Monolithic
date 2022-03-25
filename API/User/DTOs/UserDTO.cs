@@ -1,5 +1,4 @@
-﻿using API.Helpers;
-using API.User.Models;
+﻿using API.User.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace API.User.DTOs
@@ -13,9 +12,9 @@ namespace API.User.DTOs
         public string Id { get; set; } = null!;
         [Required, EmailAddress]
         public string Email { get; set; } = null!;
-        [Required, StringLength(30), RegularExpression(Constants.NamePattern)]
+        [Required, StringLength(30), RegularExpression(ProgramHelper.NamePattern)]
         public string FirstName { get; set; } = null!;
-        [Required, StringLength(30), RegularExpression(Constants.NamePattern)]
+        [Required, StringLength(30), RegularExpression(ProgramHelper.NamePattern)]
         public string LastName { get; set; } = null!;
         [Required]
         public string University { get; set; } = null!;

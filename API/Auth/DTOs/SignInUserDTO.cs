@@ -1,5 +1,4 @@
-﻿using API.Helpers;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace API.Auth.DTOs
 {
@@ -13,7 +12,7 @@ namespace API.Auth.DTOs
         /// <summary>
         /// Password property that its pattern must consist of a minimum 6 characters, at least one uppercase letter, one lowercase letter, one special character, and one number.
         /// </summary>
-        [Required, RegularExpression(Constants.PasswordPattern)]
+        [Required, RegularExpression(ProgramHelper.PasswordPattern)]
         public string Password { get; set; } = null!;
         [Required]
         public string University { get; set; } = null!;
