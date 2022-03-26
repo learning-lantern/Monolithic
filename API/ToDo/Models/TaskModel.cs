@@ -8,13 +8,10 @@ namespace API.ToDo.Models
         public UserModel User { get; set; } = null!;
 
         public TaskModel() { }
-        public TaskModel(TaskDTO taskDTO, UserModel userModel) : base(taskDTO)
+        public TaskModel(TaskDTO taskDTO) : base(taskDTO) { }
+        public TaskModel(AddTaskDTO addTaskDTO, string userId) : base(addTaskDTO)
         {
-            User = userModel;
-        }
-        public TaskModel(AddTaskDTO addTaskDTO, UserModel userModel) : base(addTaskDTO)
-        {
-            User = userModel;
+            UserId = userId;
         }
     }
 }

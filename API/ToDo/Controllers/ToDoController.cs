@@ -1,8 +1,10 @@
-﻿using API.ToDo.DTOs;
+﻿using API.Helpers;
+using API.ToDo.DTOs;
 using API.ToDo.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace API.ToDo.Controllers
 {
@@ -18,8 +20,9 @@ namespace API.ToDo.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] string userId, [FromQuery] string? list)
+        public async Task<IActionResult> Get([FromQuery] string? list)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
             var tasks = await toDoRepository.GetAsync(userId, list);
 
             return Ok(JsonConvert.SerializeObject(tasks));
@@ -28,16 +31,16 @@ namespace API.ToDo.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] AddTaskDTO addTaskDTO)
         {
-            var addAsyncResult = await toDoRepository.AddAsync(addTaskDTO);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+            var addAsyncResult = await toDoRepository.AddAsync(userId, addTaskDTO);
 
             if (addAsyncResult == null)
             {
-                return NotFound(JsonConvert.SerializeObject(
-                "There is no user in this University with this Id."));
+                return NotFound(JsonConvert.SerializeObject(Message.UserIdNotFound));
             }
             if (addAsyncResult.Value > 0)
             {
-                return Ok(JsonConvert.SerializeObject(new TaskDTO(addTaskDTO) { Id = addAsyncResult.Value }));
+                return Ok(JsonConvert.SerializeObject(new TaskDTO(addTaskDTO) { Id = addAsyncResult.Value, UserId = userId }));
             }
 
             return BadRequest();
@@ -46,12 +49,12 @@ namespace API.ToDo.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] TaskDTO taskDTO)
         {
+            taskDTO.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
             var updateAsyncResult = await toDoRepository.UpdateAsync(taskDTO);
 
             if (updateAsyncResult == null)
             {
-                return NotFound(JsonConvert.SerializeObject(
-                "There is no user in this University with this Id."));
+                return NotFound(JsonConvert.SerializeObject(Message.UserIdNotFound));
             }
 
             if (updateAsyncResult.Value)
@@ -59,26 +62,26 @@ namespace API.ToDo.Controllers
                 return Ok(JsonConvert.SerializeObject(taskDTO));
             }
 
-            return BadRequest();
+            return NotFound(JsonConvert.SerializeObject(Message.TaskNotFound));
         }
 
         [HttpDelete]
         public async Task<IActionResult> Remove([FromQuery] int taskId)
         {
-            var removeAsyncResult = await toDoRepository.RemoveAsync(taskId);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+            var removeAsyncResult = await toDoRepository.RemoveAsync(userId, taskId);
 
             if (removeAsyncResult == null)
             {
-                return NotFound(JsonConvert.SerializeObject(
-                "There is no user in this University with this Id."));
+                return NotFound(JsonConvert.SerializeObject(Message.UserIdNotFound));
             }
 
             if (removeAsyncResult.Value)
             {
-                return Ok();
+                return Ok(JsonConvert.SerializeObject(Message.TaskDeleted));
             }
 
-            return BadRequest();
+            return NotFound(JsonConvert.SerializeObject(Message.TaskNotFound));
         }
     }
 }

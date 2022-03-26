@@ -4,41 +4,12 @@ namespace API.ToDo.Repositories
 {
     public interface IToDoRepository
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="list"></param>
-        /// <returns>
-        /// 
-        /// </returns>
         public Task<List<TaskDTO>> GetAsync(string userId, string? list);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="addTaskDTO"></param>
-        /// <returns>
-        /// 
-        /// </returns>
-        public Task<int?> AddAsync(AddTaskDTO addTaskDTO);
+        public Task<int?> AddAsync(string userId, AddTaskDTO addTaskDTO);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="taskDTO"></param>
-        /// <returns>
-        /// 
-        /// </returns>
         public Task<bool?> UpdateAsync(TaskDTO taskDTO);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="taskId"></param>
-        /// <returns>
-        /// 
-        /// </returns>
-        public Task<bool?> RemoveAsync(int taskId);
+        public Task<bool?> RemoveAsync(string userId, int taskId);
     }
 }
