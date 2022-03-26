@@ -1,5 +1,6 @@
 ﻿using API.Auth.DTOs;
 using API.Auth.Repositories;
+using API.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -22,58 +23,56 @@ namespace API.Auth.Controllers
         /// <summary>
         /// Creates the specified user in the backing store with given password, as an asynchronous operation.
         /// </summary>
-        /// <param name="createUserDTO"></param>
+        /// <param name="createDTO"></param>
         /// <returns>
         /// Task that represents the asynchronous operation, containing IActionResult of the operation.
         /// </returns>
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateUserDTO createUserDTO)
+        public async Task<IActionResult> Create([FromBody] CreateDTO createDTO)
         {
-            if (createUserDTO.University != "Assiut University")
+            if (!Helper.IsUniversityValid(createDTO.University))
             {
-                return BadRequest(JsonConvert.SerializeObject("There is no University in our database with this name."));
+                return BadRequest(JsonConvert.SerializeObject(Message.UniversityNotFound));
             }
 
-            if (createUserDTO.FirstName.Replace(" ", "").Length < 2 ||
-                createUserDTO.LastName.Replace(" ", "").Length < 2)
+            if (!Helper.IsNameValid(createDTO.FirstName) || !Helper.IsNameValid(createDTO.LastName))
             {
-                return BadRequest(JsonConvert.SerializeObject("The first name and last name if they have spaces, then their alphabetic characters length must be greater than or equal 2."));
+                return BadRequest(JsonConvert.SerializeObject(Message.NameNotValid));
             }
 
-            var createAsyncResult = await authRepository.CreateAsync(createUserDTO);
+            var createAsyncResult = await authRepository.CreateAsync(createDTO);
 
             return createAsyncResult.Succeeded ?
                 CreatedAtAction(actionName: nameof(ConfirmEmail),
-                value: JsonConvert.SerializeObject(createUserDTO.Email))
-                : BadRequest(JsonConvert.SerializeObject(createAsyncResult.Errors));
+                value: JsonConvert.SerializeObject(createDTO.Email)) :
+                BadRequest(JsonConvert.SerializeObject(createAsyncResult.Errors));
         }
 
         /// <summary>
         /// Attempts to sign in the specified userName and password combination as an asynchronous operation.
         /// </summary>
-        /// <param name="signInUserDTO"></param>
+        /// <param name="signInDTO"></param>
         /// <returns>
         /// Task that represents the asynchronous operation, containing IActionResult of the operation. The signed in user and its JWT token (object of sign in response data transfare class).
         /// </returns>
         [HttpPost]
-        public async Task<IActionResult> SignIn([FromBody] SignInUserDTO signInUserDTO)
+        public async Task<IActionResult> SignIn([FromBody] SignInDTO signInDTO)
         {
-            if (signInUserDTO.University != "Assiut University")
+            if (!Helper.IsUniversityValid(signInDTO.University))
             {
-                return BadRequest(JsonConvert.SerializeObject("There is no University in our database with this name."));
+                return BadRequest(JsonConvert.SerializeObject(Message.UniversityNotFound));
             }
 
-            var signInUserResponseDTO = await authRepository.SignInAsync(signInUserDTO);
+            var signInResponseDTO = await authRepository.SignInAsync(signInDTO);
 
-            if (signInUserResponseDTO.User == null)
+            if (signInResponseDTO.User == null)
             {
-                return NotFound(JsonConvert.SerializeObject("There is no user in this University with this email."));
+                return NotFound(JsonConvert.SerializeObject(Message.UserEmailNotFound));
             }
 
-            return string.IsNullOrEmpty(signInUserResponseDTO.Token)
-                ? Unauthorized(JsonConvert.SerializeObject(
-                    "Unauthorized user (Can't get JWT token)."))
-                : Ok(JsonConvert.SerializeObject(signInUserResponseDTO));
+            return string.IsNullOrEmpty(signInResponseDTO.Token) ?
+                Unauthorized(JsonConvert.SerializeObject("Can not get JWT.")) :
+                Ok(JsonConvert.SerializeObject(signInResponseDTO));
         }
 
         /// <summary>
@@ -91,7 +90,7 @@ namespace API.Auth.Controllers
 
             if (!confirmEmailAsyncResult.Succeeded)
             {
-                if (confirmEmailAsyncResult.Errors?.FirstOrDefault(error => error.Code == "NotFound") is not null)
+                if (confirmEmailAsyncResult.Errors?.FirstOrDefault(error => error.Code == StatusCodes.Status404NotFound.ToString()) != null)
                 {
                     return NotFound(JsonConvert.SerializeObject(confirmEmailAsyncResult.Errors));
                 }
@@ -116,7 +115,7 @@ namespace API.Auth.Controllers
 
             if (!sendConfirmationEmailResult.Succeeded)
             {
-                if (sendConfirmationEmailResult.Errors?.FirstOrDefault(error => error.Code == "NotFound") is not null)
+                if (sendConfirmationEmailResult.Errors?.FirstOrDefault(error => error.Code == StatusCodes.Status404NotFound.ToString()) != null)
                 {
                     return NotFound(JsonConvert.SerializeObject(sendConfirmationEmailResult.Errors));
                 }
