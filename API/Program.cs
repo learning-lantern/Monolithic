@@ -22,8 +22,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add database.
 builder.Services.AddDbContext<LearningLanternContext>();
 
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
 // Add identity core framework roles.
 builder.Services.AddIdentity<UserModel, IdentityRole>(setupAction =>
 {
