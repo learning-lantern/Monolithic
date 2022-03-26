@@ -1,4 +1,5 @@
-﻿using API.User.Models;
+﻿using API.Helpers;
+using API.User.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace API.Admin.Repositories
@@ -16,7 +17,7 @@ namespace API.Admin.Repositories
 
         public async Task<IdentityResult> CreateAdminRoleAsync()
         {
-            var role = new IdentityRole("Admin");
+            var role = new IdentityRole(Role.Admin);
 
             return await roleManager.CreateAsync(role);
         }
@@ -29,17 +30,17 @@ namespace API.Admin.Repositories
             {
                 return IdentityResult.Failed(new IdentityError()
                 {
-                    Code = "NotFound",
-                    Description = "There is no user in this University with this Id."
+                    Code = StatusCodes.Status404NotFound.ToString(),
+                    Description = Message.UserIdNotFound
                 });
             }
 
-            return await userManager.AddToRoleAsync(user, "Admin");
+            return await userManager.AddToRoleAsync(user, Role.Admin);
         }
 
         public async Task<IdentityResult> CreateUniversityAdminRoleAsync()
         {
-            var role = new IdentityRole("UniversityAdmin");
+            var role = new IdentityRole(Role.UniversityAdmin);
 
             return await roleManager.CreateAsync(role);
         }
@@ -52,17 +53,17 @@ namespace API.Admin.Repositories
             {
                 return IdentityResult.Failed(new IdentityError()
                 {
-                    Code = "NotFound",
-                    Description = "There is no user in this University with this Id."
+                    Code = StatusCodes.Status404NotFound.ToString(),
+                    Description = Message.UserIdNotFound
                 });
             }
 
-            return await userManager.AddToRoleAsync(user, "UniversityAdmin");
+            return await userManager.AddToRoleAsync(user, Role.UniversityAdmin);
         }
 
         public async Task<IdentityResult> CreateInstructorRoleAsync()
         {
-            var role = new IdentityRole("Instructor");
+            var role = new IdentityRole(Role.Instructor);
 
             return await roleManager.CreateAsync(role);
         }

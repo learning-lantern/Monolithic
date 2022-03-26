@@ -1,9 +1,11 @@
 ﻿using API.Auth.DTOs;
+using API.Helpers;
 using API.User.DTOs;
 using API.User.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace API.User.Controllers
 {
@@ -33,9 +35,8 @@ namespace API.User.Controllers
         {
             var user = await userRepository.FindByIdAsync(userId);
 
-            return user is null ? NotFound(JsonConvert.SerializeObject(
-                "There is no user in this University with this Id."))
-                : Ok(JsonConvert.SerializeObject(user));
+            return user == null ? NotFound(JsonConvert.SerializeObject(Message.UserIdNotFound)) :
+                Ok(JsonConvert.SerializeObject(user));
         }
 
         /// <summary>
@@ -50,9 +51,8 @@ namespace API.User.Controllers
         {
             var user = await userRepository.FindByEmailAsync(userEmail);
 
-            return user is null ? NotFound(JsonConvert.SerializeObject(
-                "There is no user in this University with this Email."))
-                : Ok(JsonConvert.SerializeObject(user));
+            return user == null ? NotFound(JsonConvert.SerializeObject(Message.UserEmailNotFound)) :
+                Ok(JsonConvert.SerializeObject(user));
         }
 
         /// <summary>
@@ -65,52 +65,43 @@ namespace API.User.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UserDTO userDTO)
         {
-            if (userDTO.University != "Assiut University")
+            if (!Helper.IsUniversityValid(userDTO.University))
             {
-                return BadRequest(JsonConvert.SerializeObject("There is no University in our database with this name."));
+                return BadRequest(JsonConvert.SerializeObject(Message.UniversityNotFound));
             }
 
-            if (userDTO.FirstName.Replace(" ", "").Length < 2 ||
-                userDTO.LastName.Replace(" ", "").Length < 2)
+            if (!Helper.IsNameValid(userDTO.FirstName) || !Helper.IsNameValid(userDTO.LastName))
             {
-                return BadRequest(JsonConvert.SerializeObject("The first name and last name if they have space, then their alphabetic characters length must be greater than or equal 2."));
+                return BadRequest(JsonConvert.SerializeObject(Message.NameNotValid));
             }
 
-            var updateAsyncResult = await userRepository.UpdateAsync(userDTO);
+            userDTO.Id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+            var user = await userRepository.UpdateAsync(userDTO);
 
-            if (!updateAsyncResult.Succeeded)
-            {
-                if (updateAsyncResult.Errors?.FirstOrDefault(error => error.Code == "NotFound") is not null)
-                {
-                    return NotFound(JsonConvert.SerializeObject(updateAsyncResult.Errors));
-                }
-
-                return BadRequest(JsonConvert.SerializeObject(updateAsyncResult.Errors));
-            }
-
-            return Ok(JsonConvert.SerializeObject(userDTO));
+            return user == null ? NotFound(JsonConvert.SerializeObject(Message.UserIdNotFound)) :
+                Ok(JsonConvert.SerializeObject(user));
         }
 
         /// <summary>
         /// Deletes the specified user from the backing store.
         /// </summary>
-        /// <param name="signInUserDTO"></param>
+        /// <param name="signInDTO"></param>
         /// /// <returns>
         /// Task that represents the asynchronous operation, containing IActionResult of the operation.
         /// </returns>
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromBody] SignInUserDTO signInUserDTO)
+        public async Task<IActionResult> Delete([FromBody] SignInDTO signInDTO)
         {
-            if (signInUserDTO.University != "Assiut University")
+            if (!Helper.IsUniversityValid(signInDTO.University))
             {
-                return BadRequest(JsonConvert.SerializeObject("There is no University in our database with this name."));
+                return BadRequest(JsonConvert.SerializeObject(Message.UniversityNotFound));
             }
 
-            var deleteAsyncResult = await userRepository.DeleteAsync(signInUserDTO.Email, signInUserDTO.Password);
+            var deleteAsyncResult = await userRepository.DeleteAsync(signInDTO.Email, signInDTO.Password);
 
             if (!deleteAsyncResult.Succeeded)
             {
-                if (deleteAsyncResult.Errors?.FirstOrDefault(error => error.Code == "NotFound") is not null)
+                if (deleteAsyncResult.Errors?.FirstOrDefault(error => error.Code == StatusCodes.Status404NotFound.ToString()) != null)
                 {
                     return NotFound(JsonConvert.SerializeObject(deleteAsyncResult.Errors));
                 }
@@ -118,7 +109,7 @@ namespace API.User.Controllers
                 return BadRequest(JsonConvert.SerializeObject(deleteAsyncResult.Errors));
             }
 
-            return Ok(JsonConvert.SerializeObject("User has been deleted."));
+            return Ok(JsonConvert.SerializeObject(Message.UserDeleted));
         }
     }
 }

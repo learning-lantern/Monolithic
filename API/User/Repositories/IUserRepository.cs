@@ -34,7 +34,7 @@ namespace API.User.Repositories
         /// <returns>
         /// Task that represents the asynchronous operation, containing IdentityResult of the operation.
         /// </returns>
-        public Task<IdentityResult> UpdateAsync(UserDTO userDTO);
+        public Task<UserDTO?> UpdateAsync(UserDTO userDTO);
 
         /// <summary>
         /// Deletes the specified user from the backing store.
@@ -46,13 +46,6 @@ namespace API.User.Repositories
         /// </returns>
         public Task<IdentityResult> DeleteAsync(string userEmail, string userPassword);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns>
-        /// 
-        /// </returns>
         public Task<UserModel?> FindUserByIdAsync(string userId);
     }
 }

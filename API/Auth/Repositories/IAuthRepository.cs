@@ -11,20 +11,20 @@ namespace API.Auth.Repositories
         /// <summary>
         /// Creates the specified user in the backing store with given password, as an asynchronous operation.
         /// </summary>
-        /// <param name="createUserDTO"></param>
+        /// <param name="createDTO"></param>
         /// <returns>
         /// Task that represents the asynchronous operation, containing IdentityResult of the operation.
         /// </returns>
-        public Task<IdentityResult> CreateAsync(CreateUserDTO createUserDTO);
+        public Task<IdentityResult> CreateAsync(CreateDTO createDTO);
 
         /// <summary>
         /// Attempts to sign in the specified userName and password combination as an asynchronous operation.
         /// </summary>
-        /// <param name="signInUserDTO"></param>
+        /// <param name="signInDTO"></param>
         /// <returns>
         /// The signed in user and its JWT token (object of sign in response data transfare class).
         /// </returns>
-        public Task<SignInUserResponseDTO> SignInAsync(SignInUserDTO signInUserDTO);
+        public Task<SignInResponseDTO> SignInAsync(SignInDTO signInDTO);
 
         /// <summary>
         /// Sends confirmation email token to the email.

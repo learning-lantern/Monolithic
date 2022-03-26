@@ -1,4 +1,5 @@
-﻿using API.University.Repositories;
+﻿using API.Helpers;
+using API.University.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -6,7 +7,7 @@ using Newtonsoft.Json;
 namespace API.University.Controllers
 {
     [Route("api/[controller]/[action]")]
-    [ApiController, Authorize(Roles = "Admin, UniversityAdmin")]
+    [ApiController, Authorize(Roles = Role.UniversityAdmin)]
     public class UniversityController : ControllerBase
     {
         private readonly IUniversityRepository universityAdminRepository;
@@ -19,16 +20,16 @@ namespace API.University.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToRoleInstructor([FromQuery] string university, [FromQuery] string userId)
         {
-            if (university != "Assiut University")
+            if (!Helper.IsUniversityValid(university))
             {
-                return BadRequest(JsonConvert.SerializeObject("There is no University in our database with this name."));
+                return BadRequest(JsonConvert.SerializeObject(Message.UniversityNotFound));
             }
 
             var addToRoleInstructorAsyncResult = await universityAdminRepository.AddToRoleInstructorAsync(userId);
 
             if (!addToRoleInstructorAsyncResult.Succeeded)
             {
-                if (addToRoleInstructorAsyncResult.Errors?.FirstOrDefault(error => error.Code == "NotFound") is not null)
+                if (addToRoleInstructorAsyncResult.Errors?.FirstOrDefault(error => error.Code == StatusCodes.Status404NotFound.ToString()) != null)
                 {
                     return NotFound(JsonConvert.SerializeObject(addToRoleInstructorAsyncResult.Errors));
                 }
@@ -36,7 +37,7 @@ namespace API.University.Controllers
                 return BadRequest(JsonConvert.SerializeObject(addToRoleInstructorAsyncResult.Errors));
             }
 
-            return Ok(JsonConvert.SerializeObject("Updated the user role to Instructor role."));
+            return Ok(JsonConvert.SerializeObject(Message.UpdateUserRole(userId, Role.Instructor)));
         }
     }
 }

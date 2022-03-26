@@ -66,6 +66,72 @@ namespace API.Migrations
                     b.ToTable("Classrooms");
                 });
 
+            modelBuilder.Entity("API.Quiz.Models.QuizModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("InstructorId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsAttendace")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Score")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InstructorId");
+
+                    b.ToTable("Quizes");
+                });
+
+            modelBuilder.Entity("API.TextLesson.Models.TextLessonModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ClassRoomId")
+                        .HasMaxLength(450)
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ContentPath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Discription")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Editable")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Printable")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TextLessons");
+                });
+
             modelBuilder.Entity("API.ToDo.Models.TaskModel", b =>
                 {
                     b.Property<int>("Id")
@@ -318,6 +384,28 @@ namespace API.Migrations
                         .IsRequired();
 
                     b.Navigation("Classroom");
+                });
+
+            modelBuilder.Entity("API.Quiz.Models.QuizModel", b =>
+                {
+                    b.HasOne("API.User.Models.UserModel", "Instructor")
+                        .WithMany()
+                        .HasForeignKey("InstructorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Instructor");
+                });
+
+            modelBuilder.Entity("API.TextLesson.Models.TextLessonModel", b =>
+                {
+                    b.HasOne("API.User.Models.UserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("API.ToDo.Models.TaskModel", b =>

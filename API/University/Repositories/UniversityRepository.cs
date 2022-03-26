@@ -1,4 +1,5 @@
-﻿using API.User.Models;
+﻿using API.Helpers;
+using API.User.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace API.University.Repositories
@@ -20,12 +21,12 @@ namespace API.University.Repositories
             {
                 return IdentityResult.Failed(new IdentityError()
                 {
-                    Code = "NotFound",
-                    Description = "There is no user in this University with this Id."
+                    Code = StatusCodes.Status404NotFound.ToString(),
+                    Description = Message.UserIdNotFound
                 });
             }
 
-            return await userManager.AddToRoleAsync(user, "Instructor");
+            return await userManager.AddToRoleAsync(user, Role.Instructor);
         }
     }
 }

@@ -6,12 +6,15 @@ namespace API.ToDo.DTOs
     {
         [Required, Key]
         public int Id { get; set; }
+        [Required, StringLength(450)]
+        public string UserId { get; set; } = null!;
 
         public TaskDTO() { }
         public TaskDTO(AddTaskDTO addTaskDTO) : base(addTaskDTO) { }
         public TaskDTO(TaskDTO taskDTO) : base(taskDTO)
         {
             Id = taskDTO.Id;
+            UserId = taskDTO.UserId;
         }
     }
 }

@@ -37,16 +37,16 @@ namespace API.ToDo.Repositories
             }
         }
 
-        public async Task<int?> AddAsync(AddTaskDTO addTaskDTO)
+        public async Task<int?> AddAsync(string userId, AddTaskDTO addTaskDTO)
         {
-            var user = await userRepository.FindUserByIdAsync(addTaskDTO.UserId);
+            var user = await userRepository.FindUserByIdAsync(userId);
 
             if (user == null)
             {
                 return null;
             }
 
-            var task = await learningLanternContext.Tasks.AddAsync(new TaskModel(addTaskDTO, user));
+            var task = await learningLanternContext.Tasks.AddAsync(new TaskModel(addTaskDTO, userId));
 
             if (task == null)
             {
@@ -65,7 +65,7 @@ namespace API.ToDo.Repositories
                 return null;
             }
 
-            var task = learningLanternContext.Tasks.Update(new TaskModel(taskDTO, user));
+            var task = learningLanternContext.Tasks.Update(new TaskModel(taskDTO));
 
             if (task == null)
             {
@@ -75,9 +75,16 @@ namespace API.ToDo.Repositories
             return await learningLanternContext.SaveChangesAsync() != 0;
         }
 
-        public async Task<bool?> RemoveAsync(int taskId)
+        public async Task<bool?> RemoveAsync(string userId, int taskId)
         {
-            var task = learningLanternContext.Tasks.Remove(new TaskModel() { Id = taskId });
+            var task = await learningLanternContext.Tasks.Where(task => task.Id == taskId && task.UserId == userId).FirstOrDefaultAsync();
+
+            if (task == null)
+            {
+                return null;
+            }
+
+            task = learningLanternContext.Tasks.Remove(task).Entity;
 
             if (task == null)
             {
