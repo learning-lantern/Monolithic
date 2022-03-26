@@ -1,4 +1,5 @@
-﻿using API.User.DTOs;
+﻿using API.Helpers;
+using API.User.DTOs;
 using API.User.Models;
 using Microsoft.AspNetCore.Identity;
 
@@ -40,23 +41,21 @@ namespace API.User.Repositories
             return new UserDTO(user);
         }
 
-        public async Task<IdentityResult> UpdateAsync(UserDTO userDTO)
+        public async Task<UserDTO?> UpdateAsync(UserDTO userDTO)
         {
             var user = await userManager.FindByIdAsync(userDTO.Id);
 
             if (user == null)
             {
-                return IdentityResult.Failed(new IdentityError()
-                {
-                    Code = "NotFound",
-                    Description = "There is no user in this University with this Id."
-                });
+                return null;
             }
 
             user.FirstName = userDTO.FirstName.Trim();
             user.LastName = userDTO.LastName.Trim();
 
-            return await userManager.UpdateAsync(user);
+            var updateAsyncResult = await userManager.UpdateAsync(user);
+
+            return updateAsyncResult.Succeeded ? new UserDTO(user) : null;
         }
 
         public async Task<IdentityResult> DeleteAsync(string userEmail, string userPassword)
@@ -67,8 +66,8 @@ namespace API.User.Repositories
             {
                 return IdentityResult.Failed(new IdentityError()
                 {
-                    Code = "NotFound",
-                    Description = "There is no user in this University with this Email."
+                    Code = StatusCodes.Status404NotFound.ToString(),
+                    Description = Message.UserEmailNotFound
                 });
             }
 
