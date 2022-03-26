@@ -3,6 +3,7 @@ using API.Auth.Repositories;
 using API.Calendar.Repositories;
 using API.Classroom.Repositories;
 using API.Database;
+using API.Helpers;
 using API.Quiz.Repositories;
 using API.TextLesson.Repositories;
 using API.ToDo.Repositories;
@@ -44,12 +45,12 @@ builder.Services.AddAuthentication(configureOptions =>
     configureOptions.TokenValidationParameters = new()
     {
         ValidateIssuer = true,
-        ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+        ValidIssuer = JWT.ValidIssuer,
         ValidateAudience = true,
-        ValidAudience = builder.Configuration["JWT:ValidAudience"],
+        ValidAudience = JWT.ValidAudience,
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(
-            key: Encoding.UTF8.GetBytes(builder.Configuration["JWT:IssuerSigningKey"]))
+            key: Encoding.UTF8.GetBytes(JWT.IssuerSigningKey))
     };
 });
 
