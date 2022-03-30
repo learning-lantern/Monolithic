@@ -37,7 +37,7 @@ namespace API.ToDo.Repositories
             }
         }
 
-        public async Task<int?> AddAsync(string userId, AddTaskDTO addTaskDTO)
+        public async Task<int?> AddAsync(AddTaskDTO addTaskDTO, string userId)
         {
             var user = await userRepository.FindUserByIdAsync(userId);
 
@@ -75,7 +75,7 @@ namespace API.ToDo.Repositories
             return await learningLanternContext.SaveChangesAsync() != 0;
         }
 
-        public async Task<bool?> RemoveAsync(string userId, int taskId)
+        public async Task<bool?> RemoveAsync(int taskId, string userId)
         {
             var task = await learningLanternContext.Tasks.Where(task => task.Id == taskId && task.UserId == userId).FirstOrDefaultAsync();
 

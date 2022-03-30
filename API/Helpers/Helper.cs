@@ -8,8 +8,10 @@ namespace API.Helpers
     {
         public static readonly Regex PasswordRegex = new(Pattern.Password);
 
-        public static readonly SmtpClient smtpClient = new(host: Message.FromEmailHost, port: 587)
+        public static readonly SmtpClient smtpClient = new()
         {
+            Host = Message.FromEmailHost,
+            Port = 587,
             EnableSsl = true,
             Credentials = new NetworkCredential(
                 userName: Message.FromEmail,

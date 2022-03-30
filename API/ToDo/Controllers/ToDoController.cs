@@ -23,6 +23,7 @@ namespace API.ToDo.Controllers
         public async Task<IActionResult> Get([FromQuery] string? list)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+
             var tasks = await toDoRepository.GetAsync(userId, list);
 
             return Ok(JsonConvert.SerializeObject(tasks));
@@ -32,7 +33,8 @@ namespace API.ToDo.Controllers
         public async Task<IActionResult> Add([FromBody] AddTaskDTO addTaskDTO)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
-            var addAsyncResult = await toDoRepository.AddAsync(userId, addTaskDTO);
+
+            var addAsyncResult = await toDoRepository.AddAsync(addTaskDTO, userId);
 
             if (addAsyncResult == null)
             {
@@ -50,6 +52,7 @@ namespace API.ToDo.Controllers
         public async Task<IActionResult> Update([FromBody] TaskDTO taskDTO)
         {
             taskDTO.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+
             var updateAsyncResult = await toDoRepository.UpdateAsync(taskDTO);
 
             if (updateAsyncResult == null)
@@ -69,7 +72,8 @@ namespace API.ToDo.Controllers
         public async Task<IActionResult> Remove([FromQuery] int taskId)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
-            var removeAsyncResult = await toDoRepository.RemoveAsync(userId, taskId);
+
+            var removeAsyncResult = await toDoRepository.RemoveAsync(taskId, userId);
 
             if (removeAsyncResult == null)
             {

@@ -6,10 +6,10 @@ namespace API.ToDo.Repositories
     {
         public Task<List<TaskDTO>> GetAsync(string userId, string? list);
 
-        public Task<int?> AddAsync(string userId, AddTaskDTO addTaskDTO);
+        public Task<int?> AddAsync(AddTaskDTO addTaskDTO, string userId);
 
         public Task<bool?> UpdateAsync(TaskDTO taskDTO);
 
-        public Task<bool?> RemoveAsync(string userId, int taskId);
+        public Task<bool?> RemoveAsync(int taskId, string userId);
     }
 }

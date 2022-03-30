@@ -66,7 +66,7 @@ builder.Services.AddTransient<IToDoRepository, ToDoRepository>();
 // TODO: Finish the Classroom service.
 builder.Services.AddTransient<IClassroomRepository, ClassroomRepository>();
 // TODO: Test the other services and integrate them with Classroom.
-builder.Services.AddTransient<ICalendarRepository, CalendarRepository>();
+//builder.Services.AddTransient<ICalendarRepository, CalendarRepository>();
 builder.Services.AddTransient<IQuizRepository, QuizRepository>();
 builder.Services.AddTransient<ITextLessonRepository, TextLessonRepository>();
 

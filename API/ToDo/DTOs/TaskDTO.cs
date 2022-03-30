@@ -6,7 +6,7 @@ namespace API.ToDo.DTOs
     {
         [Required, Key]
         public int Id { get; set; }
-        [Required, StringLength(450)]
+        [Required]
         public string UserId { get; set; } = null!;
 
         public TaskDTO() { }

@@ -7,6 +7,9 @@
         public const string TaskNotFound = "There is no task with this Id.";
         public const string TaskDeleted = "The task was deleted successfully.";
 
+        public const string ClassroomNotFound = "There is no classroom with this Id.";
+        public const string ClassroomDeleted = "The classroom was deleted successfully.";
+
         public const string UserDeleted = "The user was deleted successfully.";
         public const string UserIdNotFound = "There is no user in this University with this Id.";
         public const string UserEmailNotFound = "There is no user in this University with this email.";
@@ -19,6 +22,7 @@
         public static string EmailBody(string userId, string token) => $"<h1>Welcome To Learning Lantern</h1><br><p> Thanks for registering at learning lantern please click <strong><a href=\"https://localhost:5001/api/Auth/ConfirmEmail?userId={userId}&token={token}\" target=\"_blank\">here</a></strong> to activate your account</p>";
 
         public static string UpdateUserRole(string userId, string role) => $"Updated the user: {userId} role to {role}.";
+        public static string AddClassroomUser(string userId, int classroomId) => $"The user: {userId} added to classroom {classroomId}.";
         public static string CreatedRole(string role) => $"Created the {role} role.";
     }
 }

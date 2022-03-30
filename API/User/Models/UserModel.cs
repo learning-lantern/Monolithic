@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using API.Classroom.Models;
 using API.ToDo.Models;
 using Microsoft.AspNetCore.Identity;
 
@@ -15,5 +16,6 @@ namespace API.User.Models
         public string LastName { get; set; } = null!;
 
         public ICollection<TaskModel> Tasks { get; set; } = null!;
+        public ICollection<ClassroomUserModel> ClassroomUsers { get; set; } = null!;
     }
 }
