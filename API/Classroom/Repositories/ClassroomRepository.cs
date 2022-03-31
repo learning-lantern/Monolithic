@@ -17,7 +17,7 @@ namespace API.Classroom.Repositories
             this.learningLanternContext = learningLanternContext;
         }
 
-        public async Task<ClassroomDTO?> GetAsync(int classroomId, string userId) => await learningLanternContext.ClassroomUsers.Where(classroomUser => classroomUser.UserId == userId && classroomUser.ClassroomId == classroomId).Select(classroomUser => new ClassroomDTO(classroomUser.Classroom)).FirstOrDefaultAsync();
+        public async Task<List<ClassroomDTO>> GetAsync(string userId) => await learningLanternContext.ClassroomUsers.Where(classroomUser => classroomUser.UserId == userId).Select(classroomUser => new ClassroomDTO(classroomUser.Classroom)).ToListAsync();
 
         public async Task<int?> AddAsync(AddClassroomDTO addClassroomDTO, string userId)
         {
@@ -30,7 +30,7 @@ namespace API.Classroom.Repositories
 
             var classroom = await learningLanternContext.Classrooms.AddAsync(new ClassroomModel(addClassroomDTO));
 
-            if (classroom == null)
+            if (classroom == null || await learningLanternContext.SaveChangesAsync() == 0)
             {
                 return 0;
             }
@@ -45,40 +45,87 @@ namespace API.Classroom.Repositories
             return await learningLanternContext.SaveChangesAsync() == 0 ? 0 : classroom.Entity.Id;
         }
 
-        public async Task<bool?> AddUserAsync(int classroomId, string userId)
+        public async Task<bool?> AddUserAsync(int classroomId, string requestUserId, string userId)
         {
-            var user = await userRepository.FindUserByIdAsync(userId);
+            var classroomUser = await learningLanternContext.ClassroomUsers.Where(classroomUser => classroomUser.ClassroomId == classroomId && classroomUser.UserId == requestUserId).FirstOrDefaultAsync();
 
-            if (user == null)
+            if (classroomUser == null)
             {
                 return null;
             }
 
-            var classroom = await learningLanternContext.Classrooms.Where(classroom => classroom.Id == classroomId).FirstOrDefaultAsync();
+            var addAsyncResult = await learningLanternContext.ClassroomUsers.AddAsync(new ClassroomUserModel(classroomId, userId));
+
+            if (addAsyncResult == null)
+            {
+                return false;
+            }
+
+            return await learningLanternContext.SaveChangesAsync() != 0;
+        }
+
+        public async Task<bool?> UpdateAsync(ClassroomDTO classroomDTO, string userId)
+        {
+            var classroomUser = await learningLanternContext.ClassroomUsers.Where(classroomUser => classroomUser.ClassroomId == classroomDTO.Id && classroomUser.UserId == userId).FirstOrDefaultAsync();
+
+            if (classroomUser == null)
+            {
+                return null;
+            }
+
+            var classroom = learningLanternContext.Classrooms.Update(new ClassroomModel(classroomDTO));
 
             if (classroom == null)
             {
                 return false;
             }
 
-            var classroomUser = await learningLanternContext.ClassroomUsers.AddAsync(new ClassroomUserModel(classroomId, userId));
+            return await learningLanternContext.SaveChangesAsync() != 0;
+        }
+
+        public async Task<bool?> RemoveUserAsync(int classroomId, string requestUserId, string userId)
+        {
+            var requestUser = await userRepository.FindUserByIdAsync(requestUserId);
+
+            if (requestUser == null)
+            {
+                return null;
+            }
+
+            var classroomUser = await learningLanternContext.ClassroomUsers.Where(classroomUser => classroomUser.UserId == userId && classroomUser.ClassroomId == classroomId).FirstOrDefaultAsync();
+
+            if (classroomUser == null)
+            {
+                return null;
+            }
+
+            classroomUser = learningLanternContext.ClassroomUsers.Remove(classroomUser).Entity;
 
             if (classroomUser == null)
             {
                 return false;
             }
 
-            return await learningLanternContext.SaveChangesAsync() == 0 ? false : true;
+            return await learningLanternContext.SaveChangesAsync() != 0;
         }
 
-        public async Task<bool?> UpdateAsync(ClassroomDTO classroomDTO)
+        public async Task<bool?> RemoveAsync(int classroomId, string userId)
         {
-            throw new NotImplementedException();
-        }
+            var classroomUser = await learningLanternContext.ClassroomUsers.Where(classroomUser => classroomUser.ClassroomId == classroomId && classroomUser.UserId == userId).FirstOrDefaultAsync();
 
-        public async Task<bool?> RemoveAsync(int classroomId)
-        {
-            throw new NotImplementedException();
+            if (classroomUser == null)
+            {
+                return null;
+            }
+
+            var classroom = learningLanternContext.Classrooms.Remove(classroomUser.Classroom).Entity;
+
+            if (classroom == null)
+            {
+                return false;
+            }
+
+            return await learningLanternContext.SaveChangesAsync() != 0;
         }
     }
 }

@@ -28,8 +28,13 @@ namespace API.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddToRoleAdmin([FromQuery] string userId)
+        public async Task<IActionResult> AddToRoleAdmin([FromQuery] string userId, [FromQuery] string university)
         {
+            if (!Helper.IsUniversityValid(university))
+            {
+                return BadRequest(JsonConvert.SerializeObject(Message.UniversityNotFound));
+            }
+
             var addToRoleAdminAsyncResult = await adminRepository.AddToRoleAdminAsync(userId);
 
             if (!addToRoleAdminAsyncResult.Succeeded)

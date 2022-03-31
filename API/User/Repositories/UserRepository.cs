@@ -5,9 +5,6 @@ using Microsoft.AspNetCore.Identity;
 
 namespace API.User.Repositories
 {
-    /// <summary>
-    /// User repository class for user services, implements the IUserRepository interface.
-    /// </summary>
     public class UserRepository : IUserRepository
     {
         private readonly UserManager<UserModel> userManager;

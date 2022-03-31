@@ -58,14 +58,14 @@ namespace API.ToDo.Repositories
 
         public async Task<bool?> UpdateAsync(TaskDTO taskDTO)
         {
-            var user = await userRepository.FindUserByIdAsync(taskDTO.UserId);
+            var task = await learningLanternContext.Tasks.Where(task => task.Id == taskDTO.Id && task.UserId == taskDTO.UserId).FirstOrDefaultAsync();
 
-            if (user == null)
+            if (task == null)
             {
                 return null;
             }
 
-            var task = learningLanternContext.Tasks.Update(new TaskModel(taskDTO));
+            task = learningLanternContext.Tasks.Update(new TaskModel(taskDTO)).Entity;
 
             if (task == null)
             {

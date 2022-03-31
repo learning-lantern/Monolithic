@@ -4,10 +4,16 @@ namespace API.Classroom.Repositories
 {
     public interface IClassroomRepository
     {
-        public Task<ClassroomDTO?> GetAsync(int classroomId, string userId);
+        public Task<List<ClassroomDTO>> GetAsync(string userId);
+
         public Task<int?> AddAsync(AddClassroomDTO addClassroomDTO, string userId);
-        public Task<bool?> AddUserAsync(int classroomId, string userId);
-        public Task<bool?> UpdateAsync(ClassroomDTO classroomDTO);
-        public Task<bool?> RemoveAsync(int classroomId);
+
+        public Task<bool?> AddUserAsync(int classroomId, string requestUserId, string userId);
+
+        public Task<bool?> UpdateAsync(ClassroomDTO classroomDTO, string userId);
+
+        public Task<bool?> RemoveUserAsync(int classroomId, string requestUserId, string userId);
+
+        public Task<bool?> RemoveAsync(int classroomId, string userId);
     }
 }

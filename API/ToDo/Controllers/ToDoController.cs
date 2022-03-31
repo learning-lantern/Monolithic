@@ -57,7 +57,7 @@ namespace API.ToDo.Controllers
 
             if (updateAsyncResult == null)
             {
-                return NotFound(JsonConvert.SerializeObject(Message.UserIdNotFound));
+                return NotFound(JsonConvert.SerializeObject(Message.TaskNotFound));
             }
 
             if (updateAsyncResult.Value)
@@ -65,7 +65,7 @@ namespace API.ToDo.Controllers
                 return Ok(JsonConvert.SerializeObject(taskDTO));
             }
 
-            return NotFound(JsonConvert.SerializeObject(Message.TaskNotFound));
+            return BadRequest();
         }
 
         [HttpDelete]
@@ -77,7 +77,7 @@ namespace API.ToDo.Controllers
 
             if (removeAsyncResult == null)
             {
-                return NotFound(JsonConvert.SerializeObject(Message.UserIdNotFound));
+                return NotFound(JsonConvert.SerializeObject(Message.TaskNotFound));
             }
 
             if (removeAsyncResult.Value)
@@ -85,7 +85,7 @@ namespace API.ToDo.Controllers
                 return Ok(JsonConvert.SerializeObject(Message.TaskDeleted));
             }
 
-            return NotFound(JsonConvert.SerializeObject(Message.TaskNotFound));
+            return BadRequest();
         }
     }
 }

@@ -8,13 +8,7 @@ namespace API.Calendar.Models
 		public ClassroomModel Classroom { get; set; } = null!;
 
 		public EventModel() { }
-		public EventModel(AddEventDTO addEventDTO, ClassroomModel classroomModel) : base(addEventDTO)
-        {
-			Classroom = classroomModel;
-        }
-		public EventModel(EventDTO eventDTO, ClassroomModel classroomModel) : base(eventDTO)
-		{
-			Classroom = classroomModel;
-		}
+		public EventModel(AddEventDTO addEventDTO) : base(addEventDTO) { }
+		public EventModel(EventDTO eventDTO) : base(eventDTO) { }
 	}
 }
