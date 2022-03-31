@@ -20,14 +20,13 @@ namespace API.Classroom.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] int classroomId)
+        public async Task<IActionResult> Get()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
 
-            var classroom = await classroomRepository.GetAsync(classroomId, userId);
+            var classrooms = await classroomRepository.GetAsync(userId);
 
-            return classroom == null ? BadRequest(JsonConvert.SerializeObject(Message.ClassroomNotFound)) :
-                Ok(JsonConvert.SerializeObject(classroom));
+            return Ok(JsonConvert.SerializeObject(classrooms));
         }
 
         [HttpPost, Authorize(Roles = Role.UniversityAdmin)]
@@ -50,14 +49,16 @@ namespace API.Classroom.Controllers
             return BadRequest();
         }
 
-        [HttpPost, Authorize(Roles = Role.UniversityAdmin + ", " + Role.Instructor)]
+        [HttpPost, Authorize(Roles = Role.UniversityAdmin)]
         public async Task<IActionResult> AddUser([FromQuery] int classroomId, [FromQuery] string userId)
         {
-            var addUserAsyncResult = await classroomRepository.AddUserAsync(classroomId, userId);
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+
+            var addUserAsyncResult = await classroomRepository.AddUserAsync(classroomId, requestUserId, userId);
 
             if (addUserAsyncResult == null)
             {
-                return NotFound(JsonConvert.SerializeObject(Message.UserIdNotFound));
+                return NotFound(JsonConvert.SerializeObject(Message.ClassroomNotFound));
             }
 
             if (addUserAsyncResult.Value)
@@ -71,13 +72,61 @@ namespace API.Classroom.Controllers
         [HttpPut, Authorize(Roles = Role.UniversityAdmin)]
         public async Task<IActionResult> Update([FromBody] ClassroomDTO classroomDTO)
         {
-            throw new NotImplementedException();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+
+            var updateAsyncResult = await classroomRepository.UpdateAsync(classroomDTO, userId);
+
+            if (updateAsyncResult == null)
+            {
+                return NotFound(JsonConvert.SerializeObject(Message.ClassroomNotFound));
+            }
+
+            if (updateAsyncResult.Value)
+            {
+                return Ok(JsonConvert.SerializeObject(classroomDTO));
+            }
+
+            return BadRequest();
+        }
+
+        [HttpDelete, Authorize(Roles = Role.UniversityAdmin)]
+        public async Task<IActionResult> RemoveUser([FromQuery] int classroomId, [FromQuery] string userId)
+        {
+            var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+
+            var removeUserAsyncResult = await classroomRepository.RemoveUserAsync(classroomId, requestUserId, userId);
+
+            if (removeUserAsyncResult == null)
+            {
+                return NotFound(JsonConvert.SerializeObject(Message.ClassroomNotFound));
+            }
+
+            if (removeUserAsyncResult.Value)
+            {
+                return Ok(JsonConvert.SerializeObject(Message.RemoveClassroomUser(userId, classroomId)));
+            }
+
+            return NotFound(JsonConvert.SerializeObject(Message.ClassroomNotFound));
         }
 
         [HttpDelete, Authorize(Roles = Role.UniversityAdmin)]
         public async Task<IActionResult> Remove([FromQuery] int classroomId)
         {
-            throw new NotImplementedException();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+
+            var removeAsyncResult = await classroomRepository.RemoveAsync(classroomId, userId);
+
+            if (removeAsyncResult == null)
+            {
+                return NotFound(JsonConvert.SerializeObject(Message.ClassroomNotFound));
+            }
+
+            if (removeAsyncResult.Value)
+            {
+                return Ok(JsonConvert.SerializeObject(Message.ClassroomDeleted));
+            }
+
+            return BadRequest();
         }
     }
 }

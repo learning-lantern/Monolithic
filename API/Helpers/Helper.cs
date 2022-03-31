@@ -1,22 +1,10 @@
-﻿using System.Net;
-using System.Net.Mail;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace API.Helpers
 {
     public static class Helper
     {
         public static readonly Regex PasswordRegex = new(Pattern.Password);
-
-        public static readonly SmtpClient smtpClient = new()
-        {
-            Host = Message.FromEmailHost,
-            Port = 587,
-            EnableSsl = true,
-            Credentials = new NetworkCredential(
-                userName: Message.FromEmail,
-                password: Message.FromEmailPassword)
-        };
 
         private static readonly List<string> universities = new()
         {

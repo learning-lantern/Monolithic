@@ -38,12 +38,6 @@ namespace API.Database
                 .HasForeignKey(taskModel => taskModel.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<EventModel>()
-                .HasOne(eventModel => eventModel.Classroom)
-                .WithMany(classroomModel => classroomModel.Events)
-                .HasForeignKey(eventModel => eventModel.ClassroomId)
-                .OnDelete(DeleteBehavior.Cascade);
-
             builder.Entity<ClassroomUserModel>()
                 .HasKey(classroomUserModel => new { classroomUserModel.ClassroomId, classroomUserModel.UserId });
 
@@ -57,6 +51,12 @@ namespace API.Database
                 .HasOne(classroomUserModel => classroomUserModel.Classroom)
                 .WithMany(classroomModel => classroomModel.ClassroomUsers)
                 .HasForeignKey(classroomUserModel => classroomUserModel.ClassroomId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<EventModel>()
+                .HasOne(eventModel => eventModel.Classroom)
+                .WithMany(classroomModel => classroomModel.Events)
+                .HasForeignKey(eventModel => eventModel.ClassroomId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(builder);

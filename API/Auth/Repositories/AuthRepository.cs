@@ -7,14 +7,10 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Mail;
 using System.Security.Claims;
-using System.Text;
 using System.Web;
 
 namespace API.Auth.Repositories
 {
-    /// <summary>
-    /// Auth repository class for authentication services, implements the IAuthRepository interface.
-    /// </summary>
     public class AuthRepository : IAuthRepository
     {
         private readonly UserManager<UserModel> userManager;
@@ -68,14 +64,12 @@ namespace API.Auth.Repositories
                 claims.Add(new Claim(type: ClaimTypes.Role, value: role));
             }
 
-            var symmetricSecurityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(JWT.IssuerSigningKey));
-
             var token = new JwtSecurityToken(
                 issuer: JWT.ValidIssuer,
                 audience: JWT.ValidAudience,
                 claims: claims,
                 expires: DateTime.UtcNow.AddDays(30),
-                signingCredentials: new SigningCredentials(key: symmetricSecurityKey, algorithm: SecurityAlgorithms.HmacSha256Signature)
+                signingCredentials: new SigningCredentials(key: JWT.IssuerSigningKey, algorithm: SecurityAlgorithms.HmacSha256Signature)
                 );
 
             return new SignInResponseDTO(new UserDTO(user),
@@ -104,7 +98,7 @@ namespace API.Auth.Repositories
                     IsBodyHtml = true
                 };
 
-                await Helper.smtpClient.SendMailAsync(mailMessage);
+                await Message.Client.SendMailAsync(mailMessage);
 
                 return IdentityResult.Success;
             }
