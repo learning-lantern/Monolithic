@@ -1,5 +1,6 @@
 ﻿using APIs.Calendar.Models;
 using APIs.Classroom.Models;
+using APIs.Exam.Models;
 using APIs.ToDo.Models;
 using APIs.User.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -13,6 +14,7 @@ namespace APIs.Database
     public class LearningLanternContext : IdentityDbContext<UserModel>
     {
         public DbSet<TaskModel> Tasks { get; set; } = null!;
+        public DbSet<ExamModel> Exams { get; set; } = null!;
         public DbSet<ClassroomModel> Classrooms { get; set; } = null!;
         public DbSet<ClassroomUserModel> ClassroomUsers { get; set; } = null!;
         public DbSet<EventModel> Events { get; set; } = null!;
