@@ -1,5 +1,4 @@
-﻿using APIs.User.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace APIs.Quiz.DTOs
 {
@@ -7,17 +6,15 @@ namespace APIs.Quiz.DTOs
     {
         [Required, Key]
         public int Id { get; set; }
-        
+        [Required, StringLength(450)]
+        public string UserId { get; set; } = null!;
 
         public QuizDTO() { } 
-        public QuizDTO(AddQuizDTO addQuizDTO) : base(addQuizDTO)
+        public QuizDTO(AddQuizDTO addQuizDTO) : base(addQuizDTO) { }
+        public QuizDTO(QuizDTO quizDTO) : base(quizDTO)
         {
-            
-
-        }
-        public QuizDTO(QuizDTO quizDTO, UserModel userModel) : base(quizDTO) {
             Id = quizDTO.Id;
+            UserId = quizDTO.UserId;
         }
-
     }
 }

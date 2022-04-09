@@ -37,12 +37,7 @@ namespace APIs.Classroom.Repositories
 
             var classroomUser = await learningLanternContext.ClassroomUsers.AddAsync(new ClassroomUserModel(classroom.Entity.Id, userId));
 
-            if (classroomUser == null)
-            {
-                return 0;
-            }
-
-            return await learningLanternContext.SaveChangesAsync() == 0 ? 0 : classroom.Entity.Id;
+            return (classroomUser != null && await learningLanternContext.SaveChangesAsync() != 0) ? classroom.Entity.Id : 0;
         }
 
         public async Task<bool?> AddUserAsync(int classroomId, string requestUserId, string userId)
@@ -56,12 +51,7 @@ namespace APIs.Classroom.Repositories
 
             var addAsyncResult = await learningLanternContext.ClassroomUsers.AddAsync(new ClassroomUserModel(classroomId, userId));
 
-            if (addAsyncResult == null)
-            {
-                return false;
-            }
-
-            return await learningLanternContext.SaveChangesAsync() != 0;
+            return addAsyncResult != null && await learningLanternContext.SaveChangesAsync() != 0;
         }
 
         public async Task<bool?> UpdateAsync(ClassroomDTO classroomDTO, string userId)
@@ -75,12 +65,7 @@ namespace APIs.Classroom.Repositories
 
             var classroom = learningLanternContext.Classrooms.Update(new ClassroomModel(classroomDTO));
 
-            if (classroom == null)
-            {
-                return false;
-            }
-
-            return await learningLanternContext.SaveChangesAsync() != 0;
+            return classroom != null && await learningLanternContext.SaveChangesAsync() != 0;
         }
 
         public async Task<bool?> RemoveUserAsync(int classroomId, string requestUserId, string userId)
@@ -101,12 +86,7 @@ namespace APIs.Classroom.Repositories
 
             classroomUser = learningLanternContext.ClassroomUsers.Remove(classroomUser).Entity;
 
-            if (classroomUser == null)
-            {
-                return false;
-            }
-
-            return await learningLanternContext.SaveChangesAsync() != 0;
+            return classroomUser != null && await learningLanternContext.SaveChangesAsync() != 0;
         }
 
         public async Task<bool?> RemoveAsync(int classroomId, string userId)
@@ -120,12 +100,7 @@ namespace APIs.Classroom.Repositories
 
             var classroom = learningLanternContext.Classrooms.Remove(classroomUser.Classroom).Entity;
 
-            if (classroom == null)
-            {
-                return false;
-            }
-
-            return await learningLanternContext.SaveChangesAsync() != 0;
+            return classroom != null && await learningLanternContext.SaveChangesAsync() != 0;
         }
     }
 }

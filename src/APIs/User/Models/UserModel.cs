@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using APIs.Classroom.Models;
+using APIs.Quiz.Models;
 using APIs.ToDo.Models;
 using Microsoft.AspNetCore.Identity;
 
@@ -16,6 +17,7 @@ namespace APIs.User.Models
         public string LastName { get; set; } = null!;
 
         public ICollection<TaskModel> Tasks { get; set; } = null!;
+        public ICollection<QuizModel> Quizes { get; set; } = null!;
         public ICollection<ClassroomUserModel> ClassroomUsers { get; set; } = null!;
     }
 }

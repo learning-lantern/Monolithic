@@ -1,13 +1,15 @@
-﻿using APIs.Quiz.DTOs;
+﻿using APIs.Helpers;
+using APIs.Quiz.DTOs;
 using APIs.Quiz.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace APIs.Quiz.Controllers
 {
-    [Route("api/[controller]/[action]")]
-    [ApiController, Authorize]
+    [Route("api/Classroom/[controller]/[action]")]
+    [ApiController, Authorize(Roles = Role.Instructor)]
     public class QuizController : ControllerBase
     {
         private readonly IQuizRepository quizRepository;
@@ -18,26 +20,34 @@ namespace APIs.Quiz.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] string InstructorId)
+        public async Task<IActionResult> Get()
         {
-            var quizs = await quizRepository.GetAsync(InstructorId);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
 
-            return Ok(JsonConvert.SerializeObject(quizs));
+            return Ok(JsonConvert.SerializeObject(await quizRepository.GetAsync(userId)));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetByClassroom([FromQuery] int classroomId)
+        {
+            return Ok(JsonConvert.SerializeObject(await quizRepository.GetAsync(classroomId)));
         }
 
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] AddQuizDTO addQuizDTO)
         {
-            var addAsyncResult = await quizRepository.AddAsync(addQuizDTO);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
 
-            if (addAsyncResult is null)
+            var addAsyncResult = await quizRepository.AddAsync(addQuizDTO, userId);
+
+            if (addAsyncResult == null)
             {
-                return NotFound(JsonConvert.SerializeObject(
-                "There is no user in this University with this Id."));
+                return NotFound(JsonConvert.SerializeObject(Message.UserIdNotFound));
             }
+
             if (addAsyncResult.Value > 0)
             {
-                return Ok(JsonConvert.SerializeObject(new QuizDTO(addQuizDTO) { Id = addAsyncResult.Value }));
+                return Ok(JsonConvert.SerializeObject(new QuizDTO(addQuizDTO) { Id = addAsyncResult.Value, UserId = userId }));
             }
 
             return BadRequest();
@@ -46,12 +56,13 @@ namespace APIs.Quiz.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] QuizDTO quizDTO)
         {
+            quizDTO.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+
             var updateAsyncResult = await quizRepository.UpdateAsync(quizDTO);
 
-            if (updateAsyncResult is null)
+            if (updateAsyncResult == null)
             {
-                return NotFound(JsonConvert.SerializeObject(
-                "There is no user in this University with this Id."));
+                return NotFound(JsonConvert.SerializeObject(Message.QuizNotFound));
             }
 
             if (updateAsyncResult.Value)
@@ -65,17 +76,18 @@ namespace APIs.Quiz.Controllers
         [HttpDelete]
         public async Task<IActionResult> Remove([FromQuery] int quizId)
         {
-            var removeAsyncResult = await quizRepository.RemoveAsync(quizId);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
 
-            if (removeAsyncResult is null)
+            var removeAsyncResult = await quizRepository.RemoveAsync(quizId, userId);
+
+            if (removeAsyncResult == null)
             {
-                return NotFound(JsonConvert.SerializeObject(
-                "There is no user in this University with this Id."));
+                return NotFound(JsonConvert.SerializeObject(Message.QuizNotFound));
             }
 
             if (removeAsyncResult.Value)
             {
-                return Ok();
+                return Ok(JsonConvert.SerializeObject(Message.QuizRemoved));
             }
 
             return BadRequest();

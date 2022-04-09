@@ -17,9 +17,7 @@ namespace APIs.Admin.Repositories
 
         public async Task<IdentityResult> CreateAdminRoleAsync()
         {
-            var role = new IdentityRole(Role.Admin);
-
-            return await roleManager.CreateAsync(role);
+            return await roleManager.CreateAsync(new IdentityRole(Role.Admin));
         }
 
         public async Task<IdentityResult> AddToRoleAdminAsync(string userId)
@@ -40,9 +38,7 @@ namespace APIs.Admin.Repositories
 
         public async Task<IdentityResult> CreateUniversityAdminRoleAsync()
         {
-            var role = new IdentityRole(Role.UniversityAdmin);
-
-            return await roleManager.CreateAsync(role);
+            return await roleManager.CreateAsync(new IdentityRole(Role.UniversityAdmin));
         }
 
         public async Task<IdentityResult> AddToRoleUniversityAdminAsync(string userId)
@@ -63,9 +59,7 @@ namespace APIs.Admin.Repositories
 
         public async Task<IdentityResult> CreateInstructorRoleAsync()
         {
-            var role = new IdentityRole(Role.Instructor);
-
-            return await roleManager.CreateAsync(role);
+            return await roleManager.CreateAsync(new IdentityRole(Role.Instructor));
         }
     }
 }

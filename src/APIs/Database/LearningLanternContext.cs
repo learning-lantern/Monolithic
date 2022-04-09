@@ -1,6 +1,7 @@
 ﻿using APIs.Calendar.Models;
 using APIs.Classroom.Models;
 using APIs.Exam.Models;
+using APIs.Quiz.Models;
 using APIs.ToDo.Models;
 using APIs.User.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -14,12 +15,11 @@ namespace APIs.Database
     public class LearningLanternContext : IdentityDbContext<UserModel>
     {
         public DbSet<TaskModel> Tasks { get; set; } = null!;
-        public DbSet<ExamModel> Exams { get; set; } = null!;
         public DbSet<ClassroomModel> Classrooms { get; set; } = null!;
         public DbSet<ClassroomUserModel> ClassroomUsers { get; set; } = null!;
         public DbSet<EventModel> Events { get; set; } = null!;
-        //public DbSet<QuizModel> Quizes { get; set; } = null!;
-        //public DbSet<TextLessonModel> TextLessons { get; set; } = null!;
+        public DbSet<QuizModel> Quizes { get; set; } = null!;
+        public DbSet<ExamModel> Exams { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
@@ -58,6 +58,18 @@ namespace APIs.Database
                 .WithMany(classroomModel => classroomModel.Events)
                 .HasForeignKey(eventModel => eventModel.ClassroomId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<QuizModel>()
+                .HasOne(quizModel => quizModel.User)
+                .WithMany(userModel => userModel.Quizes)
+                .HasForeignKey(quizModel => quizModel.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<QuizModel>()
+                .HasOne(quizModel => quizModel.Classroom)
+                .WithMany(classroomModel => classroomModel.Quizes)
+                .HasForeignKey(quizModel => quizModel.ClassroomId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             base.OnModelCreating(builder);
         }

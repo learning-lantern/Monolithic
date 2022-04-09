@@ -41,12 +41,7 @@ namespace APIs.Calendar.Repositories
 
             var eventModel = await learningLanternContext.Events.AddAsync(new EventModel(addEventDTO));
 
-            if (eventModel == null)
-            {
-                return 0;
-            }
-
-            return await learningLanternContext.SaveChangesAsync() == 0 ? 0 : eventModel.Entity.Id;
+            return (eventModel != null && await learningLanternContext.SaveChangesAsync() != 0) ? eventModel.Entity.Id : 0;
         }
 
         public async Task<bool?> UpdateAsync(EventDTO eventDTO, string userId)
@@ -67,12 +62,7 @@ namespace APIs.Calendar.Repositories
 
             eventModel = learningLanternContext.Events.Update(new EventModel(eventDTO)).Entity;
 
-            if (eventModel == null)
-            {
-                return false;
-            }
-
-            return await learningLanternContext.SaveChangesAsync() != 0;
+            return eventModel != null && await learningLanternContext.SaveChangesAsync() != 0;
         }
 
         public async Task<bool?> RemoveAsync(int eventId, string userId)
@@ -93,12 +83,7 @@ namespace APIs.Calendar.Repositories
 
             eventModel = learningLanternContext.Events.Remove(eventModel).Entity;
 
-            if (eventModel == null)
-            {
-                return false;
-            }
-
-            return await learningLanternContext.SaveChangesAsync() != 0;
+            return eventModel != null && await learningLanternContext.SaveChangesAsync() != 0;
         }
     }
 }

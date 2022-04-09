@@ -48,12 +48,7 @@ namespace APIs.ToDo.Repositories
 
             var task = await learningLanternContext.Tasks.AddAsync(new TaskModel(addTaskDTO, userId));
 
-            if (task == null)
-            {
-                return 0;
-            }
-
-            return await learningLanternContext.SaveChangesAsync() == 0 ? 0 : task.Entity.Id;
+            return (task != null && await learningLanternContext.SaveChangesAsync() != 0) ? task.Entity.Id : 0;
         }
 
         public async Task<bool?> UpdateAsync(TaskDTO taskDTO)
@@ -67,12 +62,7 @@ namespace APIs.ToDo.Repositories
 
             task = learningLanternContext.Tasks.Update(new TaskModel(taskDTO)).Entity;
 
-            if (task == null)
-            {
-                return false;
-            }
-
-            return await learningLanternContext.SaveChangesAsync() != 0;
+            return task != null && await learningLanternContext.SaveChangesAsync() != 0;
         }
 
         public async Task<bool?> RemoveAsync(int taskId, string userId)
@@ -86,12 +76,7 @@ namespace APIs.ToDo.Repositories
 
             task = learningLanternContext.Tasks.Remove(task).Entity;
 
-            if (task == null)
-            {
-                return false;
-            }
-
-            return await learningLanternContext.SaveChangesAsync() != 0;
+            return task != null && await learningLanternContext.SaveChangesAsync() != 0;
         }
     }
 }

@@ -82,7 +82,7 @@ namespace APIs.ToDo.Controllers
 
             if (removeAsyncResult.Value)
             {
-                return Ok(JsonConvert.SerializeObject(Message.TaskDeleted));
+                return Ok(JsonConvert.SerializeObject(Message.TaskRemoved));
             }
 
             return BadRequest();

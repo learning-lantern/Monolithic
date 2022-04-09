@@ -1,5 +1,6 @@
 ﻿using APIs.Calendar.DTOs;
 using APIs.Classroom.Models;
+using APIs.User.Models;
 
 namespace APIs.Calendar.Models
 {

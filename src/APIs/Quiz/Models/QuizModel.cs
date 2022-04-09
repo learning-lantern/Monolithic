@@ -1,24 +1,19 @@
-﻿using APIs.Quiz.DTOs;
+﻿using APIs.Classroom.Models;
+using APIs.Quiz.DTOs;
 using APIs.User.Models;
 
 namespace APIs.Quiz.Models
 {
     public class QuizModel : QuizDTO
     {
-        public UserModel Instructor { get; set; } = null!;
+        public UserModel User { get; set; } = null!;
+        public ClassroomModel Classroom { get; set; } = null!;
 
         public QuizModel() { }
-        public QuizModel(QuizDTO quizDTO, UserModel userModel) : base(quizDTO)
+        public QuizModel(QuizDTO quizDTO) : base(quizDTO) { }
+        public QuizModel(AddQuizDTO addQuizDTO, string userId) : base(addQuizDTO)
         {
-            Instructor = userModel;
+            UserId = userId;
         }
-
-        public QuizModel(AddQuizDTO addQuizDTO, UserModel userModel) : base(addQuizDTO)
-        {
-            Instructor = userModel;
-        }
-
-
-
     }
 }

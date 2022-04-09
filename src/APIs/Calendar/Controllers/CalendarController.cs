@@ -89,7 +89,7 @@ namespace APIs.Calendar.Controllers
 
             if (removeAsyncResult.Value)
             {
-                return Ok(JsonConvert.SerializeObject(Message.EventDeleted));
+                return Ok(JsonConvert.SerializeObject(Message.EventRemoved));
             }
 
             return BadRequest();

@@ -5,40 +5,14 @@ namespace APIs.Quiz.Repositories
 {
     public interface IQuizRepository
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="InstructorId"></param>
-        /// <returns>
-        /// 
-        /// </returns>
-        public Task<List<QuizDTO>> GetAsync(string InstructorId);
+        public Task<List<QuizDTO>> GetAsync(string userId);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="addQuizDTO"></param>
-        /// <returns>
-        /// 
-        /// </returns>
-        public Task<int?> AddAsync(AddQuizDTO addQuizDTO);
+        public Task<List<QuizDTO>> GetAsync(int classroomId);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="quizDTO"></param>
-        /// <returns>
-        /// 
-        /// </returns>
+        public Task<int?> AddAsync(AddQuizDTO addQuizDTO, string userId);
+
         public Task<bool?> UpdateAsync(QuizDTO quizDTO);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="quizId"></param>
-        /// <returns>
-        /// 
-        /// </returns>
-        public Task<bool?> RemoveAsync(int quizId);
+        public Task<bool?> RemoveAsync(int quizId, string userId);
     }
 }

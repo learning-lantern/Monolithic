@@ -123,7 +123,7 @@ namespace APIs.Classroom.Controllers
 
             if (removeAsyncResult.Value)
             {
-                return Ok(JsonConvert.SerializeObject(Message.ClassroomDeleted));
+                return Ok(JsonConvert.SerializeObject(Message.ClassroomRemoved));
             }
 
             return BadRequest();
