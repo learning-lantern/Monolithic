@@ -61,7 +61,7 @@ builder.Services.AddTransient<IClassroomRepository, ClassroomRepository>();
 builder.Services.AddTransient<ICalendarRepository, CalendarRepository>();
 // TODO: Test the other services and integrate them with Classroom.
 //builder.Services.AddTransient<IQuizRepository, QuizRepository>();
-//builder.Services.AddTransient<ITextLessonRepository, TextLessonRepository>();
+//builder.Services.AddTransient<IExamRepository, ExamRepository>();
 
 // Add cors for Angular.
 builder.Services.AddCors(setupAction => setupAction.AddDefaultPolicy(
