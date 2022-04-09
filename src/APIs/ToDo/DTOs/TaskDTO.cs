@@ -2,7 +2,7 @@
 
 namespace APIs.ToDo.DTOs
 {
-    public class TaskDTO : AddTaskDTO
+    public class TaskDTO : TaskProperties
     {
         [Required, Key]
         public int Id { get; set; }
@@ -10,7 +10,7 @@ namespace APIs.ToDo.DTOs
         public string UserId { get; set; } = null!;
 
         public TaskDTO() { }
-        public TaskDTO(AddTaskDTO addTaskDTO) : base(addTaskDTO) { }
+        public TaskDTO(TaskProperties taskProperties) : base(taskProperties) { }
         public TaskDTO(TaskDTO taskDTO) : base(taskDTO)
         {
             Id = taskDTO.Id;

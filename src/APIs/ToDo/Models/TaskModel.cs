@@ -9,7 +9,7 @@ namespace APIs.ToDo.Models
 
         public TaskModel() { }
         public TaskModel(TaskDTO taskDTO) : base(taskDTO) { }
-        public TaskModel(AddTaskDTO addTaskDTO, string userId) : base(addTaskDTO)
+        public TaskModel(TaskProperties taskProperties, string userId) : base(taskProperties)
         {
             UserId = userId;
         }

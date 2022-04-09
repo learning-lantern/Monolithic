@@ -40,9 +40,10 @@ namespace APIs.ToDo.Controllers
             {
                 return NotFound(JsonConvert.SerializeObject(Message.UserIdNotFound));
             }
+
             if (addAsyncResult.Value > 0)
             {
-                return Ok(JsonConvert.SerializeObject(new TaskDTO(addTaskDTO) { Id = addAsyncResult.Value, UserId = userId }));
+                return Ok(JsonConvert.SerializeObject(new AddTaskResponseDTO(new TaskDTO(addTaskDTO) { Id = addAsyncResult.Value, UserId = userId }, addTaskDTO.TempId)));
             }
 
             return BadRequest();

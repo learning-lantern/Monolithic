@@ -19,7 +19,7 @@ namespace APIs.Database
         public DbSet<ClassroomUserModel> ClassroomUsers { get; set; } = null!;
         public DbSet<EventModel> Events { get; set; } = null!;
         public DbSet<QuizModel> Quizes { get; set; } = null!;
-        public DbSet<ExamModel> Exams { get; set; } = null!;
+        //public DbSet<ExamModel> Exams { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
