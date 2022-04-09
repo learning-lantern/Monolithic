@@ -12,6 +12,7 @@ namespace APIs.ToDo.DTOs
         public bool Completed { get; set; } = false;
         public bool Important { get; set; } = false;
         public int Repeated { get; set; } = 0;
+        public int TempId { get; set; } = 0;
 
         public AddTaskDTO() { }
         public AddTaskDTO(AddTaskDTO addTaskDTO)
@@ -23,6 +24,7 @@ namespace APIs.ToDo.DTOs
             Completed = addTaskDTO.Completed;
             Important = addTaskDTO.Important;
             Repeated = addTaskDTO.Repeated;
+            TempId = addTaskDTO.TempId;
         }
     }
 }
