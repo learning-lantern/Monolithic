@@ -11,6 +11,7 @@ using APIs.User.Models;
 using APIs.User.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,7 +38,7 @@ builder.Services.AddAuthentication(configureOptions =>
     configureOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(configureOptions =>
 {
-    configureOptions.TokenValidationParameters = new()
+    configureOptions.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
         ValidIssuer = JWT.ValidIssuer,
@@ -72,11 +73,9 @@ builder.Services.AddCors(setupAction => setupAction.AddDefaultPolicy(
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseCors();
